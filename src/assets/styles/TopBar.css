@@ -1,0 +1,321 @@
+.topBarInnerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 30px;
+  gap: 10px;
+  padding-bottom: 10px;
+  font-weight: 500;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.topBarTitle {
+  display: flex;
+}
+
+.searchWrapper {
+  position: relative;
+  column-gap: 20px;
+  display: flex;
+  width: 393px;
+}
+
+.searchWrapper input {
+  padding: 10px 16px 10px 40px;
+  font-size: 14px;
+  border: 1px solid black;
+  outline: none;
+  border-radius: 50px;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+}
+
+.searchWrapper input::placeholder {
+  color: rgb(165, 165, 165);
+}
+
+.searchWrapper select {
+  padding: 13px 20px 13px 40px;
+  outline: none;
+  border: none;
+  border-radius: 7px;
+  box-shadow: 0px 1px 2px 0px #1018280d;
+  font-family: "Poppins", sans-serif;
+  padding: 8px 12px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 220px;
+}
+
+.searchWrapper img {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 10px;
+  width: 17px;
+  height: 17px;
+  stroke: rgb(165, 165, 165);
+}
+
+.topBarActionsWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  width: 50%;
+}
+
+.notificationContainer {
+  position: relative;
+  margin-top: 10px;
+}
+.notificationContainer img {
+  height: 38px;
+  cursor: pointer;
+  padding: 10px;
+  background-color: #ee3f24;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.profile-card {
+  background-color: #ea3c2f;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 16px 6px 7px;
+  border-radius: 40px;
+  gap: 16px;
+  cursor: pointer;
+  min-width: 155px;
+}
+
+.profile-image {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-name {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.arrow {
+  color: white;
+  font-size: 16px;
+}
+
+.arrow {
+  transform: rotate(270deg);
+  transition: transform 0.3s ease;
+}
+
+.rotated {
+  transform: rotate(90deg);
+}
+
+.profileContainer {
+  position: relative;
+  background-color: whitesmoke;
+  border-radius: 6px;
+}
+
+.notificationButton,
+.profileButton {
+  font-family: "Poppins", sans-serif;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px;
+  transition: background-color 0.2s;
+  font-size: 20px;
+}
+
+.profileButton {
+  padding: 9px 12px 9px 12px;
+}
+
+.notificationButton:hover,
+.profileButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+}
+
+.notificationBadge {
+  font-family: "Poppins", sans-serif;
+  position: absolute;
+  top: -3px;
+  right: -2px;
+  background-color: #ef4444;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdownMenu {
+  font-family: "Poppins", sans-serif;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 320px;
+  z-index: 100;
+  overflow: hidden;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notificationDropdown h3 {
+  font-family: "Poppins", sans-serif;
+  padding: 16px;
+  margin: 0;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.notificationItem {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.notificationItem:hover {
+  background-color: #f9fafb;
+}
+
+.notificationContent p {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+}
+
+.notificationTime {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.viewAllNotifications {
+  padding: 12px 16px;
+  text-align: center;
+  color: #3b82f6;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.viewAllNotifications:hover {
+  background-color: #f9fafb;
+}
+
+.profileDropdown {
+  width: 250px;
+}
+
+.profileInfo {
+  overflow: hidden;
+}
+
+.profileMenuItems {
+  display: flex;
+  flex-direction: column;
+}
+
+.profileMenuItem {
+  padding: 12px 16px;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profileMenuItem:hover {
+  background-color: #f9fafb;
+}
+
+.profileMenuItem .loaderWrapper {
+  min-height: 0;
+}
+
+.notification-dot {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 4px;
+  height: 4px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.topBarContainer{
+  display: block;
+}
+.mobiletopBarContainer{
+  display: none !important;
+}
+
+
+.deActiveSearchWrapper{
+  font-size: 14px;
+}
+.deActiveSearchWrapper input{
+  width: 0%;
+  padding: 7px 18px;
+}
+
+ .deActiveSearchprofile-name{
+    display: none;
+  }
+
+  .deActiveSearchDetailArrow{
+    display: none;
+  }
+
+  .deActiveSearchprofile-card{
+    min-width: 0px;
+    padding: 5px;
+  }
+
+
+@media only screen and (max-width: 425px) {
+  .topBarActionsWrapper{
+    width: auto;
+  }
+  .topBarContainer{
+    display: none;
+  }
+.mobiletopBarContainer{
+  display: block !important;
+}
+}

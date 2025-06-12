@@ -1,0 +1,115 @@
+.profile-container {
+  background-color: #fff6f3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  height: 100vh;
+  width: 100vw;
+}
+
+.profile-detail-brand-logo {
+  margin: -43px 0px -20px -46px;
+}
+.profile-detail-brand-logo img {
+  height: 150px;
+}
+
+.profile-details-card {
+  border: 3px solid #ff6347;
+  border-radius: 20px;
+  padding: 2rem;
+  background-color: white;
+  /* display: flex;
+  gap: 2rem; */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.image-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.image-section img {
+  height: 100px;
+  width: 100px;
+  padding: 0px;
+  border-radius: 50%;
+  box-shadow: 0 8px 16px rgb(0 0 0 / 18%);
+  object-fit: cover;
+}
+
+.avatar {
+  width: 180px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.edit-btn {
+  position: absolute;
+  bottom: -1px;
+  right: 52px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.edit-btn img {
+  height: 15px;
+  width: 15px;
+  padding: 0px;
+  border-radius: 0px;
+  box-shadow: 0px 0px 0px black;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px;
+  width: 250px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  font-size: 15px;
+}
+.form-group select {
+  cursor: pointer;
+}
+
+.continue-btn {
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 5px 10px rgba(255, 99, 71, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.continue-btn:hover {
+  transform: translateY(-2px);
+}
+
+.select-placeholder {
+  color: gray;
+}
