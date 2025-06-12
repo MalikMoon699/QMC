@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import "./assets/styles/style.css";
+import "./assets/styles/Style.css";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import AdminDashboard from "./pages/AdminDashboard";
