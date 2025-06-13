@@ -125,6 +125,7 @@
   margin-bottom: 0.7rem;
   border-top: 1px solid #44444438;
   padding-top: 1rem;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   font-weight: 500;

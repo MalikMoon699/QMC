@@ -399,8 +399,10 @@ const SellProducts = ({ onClose, productToUpdate }) => {
                     />
                   </div>
                 ))}
+                <div style={{border:"none", display:"flex",alignItems:"center", justifyContent:"center"}} className="media-preview-video">
                 <div onClick={handleAddFilesClick} className="add-Files">
                   <Plus />
+                </div>
                 </div>
                 <input
                   ref={fileInputRef}

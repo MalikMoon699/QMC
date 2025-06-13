@@ -12,7 +12,7 @@ import Loader from "../components/Loader";
 import { toast } from "react-toastify";
 
 const Mobiles = () => {
-  const { role } = useAuth();
+  const { currentUser,role } = useAuth();
   const { searchTxt } = useOutletContext();
   const [statusFilter, setStatusFilter] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
@@ -237,7 +237,8 @@ const Mobiles = () => {
               <div className="mobile-card__info_content">
                 <div className="mobile-card__text mobile-card__info mobile-card_details_container">
                   <h3>{selectedCard.brandName}</h3>
-                  {role !== "user" && (
+                  {(role === "admin" ||
+                    currentUser?.email === selectedCard.createdByEmail) && (
                     <h3
                       onClick={() => {
                         setIsUpdateModal(true);
