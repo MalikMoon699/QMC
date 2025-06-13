@@ -201,7 +201,7 @@ const SellProducts = ({ onClose, productToUpdate }) => {
         <form style={{ padding: "20px" }}>
           {step === 1 && (
             <>
-              <label>Brand name:</label>
+              {/* <label>Brand name:</label> */}
               <input
                 className="login-input"
                 type="text"

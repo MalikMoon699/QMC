@@ -37,7 +37,7 @@ body {
   width: 280px;
   position: fixed;
   top: 0;
-  z-index: 2;
+  z-index: 1000;
   color: #fff;
   background-color: #000;
   border-right: 1px solid #e3e3e3;
@@ -55,7 +55,7 @@ body {
 .sidebar-brand-logo {
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   display: flex;
   align-items: center;
 }
@@ -161,13 +161,6 @@ body {
   justify-content: center;
 }
 
-.contentWrapper {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  color: black;
-  padding-bottom: 8px;
-}
 .contentWrapper img {
   height: 80px;
 }

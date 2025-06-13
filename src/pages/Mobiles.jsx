@@ -10,12 +10,15 @@ import { db } from "../utils/FirebaseConfig";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
+import SellerApplication from "../components/SellerApplication";
 
 const Mobiles = () => {
   const { currentUser,role } = useAuth();
   const { searchTxt } = useOutletContext();
   const [statusFilter, setStatusFilter] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
+  const [isSellerApplicationOpen, setIsSellerApplicationOpen] =
+    useState(false);
   const [isUpdateModal, setIsUpdateModal] = useState(false);
   const [sellModalOpen, setSellModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
@@ -108,6 +111,7 @@ const Mobiles = () => {
           )}
           {role === "user" && (
             <button
+              onClick={() => setIsSellerApplicationOpen(true)}
               className="action-btn"
               style={{ backgroundColor: "#ef3f2c" }}
             >
@@ -362,6 +366,14 @@ const Mobiles = () => {
           onClose={() => {
             setSellModalOpen(false);
             setSelectedCard(null);
+          }}
+          productToUpdate={selectedCard}
+        />
+      )}
+      {isSellerApplicationOpen && (
+        <SellerApplication
+          onClose={() => {
+            setIsSellerApplicationOpen(false);
           }}
           productToUpdate={selectedCard}
         />

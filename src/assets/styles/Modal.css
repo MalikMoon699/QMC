@@ -18,7 +18,6 @@
   position: relative;
   background: #fff;
   border-radius: 10px;
-  max-width: 90%;
   max-height: 90%;
   overflow: auto;
   scrollbar-width: none;
@@ -31,6 +30,7 @@
 .contentWrapper {
   display: flex;
   align-items: center;
+  text-align: center;
   flex-direction: column;
   color: #000;
   padding-bottom: 8px;

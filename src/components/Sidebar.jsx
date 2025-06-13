@@ -54,7 +54,7 @@ const Sidebar = () => {
             <div>
               <div className="sidebar-brand-logo">
                 <div style={{ margin: "0px" }} className="sidebar-brand-logo">
-                  <img src={QMCLogo} alt="UnicodeTech Logo" />Q<span>MC</span>
+                  <img src={QMCLogo} alt="UnicodeTech Logo" />QM<span>Center</span>
                 </div>
                 <button className="sideBarCross">
                   <SquareX
@@ -130,6 +130,20 @@ const Sidebar = () => {
                     </span>
                     Events
                   </li>
+                  <li
+                    className={
+                      location.pathname === "/notifications" ? "active" : ""
+                    }
+                    onClick={() => {
+                      toggleMenuClose();
+                      navigate("/notifications");
+                    }}
+                  >
+                    <span className="sidebarIcon">
+                      <Calendar1 />
+                    </span>
+                    Notifications
+                  </li>
                 </ul>
               </nav>
             </div>
@@ -181,7 +195,7 @@ const Sidebar = () => {
       <div className="sidebar">
         <div>
           <div className="sidebar-brand-logo">
-            <img src={QMCLogo} alt="UnicodeTech Logo" />M<span>CQ</span>
+            <img src={QMCLogo} alt="UnicodeTech Logo" />QM<span>Center</span>
           </div>
           <nav>
             <ul>
@@ -212,7 +226,7 @@ const Sidebar = () => {
                 <span className="sidebarIcon">
                   <TabletSmartphone />
                 </span>
-                Smart Phones
+                Smart Devices
               </li>
               <li
                 className={location.pathname === "/accessories" ? "active" : ""}
@@ -231,6 +245,20 @@ const Sidebar = () => {
                   <Calendar1 />
                 </span>
                 Events
+              </li>
+              <li
+                className={
+                  location.pathname === "/notifications" ? "active" : ""
+                }
+                onClick={() => {
+                  toggleMenuClose();
+                  navigate("/notifications");
+                }}
+              >
+                <span className="sidebarIcon">
+                  <Calendar1 />
+                </span>
+                Notifications
               </li>
             </ul>
           </nav>

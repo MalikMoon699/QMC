@@ -14,6 +14,7 @@ import { useAuth } from "./context/AuthContext";
 import Mobiles from "./pages/Mobiles";
 import Users from "./pages/Users";
 import Events from "./pages/Events";
+import Notifications from "./pages/Notifications";
 import Accessories from "./pages/Accessories";
 import AboutUs from "./pages/AboutUs";
 
@@ -92,6 +93,16 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "seller","user"]}>
+              <Notifications />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/events"
           element={
