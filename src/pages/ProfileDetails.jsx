@@ -15,7 +15,7 @@ import Loader from "../components/Loader";
 import "../assets/styles/ProfileDetail.css";
 import "../assets/styles/Login.css";
 import LoginImg from "../assets/images/login/LoginImg.jpg";
-import Logo from "../assets/images/Logo/QMCLogo.png";
+import Logo from "../assets/images/logo/QMCLogo.png";
 import { generateCustomId } from "../utils/Helpers";
 import { Pen } from "lucide-react";
 
