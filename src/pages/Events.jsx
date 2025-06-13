@@ -6,7 +6,7 @@ import { demo1, demo2, demo3, demo4 } from "../utils/Demoimages";
 import Slider from "../components/Slider";
 import { Plus, Store } from "lucide-react";
 
-const SmartWatches = () => {
+const Events = () => {
   const { role } = useAuth();
   const { searchTxt } = useOutletContext();
   const [statusFilter, setStatusFilter] = useState("All");
@@ -280,4 +280,4 @@ const SmartWatches = () => {
   );
 };
 
-export default SmartWatches;
+export default Events;

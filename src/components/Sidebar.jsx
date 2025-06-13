@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import QMCLogo from "../assets/images/logo/QMCLogo.png";
 import { toast } from "react-toastify";
 import { useState } from "react";
-import { Fan, LayoutDashboard, LogOut, Menu, SquareX, TabletSmartphone, TriangleAlert, Users, Watch } from "lucide-react";
+import { Fan, LayoutDashboard, LogOut, Menu, SquareX, TabletSmartphone, TriangleAlert, Users,Calendar1 } from "lucide-react";
 
 const Sidebar = () => {
   const { currentUser, role } = useAuth();
@@ -105,18 +105,6 @@ const Sidebar = () => {
                     Smart Devices
                   </li>
                   <li
-                    className={location.pathname === "/watches" ? "active" : ""}
-                    onClick={() => {
-                      toggleMenuClose();
-                      navigate("/watches");
-                    }}
-                  >
-                    <span className="sidebarIcon">
-                      <Watch />
-                    </span>
-                    Smart Watches
-                  </li>
-                  <li
                     className={
                       location.pathname === "/accessories" ? "active" : ""
                     }
@@ -129,6 +117,18 @@ const Sidebar = () => {
                       <Fan />
                     </span>
                     Accessories
+                  </li>
+                  <li
+                    className={location.pathname === "/events" ? "active" : ""}
+                    onClick={() => {
+                      toggleMenuClose();
+                      navigate("/events");
+                    }}
+                  >
+                    <span className="sidebarIcon">
+                      <Calendar1 />
+                    </span>
+                    Events
                   </li>
                 </ul>
               </nav>
@@ -215,15 +215,6 @@ const Sidebar = () => {
                 Smart Phones
               </li>
               <li
-                className={location.pathname === "/watches" ? "active" : ""}
-                onClick={() => navigate("/watches")}
-              >
-                <span className="sidebarIcon">
-                  <Watch />
-                </span>
-                Smart Watches
-              </li>
-              <li
                 className={location.pathname === "/accessories" ? "active" : ""}
                 onClick={() => navigate("/accessories")}
               >
@@ -231,6 +222,15 @@ const Sidebar = () => {
                   <Fan />
                 </span>
                 Accessories
+              </li>
+              <li
+                className={location.pathname === "/events" ? "active" : ""}
+                onClick={() => navigate("/events")}
+              >
+                <span className="sidebarIcon">
+                  <Calendar1 />
+                </span>
+                Events
               </li>
             </ul>
           </nav>

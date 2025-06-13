@@ -13,7 +13,7 @@ import SellersDashboard from "./pages/SellersDashboard";
 import { useAuth } from "./context/AuthContext";
 import Mobiles from "./pages/Mobiles";
 import Users from "./pages/Users";
-import SmartWatches from "./pages/SmartWatches";
+import Events from "./pages/Events";
 import Accessories from "./pages/Accessories";
 import AboutUs from "./pages/AboutUs";
 
@@ -93,10 +93,10 @@ const App = () => {
           }
         />
         <Route
-          path="/watches"
+          path="/events"
           element={
             <ProtectedRoute allowedRoles={["admin", "seller", "user"]}>
-              <SmartWatches />
+              <Events />
             </ProtectedRoute>
           }
         />
