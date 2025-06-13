@@ -15,7 +15,6 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [statusFilter, setStatusFilter] = useState("All");
   const [loading, setLoading] = useState(true);
-  const [isEmployeeModalOpen, setIsEmployeeModalOpen] = useState(false);
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -40,10 +39,8 @@ const Users = () => {
               profileImg: userData.profileImg || ProfileImage,
               email: userData.email,
               role: userData.role,
-              gender: userData.gender || "N/A",
               userEmail: userData.userEmail,
               phoneNumber: userData.phoneNumber,
-              position: userData.position || "N/A",
               UserType: userData.isActive != null ? userData.isActive : "N/A",
               collection: userData.collection,
             })),
@@ -102,8 +99,6 @@ const Users = () => {
           user.role,
           user.userEmail,
           user.phoneNumber,
-          user.gender,
-          user.position,
         ].some((field) =>
           field && typeof field === "string"
             ? field.toLowerCase().includes(searchTxt.toLowerCase())
@@ -123,13 +118,6 @@ const Users = () => {
       <div className="users-summary-header">
         <div className="users-status-title">Users</div>
         <div className="action-btn-container">
-          <button
-            style={{ backgroundColor: "#ea3c2f" }}
-            className="action-btn"
-            onClick={() => setIsEmployeeModalOpen(true)}
-          >
-            <span>+</span> Employee
-          </button>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -152,25 +140,11 @@ const Users = () => {
                 <div className="user-card__text user-card__info">
                   <h3>{user.name}</h3>
                   <h3 className="user-card__role">
-                    {user.role === "user" || "seller"}
+                    {user.role === "user" ? "Customer" : "Seller"}
                   </h3>
                 </div>
                 <div className="user-card_details_container">
-                  <p className="task-card-modal-status">
-                    <strong>Logged By:</strong>
-                    <span className="dashed-line"></span>
-                    {user.email}
-                  </p>
-                  <p className="task-card-modal-status">
-                    <strong>Gender:</strong>
-                    <span className="dashed-line"></span>
-                    {user.gender}
-                  </p>
-                  <p className="task-card-modal-status">
-                    <strong>Position:</strong>
-                    <span className="dashed-line"></span>
-                    {user.position}
-                  </p>
+
                 </div>
                 <div className="user-card_personal_details_container ">
                   <div className="user-card__contact">
@@ -180,7 +154,7 @@ const Users = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      <h4>{user.userEmail}</h4>
+                      <h4>{user.email}</h4>
                     </a>
                   </div>
                   {user.phoneNumber && (

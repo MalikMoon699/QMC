@@ -3,7 +3,7 @@ import "../assets/styles/TopBar.css";
 import SearchIcon from "../assets/images/icons/Search.png";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../utils/FirebaseConfig";
-// import TopBarModal from "./TopBarModal";
+import TopBarModal from "./TopBarModal";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 // import Notifications from "./Notifications";
 import { useLocation } from "react-router-dom";
@@ -25,8 +25,6 @@ const TopBar = ({ searchTxt, setSearchText }) => {
       name: currentUser?.displayName || "Unknown User",
       userEmail: "",
       phoneNumber: "",
-      gender: "",
-      position: role || "",
       profileImg: "",
     },
   });
@@ -43,11 +41,11 @@ const TopBar = ({ searchTxt, setSearchText }) => {
 
     const setupListeners = () => {
       const collectionMap = {
-        user: "EMPLOYEES",
-        manager: "MANAGER",
+        user: "USERS",
+        seller: "SELLERS",
         admin: "ADMIN",
       };
-      const collectionName = collectionMap[role.toLowerCase()] || "EMPLOYEES";
+      const collectionName = collectionMap[role.toLowerCase()];
       const userQuery = query(
         collection(db, collectionName),
         where("uid", "==", currentUser.uid)
@@ -65,8 +63,6 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                 name: data.name || currentUser.displayName || "Unknown User",
                 userEmail: data.userEmail || "",
                 phoneNumber: data.phoneNumber || "",
-                gender: data.gender || "",
-                position: data.position || role || "",
                 profileImg: data.profileImg || "",
               },
               userCustomId: data.customId || userDoc.id,
@@ -77,8 +73,6 @@ const TopBar = ({ searchTxt, setSearchText }) => {
               ...prev,
               userData: {
                 name: currentUser.displayName || "Unknown User",
-                gender: "",
-                position: role || "",
                 profileImg: "",
               },
               loading: false,
@@ -214,14 +208,14 @@ const TopBar = ({ searchTxt, setSearchText }) => {
         </div>
       </div>
 
-      {/* {state.isOpen && (
+      {state.isOpen && (
         <TopBarModal
           userData={state.userData}
           onProfileUpdate={() => {
             if (unsubscribeRef.current.user) unsubscribeRef.current.user();
             const collectionMap = {
-              user: "EMPLOYEES",
-              manager: "MANAGER",
+              user: "USERS",
+              sellers: "SELLERS",
               admin: "ADMIN",
             };
             const collectionName =
@@ -243,8 +237,6 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                         data.name || currentUser.displayName || "Unknown User",
                       userEmail: data.userEmail || "",
                       phoneNumber: data.phoneNumber || "",
-                      gender: data.gender || "",
-                      position: data.position || role || "",
                       profileImg: data.profileImg || "",
                     },
                     userCustomId: data.customId || userDoc.id,
@@ -258,7 +250,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
             setState((prev) => ({ ...prev, isOpen: value }))
           }
         />
-      )} */}
+      )}
     </>
   );
 };

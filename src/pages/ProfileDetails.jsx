@@ -15,7 +15,7 @@ import Loader from "../components/Loader";
 import "../assets/styles/ProfileDetail.css";
 import "../assets/styles/Login.css";
 import LoginImg from "../assets/images/login/LoginImg.jpg";
-import Logo from "../assets/images/logo/QMCLogo.png";
+import Logo from "../assets/images/Logo/QMCLogo.png";
 import { generateCustomId } from "../utils/Helpers";
 import { Pen } from "lucide-react";
 
@@ -25,10 +25,7 @@ const ProfileImage =
 const ProfileDetails = () => {
   const [imageSrc, setImageSrc] = useState(ProfileImage);
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [gender, setGender] = useState("");
-  const [position, setPosition] = useState("");
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
@@ -39,9 +36,32 @@ const ProfileDetails = () => {
 
   useEffect(() => {
     if (currentUser) {
-      setEmail(currentUser.email);
+      // Fetch user data from Firestore
+      const fetchUserData = async () => {
+        try {
+          setLoading(true);
+          const collectionName = role === "user" ? "USERS" : role.toUpperCase();
+          const collectionRef = collection(db, collectionName);
+          const q = query(collectionRef, where("uid", "==", currentUser.uid));
+          const querySnapshot = await getDocs(q);
+
+          if (!querySnapshot.empty) {
+            const userData = querySnapshot.docs[0].data();
+            setName(userData.name || ""); // Set name if it exists, otherwise empty
+            setPhoneNumber(userData.phoneNumber || "");
+            setImageSrc(userData.profileImg || ProfileImage);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          setError("Failed to load profile data.");
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchUserData();
     }
-  }, [currentUser]);
+  }, [currentUser, role]);
 
   const getUserDocId = async () => {
     const collectionName = role === "user" ? "USERS" : role.toUpperCase();
@@ -60,8 +80,6 @@ const ProfileDetails = () => {
       isActive: true,
       profileImg: "",
       name: "",
-      gender: "",
-      position: "",
       uid: currentUser.uid,
     });
     return customId;
@@ -117,10 +135,7 @@ const ProfileDetails = () => {
         userDocRef,
         {
           name: name.trim(),
-          userEmail: email,
           phoneNumber: phoneNumber,
-          gender,
-          position: position.trim(),
           profileImg: imageUrl,
           email: currentUser.email,
           role,

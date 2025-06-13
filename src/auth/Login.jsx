@@ -46,13 +46,33 @@ const Login = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  const handleGoogleLogin = async () => {
+
+ const handleGoogleLogin = async () => {
     try {
       setLoading(true);
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      toast.success(`Welcome ${user.displayName}!`, { autoClose: 2000 });
-      navigate("/dashboard");
+      const userInfo = await findUserDoc(user);
+      if (userInfo) {
+        const { userData } = userInfo;
+        if (userData.isActive === false) {
+          await signOut(auth);
+          throw new Error("Your account is inactive.");
+        }
+        setCurrentUser(user);
+        setRole(userData.role);
+        toast.success(`Welcome ${user.displayName}!`, { autoClose: 2000 });
+        navigate("/dashboard");
+      } else if (!documentCreatedRef.current) {
+        await createUserDocument(user, "user", {
+          name: user.displayName || "",
+          phoneNumber: user.phoneNumber || "",
+        });
+        setRole("user");
+        setHasProfileDetails(!!user.displayName);
+        toast.success(`Welcome ${user.displayName}!`, { autoClose: 2000 });
+        navigate("/profileDetails");
+      }
     } catch (error) {
       console.error(error);
       toast.error(error.message || "Google login failed.");

@@ -1,5 +1,5 @@
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "./FirebaseConfig";
+import { db } from "../utils/FirebaseConfig";
+import { doc, collection, query, where, getDocs,getDoc } from "firebase/firestore";
 
 export const generateCustomId = async (collectionName) => {
   const characters =
@@ -14,4 +14,28 @@ export const generateCustomId = async (collectionName) => {
     return generateCustomId(collectionName);
   }
   return result;
+};
+
+export const fetchCurrentUser = async (user) => {
+  if (!user) {
+    console.error("No user provided to fetchCurrentUser");
+    return null;
+  }
+
+  const collectionsToCheck = ["ADMIN", "SELLERS", "USERS"];
+  for (const collectionName of collectionsToCheck) {
+    const collectionRef = collection(db, collectionName);
+    const q = query(collectionRef, where("uid", "==", user.uid));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const userDoc = querySnapshot.docs[0];
+      return {
+        collectionName,
+        userData: userDoc.data(),
+        userId: userDoc.id,
+      };
+    }
+  }
+  console.error("No user document found for UID:", user.uid);
+  return null;
 };

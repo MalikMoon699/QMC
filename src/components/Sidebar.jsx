@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import QMCLogo from "../assets/images/logo/QMCLogo.png";
 import { toast } from "react-toastify";
 import { useState } from "react";
-import { Fan, LayoutDashboard, LogOut, Menu, SquareX, TabletSmartphone, Users, Watch } from "lucide-react";
+import { Fan, LayoutDashboard, LogOut, Menu, SquareX, TabletSmartphone, TriangleAlert, Users, Watch } from "lucide-react";
 
 const Sidebar = () => {
   const { currentUser, role } = useAuth();
@@ -54,8 +54,7 @@ const Sidebar = () => {
             <div>
               <div className="sidebar-brand-logo">
                 <div style={{ margin: "0px" }} className="sidebar-brand-logo">
-                  <img src={QMCLogo} alt="UnicodeTech Logo" />
-                  Unicode<span>Tech</span>
+                  <img src={QMCLogo} alt="UnicodeTech Logo" />Q<span>MC</span>
                 </div>
                 <button className="sideBarCross">
                   <SquareX
@@ -81,10 +80,10 @@ const Sidebar = () => {
                   </li>
                   {role !== "user" && (
                     <li
-                      className={location.pathname === "/Users" ? "active" : ""}
+                      className={location.pathname === "/users" ? "active" : ""}
                       onClick={() => {
                         toggleMenuClose();
-                        navigate("/Users");
+                        navigate("/users");
                       }}
                     >
                       <span className="sidebarIcon">
@@ -137,7 +136,7 @@ const Sidebar = () => {
             <div className="logOut-container">
               <div className="logOut" onClick={() => setIsModalOpen(true)}>
                 Logout
-                <img src={LogoutIcon} alt="Logout Icon" />
+                <LogOut />
               </div>
             </div>
             {isModalOpen && (
@@ -150,23 +149,23 @@ const Sidebar = () => {
                     e.stopPropagation();
                   }}
                   className="modal-content"
-                  style={{ width: "26%" }}
+                  style={{ minWidth: "300px" }}
                 >
                   <div className="sidebar-modal">
                     <div className="contentWrapper">
-                      <img src={AlertIcon} alt="Alert" />
+                      <TriangleAlert color="red" />
                       <h3>Come Back Soon!!!</h3>
                       <p>Are you sure you want to logout</p>
                     </div>
-                    <div className="attendance-delte-btn-container">
+                    <div className="logout-btn-container">
                       <button
-                        className="attendance-cencel-btn attendance-delte-btn-same"
+                        className="logout-cencel-btn logout-delte-btn-same"
                         onClick={() => setIsModalOpen(false)}
                       >
                         Cancel
                       </button>
                       <button
-                        className="attendance-delte-btn attendance-delte-btn-same"
+                        className="logout-delte-btn logout-delte-btn-same"
                         onClick={handleLogout}
                       >
                         Logout
@@ -176,39 +175,6 @@ const Sidebar = () => {
                 </div>
               </div>
             )}
-          </div>
-        )}
-        {isModalOpen && (
-          <div onClick={() => setIsModalOpen(false)} className="modal-overlay">
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-              className="modal-content"
-              style={{ width: "26%" }}
-            >
-              <div className="sidebar-modal">
-                <div className="contentWrapper">
-                  <img src={AlertIcon} alt="Alert" />
-                  <h3>Come Back Soon!!!</h3>
-                  <p>Are you sure you want to logout</p>
-                </div>
-                <div className="attendance-delte-btn-container">
-                  <button
-                    className="attendance-cencel-btn attendance-delte-btn-same"
-                    onClick={() => setIsModalOpen(false)}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="attendance-delte-btn attendance-delte-btn-same"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         )}
       </div>
@@ -230,8 +196,8 @@ const Sidebar = () => {
               </li>
               {role !== "user" && (
                 <li
-                  className={location.pathname === "/Users" ? "active" : ""}
-                  onClick={() => navigate("/Users")}
+                  className={location.pathname === "/users" ? "active" : ""}
+                  onClick={() => navigate("/users")}
                 >
                   <span className="sidebarIcon">
                     <Users />
@@ -255,12 +221,10 @@ const Sidebar = () => {
                 <span className="sidebarIcon">
                   <Watch />
                 </span>
-                Tasks
+                Smart Watches
               </li>
               <li
-                className={
-                  location.pathname === "/accessories" ? "active" : ""
-                }
+                className={location.pathname === "/accessories" ? "active" : ""}
                 onClick={() => navigate("/accessories")}
               >
                 <span className="sidebarIcon">
@@ -284,23 +248,23 @@ const Sidebar = () => {
                 e.stopPropagation();
               }}
               className="modal-content"
-              style={{ width: "26%" }}
+              style={{ minWidth: "350px" }}
             >
               <div className="sidebar-modal">
                 <div className="contentWrapper">
-                  <img src={AlertIcon} alt="Alert" />
+                  <TriangleAlert color="red" size={80} />
                   <h3>Come Back Soon!!!</h3>
                   <p>Are you sure you want to logout</p>
                 </div>
-                <div className="attendance-delte-btn-container">
+                <div className="logout-btn-container">
                   <button
-                    className="attendance-cencel-btn attendance-delte-btn-same"
+                    className="logout-cencel-btn logout-delte-btn-same"
                     onClick={() => setIsModalOpen(false)}
                   >
                     Cancel
                   </button>
                   <button
-                    className="attendance-delte-btn attendance-delte-btn-same"
+                    className="logout-delte-btn logout-delte-btn-same"
                     onClick={handleLogout}
                   >
                     Logout

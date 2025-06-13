@@ -1,10 +1,9 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { auth, db } from "../utils/FirebaseConfig";
 import {
   onAuthStateChanged,
   signOut,
   signInWithEmailAndPassword,
-  signInWithPopup,
 } from "firebase/auth";
 import {
   collection,
@@ -30,13 +29,16 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const unsubscribeRef = useRef();
+  const documentCreatedRef = useRef(false);
+
   const createUserDocument = async (
     user,
     userRole = "user",
     additionalData = {}
   ) => {
-    if (!user) {
-      throw new Error("No user provided");
+    if (!user || documentCreatedRef.current) {
+      return;
     }
 
     try {
@@ -60,6 +62,7 @@ export const AuthProvider = ({ children }) => {
         !!(additionalData.name && additionalData.phoneNumber)
       );
       setIsNewUser(true);
+      documentCreatedRef.current = true;
       return userData;
     } catch (error) {
       console.error("Error creating user document:", error);
@@ -91,6 +94,7 @@ export const AuthProvider = ({ children }) => {
     setRole(null);
     setHasProfileDetails(null);
     setIsNewUser(false);
+    documentCreatedRef.current = false;
     if (location.pathname !== "/login") {
       navigate("/login", { state: { message } });
     }
@@ -126,14 +130,11 @@ export const AuthProvider = ({ children }) => {
         } else {
           navigate("/profileDetails");
         }
-
-        return userData;
       } else {
         await createUserDocument(user);
         setRole("user");
         setHasProfileDetails(false);
         navigate("/profileDetails");
-        return null;
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -142,64 +143,73 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
-      try {
-        setCurrentUser(user);
-        if (user) {
-          const cachedRole = localStorage.getItem(`userRole_${user.uid}`);
-          if (cachedRole) {
-            setRole(cachedRole);
-          }
+    if (!unsubscribeRef.current) {
+      unsubscribeRef.current = onAuthStateChanged(auth, async (user) => {
+        try {
+          setLoading(true);
+          setCurrentUser(user);
+          if (user) {
+            const userInfo = await findUserDoc(user);
+            if (userInfo) {
+              const { userData } = userInfo;
+              if (userData.isActive === false) {
+                await logout("Your account is inactive.");
+                return;
+              }
+              setRole(userData.role);
+              localStorage.setItem(`userRole_${user.uid}`, userData.role);
 
-          const userInfo = await findUserDoc(user);
-          if (userInfo) {
-            const { userData } = userInfo;
-            if (userData.isActive === false) {
-              await logout("Your account is inactive.");
-              return;
-            }
-
-            setRole(userData.role);
-            localStorage.setItem(`userRole_${user.uid}`, userData.role);
-
-            const requiredFields = ["name", "phoneNumber"];
-            const profileComplete = requiredFields.every(
-              (field) => userData[field] && userData[field].trim() !== ""
-            );
-            setHasProfileDetails(profileComplete);
-            if (!profileComplete && location.pathname !== "/profileDetails") {
+              const requiredFields = ["name", "phoneNumber"];
+              const profileComplete = requiredFields.every(
+                (field) => userData[field] && userData[field].trim() !== ""
+              );
+              setHasProfileDetails(profileComplete);
+              if (!profileComplete && location.pathname !== "/profileDetails") {
+                navigate("/profileDetails");
+              } else if (
+                profileComplete &&
+                location.pathname === "/profileDetails"
+              ) {
+                navigate("/");
+              }
+            } else if (!documentCreatedRef.current && !isNewUser) {
+              await createUserDocument(user, "user", {
+                name: user.displayName || "",
+                phoneNumber: user.phoneNumber || "",
+              });
+              setRole("user");
+              setHasProfileDetails(!!user.displayName);
               navigate("/profileDetails");
-            } else if (
-              profileComplete &&
-              location.pathname === "/profileDetails"
-            ) {
-              navigate("/");
             }
-          } else if (!isNewUser) {
-            await createUserDocument(user);
-            navigate("/profileDetails");
+          } else {
+            setRole(null);
+            setHasProfileDetails(null);
+            setIsNewUser(false);
+            documentCreatedRef.current = false;
+            localStorage.removeItem(`userRole_${user?.uid}`);
+            if (!["/login", "/signUp"].includes(location.pathname)) {
+              navigate("/login");
+            }
           }
-        } else {
+        } catch (error) {
+          console.error("Auth state change error:", error);
           setRole(null);
           setHasProfileDetails(null);
           setIsNewUser(false);
-          localStorage.removeItem(`userRole_${user?.uid}`);
-          if (!["/login", "/signUp"].includes(location.pathname)) {
-            navigate("/login");
-          }
+          documentCreatedRef.current = false;
+          navigate("/login");
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.error("Auth state change error:", error);
-        setRole(null);
-        setHasProfileDetails(null);
-        setIsNewUser(false);
-        navigate("/login");
-      } finally {
-        setLoading(false);
-      }
-    });
+      });
+    }
 
-    return unsubscribeAuth;
+    return () => {
+      if (unsubscribeRef.current) {
+        unsubscribeRef.current();
+        unsubscribeRef.current = null;
+      }
+    };
   }, [navigate, location.pathname, isNewUser]);
 
   useEffect(() => {
@@ -228,18 +238,11 @@ export const AuthProvider = ({ children }) => {
                 ) {
                   navigate("/");
                 }
-              } else {
-                console.log(`User document not found for ${currentUser.email}`);
               }
             },
             (error) => {
               console.error("Error in isActive listener:", error);
             }
-          );
-        } else {
-          console.log(
-            "User document not found for isActive listener:",
-            currentUser.email
           );
         }
       });
