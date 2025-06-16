@@ -114,12 +114,12 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                   value={searchTxt}
                   onChange={(event) => setSearchText(event.target.value)}
                 />
-                <img
+                <Search
                   onClick={() => {
                     setIsSearch((prev) => !prev);
                   }}
-                  src={SearchIcon}
-                  alt="Search"
+                  className="icon"
+                  size={20}
                 />
               </>
             ) : (
@@ -172,7 +172,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                   value={searchTxt}
                   onChange={(event) => setSearchText(event.target.value)}
                 />
-                <img src={SearchIcon} alt="Search" />
+                <Search className="icon" size={20} />
               </>
             ) : (
               <div>DashBoard</div>

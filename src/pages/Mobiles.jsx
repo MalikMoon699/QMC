@@ -215,10 +215,6 @@ const Mobiles = () => {
 
       {isOpen && selectedCard && (
         <div
-          onClick={() => {
-            setIsOpen(false);
-            setSelectedCard(null);
-          }}
           className="modal-overlay"
         >
           <div onClick={(e) => e.stopPropagation()} className="modal-card">

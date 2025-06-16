@@ -1,23 +1,22 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useOutletContext } from "react-router-dom";
-import "../assets/styles/Mobile.css";
+import "../assets/styles/Events.css";
 import { useAuth } from "../context/AuthContext";
 import { demo1, demo2, demo3, demo4 } from "../utils/Demoimages";
 import Slider from "../components/Slider";
-import { MessageCircleWarning, Plus, Store } from "lucide-react";
-import SellProducts from "../components/SellProducts";
+import { MessageCircleWarning, Plus, ReceiptText, Store } from "lucide-react";
 import { db } from "../utils/FirebaseConfig";
 import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
 import SellerApplication from "../components/SellerApplication";
+import AddEvents from "../components/AddEvents";
 
-const Mobiles = () => {
+const Events = () => {
   const { currentUser, role } = useAuth();
   const { searchTxt } = useOutletContext();
   const [statusFilter, setStatusFilter] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
-  const [isSellerApplicationOpen, setIsSellerApplicationOpen] = useState(false);
   const [isUpdateModal, setIsUpdateModal] = useState(false);
   const [sellModalOpen, setSellModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
@@ -27,7 +26,7 @@ const Mobiles = () => {
   useEffect(() => {
     setLoading(true);
     const unsubscribe = onSnapshot(
-      collection(db, "SMARTDEVICES"),
+      collection(db, "EVENTS"),
       (querySnapshot) => {
         const devicesData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -58,12 +57,7 @@ const Mobiles = () => {
     if (searchTxt.trim()) {
       filtered = filtered.filter((device) =>
         [
-          device.brandName,
-          device.deviceType,
-          device.deviceModel,
-          device.memory,
-          device.ram,
-          device.price,
+          device.eventName,
         ].some((field) =>
           field && typeof field === "string"
             ? field.toLowerCase().includes(searchTxt.toLowerCase())
@@ -78,20 +72,20 @@ const Mobiles = () => {
     );
   }, [devices, statusFilter, searchTxt]);
 
-  const handleDeleteProduct = async () => {
+  const handleDeleteEvent = async () => {
     if (!selectedCard?.id) return;
     try {
-      await deleteDoc(doc(db, "SMARTDEVICES", selectedCard.id));
+      await deleteDoc(doc(db, "EVENTS", selectedCard.id));
       setDevices((prev) =>
         prev.filter((device) => device.id !== selectedCard.id)
       );
-      toast.success("Product marked as sold out!");
+      toast.success("Event marked as Delete!");
       setIsUpdateModal(false);
       setIsOpen(false);
       setSelectedCard(null);
     } catch (error) {
-      console.error("Error deleting product:", error);
-      toast.error("Failed to mark product as sold out.");
+      console.error("Error deleting Event:", error);
+      toast.error("Failed to mark Event as Delete.");
     }
   };
 
@@ -111,7 +105,8 @@ const Mobiles = () => {
               style={{ backgroundColor: "#ef3f2c" }}
               className="action-btn"
             >
-              <Plus size={20} />Add Event Sale
+              <Plus size={20} />
+              Add Event Sale
             </button>
           )}
           <select
@@ -127,74 +122,126 @@ const Mobiles = () => {
           </select>
         </div>
       </div>
-      <div className="mobiles-container">
+      <div className="events-container">
         {loading ? (
           <Loader loading={true} />
         ) : filteredMobilesData.length > 0 ? (
           filteredMobilesData.map((device, index) => (
-            <div
-              onClick={() => {
-                setIsOpen(true);
-                setSelectedCard(device);
-              }}
-              className="mobile-card"
-              key={device.id || index}
-            >
-              <Slider
-                slides={device.images?.length ? device.images : fallbackImages}
-              />
-              <div className="mobile-card__info_content">
-                <div className="mobile-card__text mobile-card__info mobile-card_details_container">
-                  <h3>{device.deviceModel}</h3>
-                  <h3 className="mobile-card__role">{device.brandName}</h3>
-                </div>
-                <div className="mobile-card_details_container">
-                  <p className="mobile_card_details">
-                    <strong>DeviceType:</strong>
-                    <span className="dashed-line"></span>
-                    {device.deviceType}
-                  </p>
-                  {device.ram ? (
-                    <p className="mobile_card_details">
-                      <strong>RAM:</strong>
-                      <span className="dashed-line"></span>
-                      {device.ram}GB
-                    </p>
-                  ) : (
-                    <p className="mobile_card_details">
-                      <strong>Battery Health:</strong>
-                      <span className="dashed-line"></span>
-                      {device.batteryHelth || "N/A"}%
-                    </p>
-                  )}
-                  <p className="mobile_card_details">
-                    <strong>Memory:</strong>
-                    <span className="dashed-line"></span>
-                    {device.memory}GB
-                  </p>
-                  <p style={{ color: "red" }} className="mobile_card_details">
-                    <strong>Price:</strong>
-                    <span className="dashed-line"></span>
-                    {device.price} PKR
-                  </p>
-                </div>
-                <div
-                  style={{
-                    paddingTop: "10px",
+            <div className="event-card" key={device.id || index}>
+              <div className="events-type-container">
+                <h1>{device.eventName}</h1>
+                <button
+                  className="action-btn"
+                  style={{ backgroundColor: "#ef3f2c" }}
+                  onClick={() => {
+                    setIsOpen(true);
+                    setSelectedCard(device);
                   }}
-                  className="mobile_card_details"
                 >
-                  <p
-                    style={{
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
-                    <strong>Description: </strong>
-                    {device.description}
-                  </p>
-                </div>
+                  <ReceiptText size={20} />
+                  Event Details
+                </button>
+              </div>
+              <div className="mobiles-container single-event-container">
+                {device.selectedEvents?.length > 0 ? (
+                  device.selectedEvents.map((selectedDevice, idx) => (
+                    <div key={idx} className="mobile-card">
+                      <Slider
+                        slides={
+                          selectedDevice.images?.length
+                            ? selectedDevice.images
+                            : fallbackImages
+                        }
+                      />
+                      <div className="mobile-card__info_content">
+                        <div className="mobile-card__text mobile-card__info mobile-card_details_container">
+                          <h3>{selectedDevice.deviceModel}</h3>
+                          <h3 className="mobile-card__role">
+                            {selectedDevice.brandName}
+                          </h3>
+                        </div>
+                        <div className="mobile-card_details_container">
+                          <p className="mobile_card_details">
+                            <strong>DeviceType:</strong>
+                            <span className="dashed-line"></span>
+                            {selectedDevice.deviceType}
+                          </p>
+                          {selectedDevice.ram ? (
+                            <p className="mobile_card_details">
+                              <strong>RAM:</strong>
+                              <span className="dashed-line"></span>
+                              {selectedDevice.ram}GB
+                            </p>
+                          ) : (
+                            <p className="mobile_card_details">
+                              <strong>Battery Health:</strong>
+                              <span className="dashed-line"></span>
+                              {selectedDevice.batteryHelth || "N/A"}%
+                            </p>
+                          )}
+                          <p className="mobile_card_details">
+                            <strong>Memory:</strong>
+                            <span className="dashed-line"></span>
+                            {selectedDevice.memory}GB
+                          </p>
+                          <p
+                            style={{ color: "green" }}
+                            className="mobile_card_details"
+                          >
+                            <strong>Off:</strong>
+                            <span className="dashed-line"></span>
+                            <span> {device.eventoff}</span>
+                            <span>%</span>
+                          </p>
+                          <p
+                            style={{ color: "red" }}
+                            className="mobile_card_details"
+                          >
+                            <strong>Price:</strong>
+                            <span className="dashed-line"></span>
+                            <span
+                              style={{
+                                textDecoration: "line-through",
+                                color: "grey",
+                                fontSize: "10px",
+                                fontWeight: "300",
+                              }}
+                            >
+                              {`[${selectedDevice.price}]`}
+                            </span>
+                            <span>
+                              {" "}
+                              {Math.round(
+                                selectedDevice.price *
+                                  (1 - device.eventoff / 100)
+                              )}
+                            </span>
+                            <span>PKR</span>
+                          </p>
+                        </div>
+                        <div
+                          style={{
+                            paddingTop: "10px",
+                          }}
+                          className="mobile_card_details"
+                        >
+                          <p
+                            style={{
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                            }}
+                          >
+                            <strong>Description: </strong>
+                            {selectedDevice.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>No devices selected for this event</p>
+                )}
               </div>
             </div>
           ))
@@ -205,10 +252,6 @@ const Mobiles = () => {
 
       {isOpen && selectedCard && (
         <div
-          onClick={() => {
-            setIsOpen(false);
-            setSelectedCard(null);
-          }}
           className="modal-overlay"
         >
           <div onClick={(e) => e.stopPropagation()} className="modal-card">
@@ -222,20 +265,12 @@ const Mobiles = () => {
               >
                 ❮
               </button>
-              <h3 className="modal-title">{selectedCard.deviceModel}</h3>
+              <h3 className="modal-title">{selectedCard.eventName}</h3>
             </div>
             <div className="mobile-card mobile-modal-card">
-              <Slider
-                style={{ maxHeight: "450px" }}
-                slides={
-                  selectedCard.images?.length
-                    ? selectedCard.images
-                    : fallbackImages
-                }
-              />
               <div className="mobile-card__info_content">
                 <div className="mobile-card__text mobile-card__info mobile-card_details_container">
-                  <h3>{selectedCard.brandName}</h3>
+                  <h3>-{selectedCard.eventoff}%</h3>
                   {(role === "admin" ||
                     currentUser?.email === selectedCard.createdByEmail) && (
                     <h3
@@ -255,33 +290,25 @@ const Mobiles = () => {
                 </div>
                 <div className="mobile-card_details_container">
                   <p className="mobile_card_details">
-                    <strong>DeviceType:</strong>
+                    <strong>Created At:</strong>
                     <span className="dashed-line"></span>
-                    {selectedCard.deviceType}
+                    {selectedCard.createdAt.toDate().toLocaleString("en-PK", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                      timeZone: "Asia/Karachi",
+                    })}
                   </p>
-                  {selectedCard.ram ? (
-                    <p className="mobile_card_details">
-                      <strong>RAM:</strong>
-                      <span className="dashed-line"></span>
-                      {selectedCard.ram}GB
-                    </p>
-                  ) : (
-                    <p className="mobile_card_details">
-                      <strong>Battery Health:</strong>
-                      <span className="dashed-line"></span>
-                      {selectedCard.batteryHelth || "N/A"}%
-                    </p>
-                  )}
+
                   <p className="mobile_card_details">
-                    <strong>Memory:</strong>
+                    <strong>Total Devices:</strong>
                     <span className="dashed-line"></span>
-                    {selectedCard.memory}GB
+                    {selectedCard.selectedEvents.length}
                   </p>
                   <p
                     style={{ color: "#00a400" }}
                     className="mobile_card_details"
                   >
-                    <strong>Sell By:</strong>
+                    <strong>Event By:</strong>
                     <span className="dashed-line"></span>
                     {selectedCard.createdBy}
                   </p>
@@ -289,7 +316,7 @@ const Mobiles = () => {
                     style={{ color: "#00c000" }}
                     className="mobile_card_details"
                   >
-                    <strong>Seller Mail:</strong>
+                    <strong>Mail:</strong>
                     <span className="dashed-line"></span>
                     {selectedCard.createdByEmail}
                   </p>
@@ -297,14 +324,9 @@ const Mobiles = () => {
                     style={{ color: "#00c000" }}
                     className="mobile_card_details"
                   >
-                    <strong>Seller Number:</strong>
+                    <strong>Number:</strong>
                     <span className="dashed-line"></span>
                     {selectedCard.createdByPhoneNumber}
-                  </p>
-                  <p style={{ color: "red" }} className="mobile_card_details">
-                    <strong>Price:</strong>
-                    <span className="dashed-line"></span>
-                    {selectedCard.price} PKR
                   </p>
                 </div>
                 <div
@@ -315,7 +337,8 @@ const Mobiles = () => {
                 >
                   <p>
                     <strong>Description: </strong>
-                    {selectedCard.description}
+                    {selectedCard.description ||
+                      "------------------------------------"}
                   </p>
                 </div>
               </div>
@@ -335,15 +358,15 @@ const Mobiles = () => {
             <div className="sidebar-modal">
               <div className="contentWrapper">
                 <MessageCircleWarning color="red" size={50} />
-                <h3>Change Your Product!!!</h3>
-                <p>Are You Sure to Update or Sold Out</p>
+                <h3>Change Your Event!!!</h3>
+                <p>Are You Sure to Update or Delete</p>
               </div>
               <div className="logout-btn-container">
                 <button
                   className="logout-cencel-btn logout-delte-btn-same"
-                  onClick={handleDeleteProduct}
+                  onClick={handleDeleteEvent}
                 >
-                  Sold Out
+                  Delete
                 </button>
                 <button
                   className="logout-delte-btn logout-delte-btn-same"
@@ -357,24 +380,16 @@ const Mobiles = () => {
         </div>
       )}
       {sellModalOpen && (
-        <SellProducts
+        <AddEvents
           onClose={() => {
             setSellModalOpen(false);
             setSelectedCard(null);
           }}
-          productToUpdate={selectedCard}
-        />
-      )}
-      {isSellerApplicationOpen && (
-        <SellerApplication
-          onClose={() => {
-            setIsSellerApplicationOpen(false);
-          }}
-          productToUpdate={selectedCard}
+          EventToUpdate={selectedCard}
         />
       )}
     </div>
   );
 };
 
-export default Mobiles;
+export default Events;

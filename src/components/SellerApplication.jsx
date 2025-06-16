@@ -82,9 +82,6 @@ const SellerApplication = ({ onClose }) => {
     <>
       <div
         style={{ display: lessAge || isFormSubmit ? "none" : "flex" }}
-        onClick={() => {
-          onClose();
-        }}
         className="modal-overlay"
       >
         <div

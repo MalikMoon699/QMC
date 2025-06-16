@@ -156,7 +156,6 @@ const Sidebar = () => {
             </div>
             {isModalOpen && (
               <div
-                onClick={() => setIsModalOpen(false)}
                 className="modal-overlay"
               >
                 <div

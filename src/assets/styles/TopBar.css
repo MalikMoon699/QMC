@@ -47,15 +47,13 @@
   max-width: 220px;
 }
 
-.searchWrapper img {
+.searchWrapper .icon{
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   left: 10px;
-  width: 17px;
-  height: 17px;
-  stroke: rgb(165, 165, 165);
 }
+
 
 .topBarActionsWrapper {
   display: flex;
@@ -291,7 +289,7 @@
 }
 .deActiveSearchWrapper input{
   width: 0%;
-  padding: 7px 18px;
+  padding: 8px 19px;
 }
 
  .deActiveSearchprofile-name{

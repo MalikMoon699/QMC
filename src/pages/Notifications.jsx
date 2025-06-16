@@ -10,6 +10,7 @@ import {
   updateDoc,
   setDoc,
 } from "firebase/firestore";
+import Loader from "../components/Loader";
 
 const Notifications = () => {
   const { currentUser, role } = useAuth();
@@ -94,7 +95,7 @@ const Notifications = () => {
       <h2>Your Notifications</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {loading ? (
-        <p>Loading...</p>
+        <Loader  loading={true}/>
       ) : notifications.length === 0 ? (
         <p>No notifications found.</p>
       ) : (

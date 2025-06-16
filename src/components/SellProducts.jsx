@@ -185,7 +185,7 @@ const SellProducts = ({ onClose, productToUpdate }) => {
   };
 
   return (
-    <div className="modal-overlay" onClick={handleClose}>
+    <div className="modal-overlay">
       <div
         className="sidebar-modal-container"
         onClick={(e) => e.stopPropagation()}
