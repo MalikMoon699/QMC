@@ -4,6 +4,7 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
+import {generateCustomId} from "./Helpers"
 import { getMessaging, getToken } from "firebase/messaging";
 
 const firebaseConfig = {
@@ -33,7 +34,8 @@ export const generateToken = async () => {
       vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
     });
     console.log("Token:", token);
-    await setDoc(doc(db, "user_tokens", auth.currentUser.uid), {
+    const customId = await generateCustomId("user_tokens"); 
+    await setDoc(doc(db, "user_tokens", customId), {
       token: token,
       email: auth.currentUser.email,
       createdAt: new Date(),

@@ -1,5 +1,12 @@
 import { db } from "../utils/FirebaseConfig";
-import { doc, collection, query, where, getDocs,getDoc } from "firebase/firestore";
+import {
+  doc,
+  collection,
+  query,
+  where,
+  getDocs,
+  getDoc,
+} from "firebase/firestore";
 
 export const generateCustomId = async (collectionName) => {
   const characters =
