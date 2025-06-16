@@ -3,7 +3,7 @@ import { auth } from "../utils/FirebaseConfig";
 import { useAuth } from "../context/AuthContext";
 import QMCLogo from "../assets/images/logo/QMCLogo.png";
 import { toast } from "react-toastify";
-import { useState } from "react";
+import React,{ useState } from "react";
 import { Fan, LayoutDashboard, LogOut, Menu, SquareX, TabletSmartphone, TriangleAlert, Users,Calendar1 } from "lucide-react";
 
 const Sidebar = () => {

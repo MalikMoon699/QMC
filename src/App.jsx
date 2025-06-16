@@ -1,3 +1,4 @@
+import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import "./assets/styles/Style.css";
 import Login from "./auth/Login";
@@ -97,7 +98,7 @@ const App = () => {
         <Route
           path="/notifications"
           element={
-            <ProtectedRoute allowedRoles={["admin", "seller","user"]}>
+            <ProtectedRoute allowedRoles={["admin", "seller", "user"]}>
               <Notifications />
             </ProtectedRoute>
           }
