@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import "./assets/styles/Style.css";
 import Login from "./auth/Login";
@@ -18,9 +18,19 @@ import Events from "./pages/Events";
 import Notifications from "./pages/Notifications";
 import Accessories from "./pages/Accessories";
 import AboutUs from "./pages/AboutUs";
+import { generateToken,messaging } from "./utils/FirebaseConfig";
+import { onMessage } from "firebase/messaging";
+
 
 const App = () => {
   const { role, hasProfileDetails, loading } = useAuth();
+
+  useEffect(()=>{
+    generateToken();
+    onMessage(messaging, (payload) => {
+      console.log(payload);
+    });
+  },[])
 
   const getDashboardComponent = () => {
     if (loading) return <Loader loading={true} />;

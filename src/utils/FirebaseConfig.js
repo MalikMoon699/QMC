@@ -1,8 +1,9 @@
 import { getAnalytics } from "firebase/analytics";
 import { initializeApp, getApps } from "firebase/app";
-import { getAuth,GoogleAuthProvider } from "firebase/auth";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getMessaging, getToken } from "firebase/messaging";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -22,6 +23,22 @@ const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 const storage = getStorage(app);
 const analytics = getAnalytics(app);
+const messaging = getMessaging(app);
 
-export { app, auth, db, storage, provider };
+export const generateToken = async () => {
+  const permission = await Notification.requestPermission();
+  if (permission === "granted") {
+    const token = await getToken(messaging, {
+      vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+    });
+    console.log("Token:", token);
+    await setDoc(doc(db, "user_tokens", auth.currentUser.uid), {
+      token: token,
+      email: auth.currentUser.email,
+      createdAt: new Date(),
+    });
+    return token;
+  }
+};
 
+export { app, auth, db, storage, provider, messaging };
