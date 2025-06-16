@@ -67,6 +67,7 @@
   cursor: default !important;
   color: #f05454;
   padding: 10px 20px;
+  gap: 10px;
   border-bottom: 1px solid #e41e53;
   width: 100%;
 }
@@ -134,7 +135,20 @@ input[type="checkbox"]:checked:after {
   justify-content: center;
 }
 
+@media only screen and (max-width: 425px) {
+  .events-type-container h1{
+    font-size: x-large;
+    font-weight: 500;
+  }
+}
+
 @media only screen and (max-width: 375px) {
+  .events-type-container h1{
+    font-size: large;
+    font-weight: 500;
+  width: 36% !important;
+
+  }
   .single-event-container {
     padding: 5px;
   }

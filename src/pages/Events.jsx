@@ -129,10 +129,20 @@ const Events = () => {
           filteredMobilesData.map((device, index) => (
             <div className="event-card" key={device.id || index}>
               <div className="events-type-container">
-                <h1>{device.eventName}</h1>
+                <h1
+                  style={{
+                    width: "50%",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {device.eventName}
+                </h1>
                 <button
                   className="action-btn"
-                  style={{ backgroundColor: "#ef3f2c" }}
+                  style={{ backgroundColor: "#ef3f2c"
+                  }}
                   onClick={() => {
                     setIsOpen(true);
                     setSelectedCard(device);
@@ -251,9 +261,7 @@ const Events = () => {
       </div>
 
       {isOpen && selectedCard && (
-        <div
-          className="modal-overlay"
-        >
+        <div className="modal-overlay">
           <div onClick={(e) => e.stopPropagation()} className="modal-card">
             <div className="modal-header">
               <button
