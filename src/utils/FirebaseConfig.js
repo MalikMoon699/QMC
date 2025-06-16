@@ -3,6 +3,7 @@ import { initializeApp, getApps } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { doc, setDoc } from "firebase/firestore";
 import { getMessaging, getToken } from "firebase/messaging";
 
 const firebaseConfig = {
