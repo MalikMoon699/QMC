@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import QMCLogo from "../assets/images/logo/QMCLogo.png";
 import { toast } from "react-toastify";
 import React,{ useState } from "react";
-import { Fan, LayoutDashboard, LogOut, Menu, SquareX, TabletSmartphone, TriangleAlert, Users,Calendar1 } from "lucide-react";
+import { Fan, LayoutDashboard, LogOut, Menu, SquareX, TabletSmartphone, TriangleAlert, Users,Calendar1, Bell } from "lucide-react";
 
 const Sidebar = () => {
   const { currentUser, role } = useAuth();
@@ -54,7 +54,8 @@ const Sidebar = () => {
             <div>
               <div className="sidebar-brand-logo">
                 <div style={{ margin: "0px" }} className="sidebar-brand-logo">
-                  <img src={QMCLogo} alt="UnicodeTech Logo" />QM<span>Center</span>
+                  <img src={QMCLogo} alt="UnicodeTech Logo" />
+                  QM<span>Center</span>
                 </div>
                 <button className="sideBarCross">
                   <SquareX
@@ -140,7 +141,7 @@ const Sidebar = () => {
                     }}
                   >
                     <span className="sidebarIcon">
-                      <Calendar1 />
+                      <Bell />
                     </span>
                     Notifications
                   </li>
@@ -195,7 +196,8 @@ const Sidebar = () => {
       <div className="sidebar">
         <div>
           <div className="sidebar-brand-logo">
-            <img src={QMCLogo} alt="UnicodeTech Logo" />QM<span>Center</span>
+            <img src={QMCLogo} alt="UnicodeTech Logo" />
+            QM<span>Center</span>
           </div>
           <nav>
             <ul>
@@ -256,7 +258,7 @@ const Sidebar = () => {
                 }}
               >
                 <span className="sidebarIcon">
-                  <Calendar1 />
+                  <Bell />
                 </span>
                 Notifications
               </li>

@@ -7,18 +7,17 @@ import Slider from "../components/Slider";
 import { MessageCircleWarning, Plus, Store } from "lucide-react";
 import SellProducts from "../components/SellProducts";
 import { db } from "../utils/FirebaseConfig";
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
 import SellerApplication from "../components/SellerApplication";
 
 const Mobiles = () => {
-  const { currentUser,role } = useAuth();
+  const { currentUser, role } = useAuth();
   const { searchTxt } = useOutletContext();
   const [statusFilter, setStatusFilter] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
-  const [isSellerApplicationOpen, setIsSellerApplicationOpen] =
-    useState(false);
+  const [isSellerApplicationOpen, setIsSellerApplicationOpen] = useState(false);
   const [isUpdateModal, setIsUpdateModal] = useState(false);
   const [sellModalOpen, setSellModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
@@ -26,22 +25,24 @@ const Mobiles = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchDevices = async () => {
-      try {
-        setLoading(true);
-        const querySnapshot = await getDocs(collection(db, "SMARTDEVICES"));
+    setLoading(true);
+    const unsubscribe = onSnapshot(
+      collection(db, "SMARTDEVICES"),
+      (querySnapshot) => {
         const devicesData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
         setDevices(devicesData);
-      } catch (error) {
-        console.error("Error fetching devices:", error);
-      } finally {
         setLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching devices:", error);
+        setLoading(false);
+        toast.error("Failed to fetch devices.");
       }
-    };
-    fetchDevices();
+    );
+    return () => unsubscribe();
   }, []);
 
   const fallbackImages = [demo1, demo2, demo3, demo4];
@@ -70,7 +71,11 @@ const Mobiles = () => {
         )
       );
     }
-    return filtered;
+    return filtered.sort((a, b) =>
+      a.createdAt && b.createdAt
+        ? new Date(b.createdAt) - new Date(a.createdAt)
+        : 0
+    );
   }, [devices, statusFilter, searchTxt]);
 
   const handleDeleteProduct = async () => {
@@ -231,7 +236,7 @@ const Mobiles = () => {
             </div>
             <div className="mobile-card mobile-modal-card">
               <Slider
-                style={{ maxHeight: "100%" }}
+                style={{ maxHeight: "450px" }}
                 slides={
                   selectedCard.images?.length
                     ? selectedCard.images
@@ -249,7 +254,7 @@ const Mobiles = () => {
                       }}
                       style={{
                         cursor: "pointer",
-                        padding: "3px 13px ",
+                        padding: "3px 13px",
                         fontSize: "12px",
                       }}
                       className="mobile-card__role"
