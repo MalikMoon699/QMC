@@ -159,6 +159,15 @@ const Accessories = () => {
                   <h3 className="mobile-card__role">{device.brandName}</h3>
                 </div>
                 <div className="mobile-card_details_container">
+                  {device.fields?.length > 0 &&
+                    device.fields.map((selectedDevice, idx) => (
+                      <p key={idx} className="mobile_card_details">
+                        <strong>{selectedDevice.fieldName}:</strong>
+                        <span className="dashed-line"></span>
+                        {selectedDevice.body}
+                      </p>
+                    ))}
+
                   <p className="mobile_card_details">
                     <strong>DeviceType:</strong>
                     <span className="dashed-line"></span>
@@ -214,9 +223,7 @@ const Accessories = () => {
       </div>
 
       {isOpen && selectedCard && (
-        <div
-          className="modal-overlay"
-        >
+        <div className="modal-overlay">
           <div onClick={(e) => e.stopPropagation()} className="modal-card">
             <div className="modal-header">
               <button
