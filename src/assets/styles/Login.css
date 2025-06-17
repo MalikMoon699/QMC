@@ -215,3 +215,9 @@
   justify-content: space-between;
   gap: 40px;
 }
+
+@media only screen and (max-width: 800px) {
+  .login-left{
+    display: none;
+  }
+}
