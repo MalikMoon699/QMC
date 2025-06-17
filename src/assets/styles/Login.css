@@ -194,8 +194,8 @@
 }
 
 .google-login-button:hover {
-  transform: translate(0px , -10px); 
-  }
+  transform: translate(0px, -10px);
+}
 
 .login-with-google {
   display: flex;
@@ -204,12 +204,11 @@
   padding: 14px 20px;
 }
 
-
 .login-with-google img {
   height: 20px;
 }
 
-.signUp-btn-container{
+.signUp-btn-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -217,7 +216,12 @@
 }
 
 @media only screen and (max-width: 800px) {
-  .login-left{
+  .login-left {
     display: none;
+  }
+  .login-right {
+    padding: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 }
