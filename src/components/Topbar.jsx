@@ -178,7 +178,11 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                 <Search className="icon" size={20} />
               </>
             ) : (
-              <div>DashBoard</div>
+              <div>
+                {" "}
+                <span>Hi!</span>
+                {state.userData.name || "N/A"}
+              </div>
             )}
           </div>
           <div className="topBarActionsWrapper">
