@@ -2,6 +2,7 @@
   display: flex;
   width: 100vw;
   overflow: hidden;
+  min-height: 100vh;
 }
 
 .login-left {
@@ -220,7 +221,7 @@
     display: none;
   }
   .login-right {
-    padding: 10px;
+    padding: 20px;
     overflow-y: auto;
     overflow-x: hidden;
   }

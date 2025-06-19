@@ -123,7 +123,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                 />
               </>
             ) : (
-              <div>
+              <div className="topbar-name-wrapper">
                 <span>Hi!</span>
                 {state.userData.name || "N/A"}
               </div>
