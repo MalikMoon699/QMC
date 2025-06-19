@@ -5,6 +5,7 @@ import "../assets/styles/SellAccessories.css";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
+import ImageUpload from "./ImageUpload";
 import { generateCustomId, fetchCurrentUser } from "../utils/Helpers";
 import { CircleMinus, PlusCircle, Plus, X } from "lucide-react";
 
@@ -59,6 +60,8 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
       setImages((prev) => prev.filter((_, i) => i !== index));
     }
   };
+
+  
 
   const addNewField = (e) => {
     e.preventDefault();
@@ -389,19 +392,7 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
           </div>
         </form>
       </div>
-      {isImageClicked && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="sidebar-modal">
-              <img src={selectedImage} alt="" />
-              <div className="logout-btn-container">
-                <button className="logout-cencel-btn logout-delte-btn-same">Reset</button>
-                <button className="logout-delte-btn logout-delte-btn-same">Save</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {isImageClicked && <ImageUpload onClose={handleImageUploadClose} />}
     </div>
   );
 };
