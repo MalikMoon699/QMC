@@ -109,7 +109,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
             {location.pathname !== "/" ? (
               <>
                 <input
-                  type="search"
+                  type="text"
                   placeholder="Search..."
                   value={searchTxt}
                   onChange={(event) => setSearchText(event.target.value)}
@@ -123,7 +123,10 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                 />
               </>
             ) : (
-              <div><span>Hi!</span>{state.userData.name || "N/A"}</div>
+              <div>
+                <span>Hi!</span>
+                {state.userData.name || "N/A"}
+              </div>
             )}
           </div>
           <div className="topBarActionsWrapper">
@@ -167,7 +170,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
             {location.pathname !== "/" ? (
               <>
                 <input
-                  type="search"
+                  type="text"
                   placeholder="Search..."
                   value={searchTxt}
                   onChange={(event) => setSearchText(event.target.value)}
