@@ -123,7 +123,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                 />
               </>
             ) : (
-              <div>DashBoard</div>
+              <div><span>Hi!</span>{state.userData.name || "N/A"}</div>
             )}
           </div>
           <div className="topBarActionsWrapper">

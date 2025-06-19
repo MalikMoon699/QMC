@@ -201,6 +201,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 20px;
+  color: black;
 }
 
 .login-with-google img {
