@@ -114,13 +114,15 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                   value={searchTxt}
                   onChange={(event) => setSearchText(event.target.value)}
                 />
-                <Search
-                  onClick={() => {
-                    setIsSearch((prev) => !prev);
-                  }}
-                  className="icon"
-                  size={20}
-                />
+                <span>
+                  <Search
+                    onClick={() => {
+                      setIsSearch((prev) => !prev);
+                    }}
+                    className="icon"
+                    size={20}
+                  />
+                </span>
               </>
             ) : (
               <div className="topbar-name-wrapper">

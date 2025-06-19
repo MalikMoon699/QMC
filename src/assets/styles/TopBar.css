@@ -28,6 +28,7 @@
   border-radius: 50px;
   width: 100%;
   font-family: "Poppins", sans-serif;
+  transition: width 0.3s ease, padding 0.3s ease;
 }
 
 .searchWrapper input::placeholder {
@@ -52,6 +53,17 @@
   top: 50%;
   transform: translateY(-50%);
   left: 10px;
+}
+
+.deActiveSearchWrapper .icon {
+  position: unset;
+  transform: translateY(0%);
+}
+.deActiveSearchWrapper span {
+  border: 1px solid black;
+  padding: 12px 12px 7px 12px;
+  /* padding: 6px 8px 2px 5px; */
+  border-radius: 50%;
 }
 
 .topBarActionsWrapper {
@@ -284,10 +296,14 @@
 
 .deActiveSearchWrapper {
   font-size: 14px;
+  gap: 0px;
 }
+
 .deActiveSearchWrapper input {
-  width: 0%;
-  padding: 8px 19px;
+  width: 0px;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .deActiveSearchprofile-name {
@@ -302,7 +318,7 @@
   min-width: 0px;
   padding: 5px;
 }
-.nameWrapp{
+.nameWrapp {
   width: 80%;
 }
 .topbar-name-wrapper {
