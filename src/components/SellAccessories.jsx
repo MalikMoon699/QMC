@@ -6,7 +6,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { generateCustomId, fetchCurrentUser } from "../utils/Helpers";
-import { CircleMinus, PlusCircle } from "lucide-react";
+import { CircleMinus, PlusCircle, Plus, X } from "lucide-react";
 
 const SellAccessories = ({ onClose, productToUpdate }) => {
   const { currentUser } = useAuth();
@@ -16,9 +16,11 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
   const [deviceModal, setDeviceModal] = useState("");
   const [price, setPrice] = useState("");
   const [images, setImages] = useState([]);
+  const [selectedImage, setSelectedImage] = useState([]);
   const [existingImages, setExistingImages] = useState([]);
   const [currentUserDetails, setCurrentUserDetails] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [isImageClicked, setIsImageClicked] = useState(false);
   const fileInputRef = useRef(null);
 
   const [fields, setFields] = useState([{ id: 1, fieldName: "", body: "" }]);
@@ -37,6 +39,25 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
         field.id === id ? { ...field, body: value } : field
       )
     );
+  };
+
+  const handleAddFilesClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImages((prev) => [...prev, ...files]);
+  };
+
+  const removeImage = (index, isExisting = false) => {
+    if (isExisting) {
+      setExistingImages((prev) => prev.filter((_, i) => i !== index));
+    } else {
+      setImages((prev) => prev.filter((_, i) => i !== index));
+    }
   };
 
   const addNewField = (e) => {
@@ -296,6 +317,63 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
                 setErrors((prev) => ({ ...prev, description: "" }));
               }}
             />
+            <div className="media-preview">
+              {existingImages.map((image, index) => (
+                <div key={`existing-${index}`} style={{ position: "relative" }}>
+                  <button
+                    className="video-cancel"
+                    onClick={() => removeImage(index, true)}
+                  >
+                    <X size={16} />
+                  </button>
+                  <img
+                    src={image}
+                    alt={`existing-${index}`}
+                    className="media-preview-video"
+                  />
+                </div>
+              ))}
+              {images.map((image, index) => (
+                <div key={index} style={{ position: "relative" }}>
+                  <button
+                    className="video-cancel"
+                    onClick={() => removeImage(index)}
+                  >
+                    <X size={16} />
+                  </button>
+                  <img
+                    onClick={() => {
+                      setIsImageClicked(true);
+                      setSelectedImage;
+                    }}
+                    src={URL.createObjectURL(image)}
+                    alt={`upload-${index}`}
+                    className="media-preview-video"
+                  />
+                </div>
+              ))}
+              <div
+                style={{
+                  border: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                className="media-preview-video"
+              >
+                <div onClick={handleAddFilesClick} className="add-Files">
+                  <Plus />
+                </div>
+              </div>
+              <input
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageChange}
+              />
+            </div>
             <button
               style={{
                 width: "100%",
@@ -311,6 +389,19 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
           </div>
         </form>
       </div>
+      {isImageClicked && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="sidebar-modal">
+              <img src={selectedImage} alt="" />
+              <div className="logout-btn-container">
+                <button className="logout-cencel-btn logout-delte-btn-same">Reset</button>
+                <button className="logout-delte-btn logout-delte-btn-same">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
