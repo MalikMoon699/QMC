@@ -147,7 +147,7 @@ const Accessories = () => {
                 setIsOpen(true);
                 setSelectedCard(device);
               }}
-              className="mobile-card"
+              className="mobile-card accessories-card"
               key={device.id || index}
             >
               <Slider
@@ -167,30 +167,6 @@ const Accessories = () => {
                         {selectedDevice.body}
                       </p>
                     ))}
-
-                  <p className="mobile_card_details">
-                    <strong>DeviceType:</strong>
-                    <span className="dashed-line"></span>
-                    {device.deviceType}
-                  </p>
-                  {device.ram ? (
-                    <p className="mobile_card_details">
-                      <strong>RAM:</strong>
-                      <span className="dashed-line"></span>
-                      {device.ram}GB
-                    </p>
-                  ) : (
-                    <p className="mobile_card_details">
-                      <strong>Battery Health:</strong>
-                      <span className="dashed-line"></span>
-                      {device.batteryHelth || "N/A"}%
-                    </p>
-                  )}
-                  <p className="mobile_card_details">
-                    <strong>Memory:</strong>
-                    <span className="dashed-line"></span>
-                    {device.memory}GB
-                  </p>
                   <p style={{ color: "red" }} className="mobile_card_details">
                     <strong>Price:</strong>
                     <span className="dashed-line"></span>
@@ -267,29 +243,14 @@ const Accessories = () => {
                   )}
                 </div>
                 <div className="mobile-card_details_container">
-                  <p className="mobile_card_details">
-                    <strong>DeviceType:</strong>
-                    <span className="dashed-line"></span>
-                    {selectedCard.deviceType}
-                  </p>
-                  {selectedCard.ram ? (
-                    <p className="mobile_card_details">
-                      <strong>RAM:</strong>
-                      <span className="dashed-line"></span>
-                      {selectedCard.ram}GB
-                    </p>
-                  ) : (
-                    <p className="mobile_card_details">
-                      <strong>Battery Health:</strong>
-                      <span className="dashed-line"></span>
-                      {selectedCard.batteryHelth || "N/A"}%
-                    </p>
-                  )}
-                  <p className="mobile_card_details">
-                    <strong>Memory:</strong>
-                    <span className="dashed-line"></span>
-                    {selectedCard.memory}GB
-                  </p>
+                  {selectedCard.fields?.length > 0 &&
+                    selectedCard.fields.map((selectedDevice, idx) => (
+                      <p key={idx} className="mobile_card_details">
+                        <strong>{selectedDevice.fieldName}:</strong>
+                        <span className="dashed-line"></span>
+                        {selectedDevice.body}
+                      </p>
+                    ))}
                   <p
                     style={{ color: "#00a400" }}
                     className="mobile_card_details"

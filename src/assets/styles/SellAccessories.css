@@ -65,7 +65,7 @@
 
 .field-input {
   width: 100%;
-  padding: 8px 12px;
+  padding: 0.75rem;
   border: 1px solid #ced4da;
   border-radius: 4px;
   font-size: 14px;
@@ -144,4 +144,9 @@
 
 .show {
   display: block;
+}
+
+.accessories-card{
+  max-height: 410px;
+  overflow: auto;
 }

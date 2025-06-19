@@ -302,10 +302,15 @@
   min-width: 0px;
   padding: 5px;
 }
-
+.nameWrapp{
+  width: 80%;
+}
 .topbar-name-wrapper {
   color: #ff4d4d;
   font-size: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-wrap: noWrap;
 }
 
 .topbar-name-wrapper span {

@@ -6,20 +6,15 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { generateCustomId, fetchCurrentUser } from "../utils/Helpers";
-import { PlusCircle } from "lucide-react";
+import { CircleMinus, PlusCircle } from "lucide-react";
 
 const SellAccessories = ({ onClose, productToUpdate }) => {
   const { currentUser } = useAuth();
   const [errors, setErrors] = useState({});
   const [brandName, setBrandName] = useState("");
-  const [deviceType, setDeviceType] = useState("");
-  const [customDeviceType, setCustomDeviceType] = useState("");
-  const [deviceModel, setDeviceModel] = useState("");
-  const [memory, setMemory] = useState("");
-  const [ram, setRam] = useState("");
-  const [batteryHelth, setBatteryHelth] = useState("");
-  const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
+  const [deviceModal, setDeviceModal] = useState("");
+  const [price, setPrice] = useState("");
   const [images, setImages] = useState([]);
   const [existingImages, setExistingImages] = useState([]);
   const [currentUserDetails, setCurrentUserDetails] = useState([]);
@@ -51,29 +46,11 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
     setFields([...fields, { id: newId, fieldName: "", body: "" }]);
   };
 
-  useEffect(() => {
-    if (productToUpdate) {
-      setBrandName(productToUpdate.brandName || "");
-      const deviceTypeLower = productToUpdate.deviceType?.toLowerCase();
-      setDeviceType(
-        ["android", "apple"].includes(deviceTypeLower)
-          ? deviceTypeLower
-          : "other"
-      );
-      setCustomDeviceType(
-        ["android", "apple"].includes(deviceTypeLower)
-          ? ""
-          : productToUpdate.deviceType || ""
-      );
-      setDeviceModel(productToUpdate.deviceModel || "");
-      setMemory(productToUpdate.memory || "");
-      setRam(productToUpdate.ram || "");
-      setBatteryHelth(productToUpdate.batteryHelth || "");
-      setPrice(productToUpdate.price || "");
-      setDescription(productToUpdate.description || "");
-      setExistingImages(productToUpdate.images || []);
-    }
-  }, [productToUpdate]);
+  const removeField = (e) => {
+    e.preventDefault();
+    if (fields.length === 1) return;
+    setFields(fields.slice(0, -1));
+  };
 
   useEffect(() => {
     const getUserDetails = async () => {
@@ -90,7 +67,12 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
     e.preventDefault();
 
     const newErrors = {};
-    if (!fields||fields < 2 ) newErrors.fields = "Please add at least 2 fields";
+    if (!brandName) newErrors.fields = "Please add Product Brand Name";
+    if (!deviceModal) newErrors.fields = "Please add Product Modal";
+    if (!price) newErrors.fields = "Please add Product Price";
+    if (!description) newErrors.fields = "Please add Product description";
+    if (!fields || fields < 2)
+      newErrors.fields = "Please add at least 2 fields";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -112,6 +94,10 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
         createdBy: currentUserDetails.name,
         createdByEmail: currentUserDetails.email,
         createdByPhoneNumber: currentUserDetails.phoneNumber,
+        brandName: brandName,
+        deviceModel: deviceModal,
+        description: description,
+        price: price,
         fields,
         images: [...existingImages, ...imageUrls],
         userId: auth.currentUser?.uid,
@@ -155,11 +141,88 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
           </h3>
         </div>
         <form style={{ padding: "20px" }}>
-          <div className="header">
-            <h2>Label</h2>
-            <h2>Description</h2>
-          </div>
-
+          {errors.brandName && (
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "17px",
+                marginTop: "0px",
+              }}
+              className="login-form-error"
+            >
+              {errors.brandName}
+            </p>
+          )}
+          {errors.description && (
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "17px",
+                marginTop: "0px",
+              }}
+              className="login-form-error"
+            >
+              {errors.description}
+            </p>
+          )}
+          {errors.price && (
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "17px",
+                marginTop: "0px",
+              }}
+              className="login-form-error"
+            >
+              {errors.price}
+            </p>
+          )}
+          {errors.fields && (
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "17px",
+                marginTop: "0px",
+              }}
+              className="login-form-error"
+            >
+              {errors.fields}
+            </p>
+          )}
+          {errors.deviceModal && (
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "17px",
+                marginTop: "0px",
+              }}
+              className="login-form-error"
+            >
+              {errors.deviceModal}
+            </p>
+          )}
+          <label>Brand Name</label>
+          <input
+            type="text"
+            className="login-input"
+            placeholder="Brand Name"
+            value={brandName}
+            onChange={(e) => {
+              setBrandName(e.target.value);
+              setErrors((prev) => ({ ...prev, brandName: "" }));
+            }}
+          />
+          <label>Device Modal</label>
+          <input
+            type="text"
+            className="login-input"
+            placeholder="Device Modal"
+            value={deviceModal}
+            onChange={(e) => {
+              setDeviceModal(e.target.value);
+              setErrors((prev) => ({ ...prev, deviceModal: "" }));
+            }}
+          />
           {fields.map((field, index) => (
             <div key={field.id} className="field-row">
               <div className="field-column">
@@ -177,20 +240,33 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
               <span className="dashed-column-line"></span>
               <span className="dashed-row-line"></span>
               <div className="field-column">
-                <div className="field-label">Body or description</div>
-                <input
-                  type="text"
-                  className="field-input"
-                  placeholder="10000,IPhone 16,Apple,etc..."
-                  value={field.body}
-                  onChange={(e) => handlebodyChange(field.id, e.target.value)}
-                />
+                <div className="field-label">Body</div>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <input
+                    type="text"
+                    className="field-input"
+                    placeholder="10000,IPhone 16,Apple,etc..."
+                    value={field.body}
+                    onChange={(e) => {
+                      handlebodyChange(field.id, e.target.value);
+                      setErrors((prev) => ({ ...prev, field: "" }));
+                    }}
+                  />
+                  <button
+                    type="button"
+                    style={{ background: "white", margin: "0px 0px 0px 2px" }}
+                    className="add-button"
+                    onClick={removeField}
+                  >
+                    <CircleMinus size={20} />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
           <div className="field-row">
             <span
-              style={{ margin: "-35px 0px -8px 19px" }}
+              style={{ margin: "-43px 0px -8px 19px" }}
               className="dashed-column-line"
             ></span>
           </div>
@@ -198,8 +274,40 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
             <PlusCircle size={30} />
           </button>
           <div>
-            <input type="text" className="" />
-            <button onClick={handleSubmit}>Sell</button>
+            <label>Price</label>
+            <input
+              type="number"
+              className="login-input"
+              placeholder="Price"
+              value={price}
+              onChange={(e) => {
+                setPrice(e.target.value);
+                setErrors((prev) => ({ ...prev, price: "" }));
+              }}
+            />
+            <label>Description</label>
+            <input
+              type="text"
+              className="login-input"
+              placeholder="Product Description"
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
+                setErrors((prev) => ({ ...prev, description: "" }));
+              }}
+            />
+            <button
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+              className="action-btn continue-btn"
+              disabled={uploading}
+              onClick={handleSubmit}
+            >
+              Sell
+            </button>
           </div>
         </form>
       </div>

@@ -116,7 +116,7 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  height: 90px;
+  height: 100px;
 }
 
 .user-card__role {

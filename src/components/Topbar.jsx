@@ -102,9 +102,9 @@ const TopBar = ({ searchTxt, setSearchText }) => {
       <div className="topBarContainer mobiletopBarContainer">
         <div className="topBarInnerContainer">
           <div
-            className={`searchWrapper ${
-              isSearch ? "" : "deActiveSearchWrapper"
-            }`}
+            className={`${
+              location.pathname !== "/" ? "searchWrapper" : "nameWrapp"
+            } ${isSearch ? "" : "deActiveSearchWrapper"}`}
           >
             {location.pathname !== "/" ? (
               <>
@@ -136,7 +136,9 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                 setState((prev) => ({ ...prev, isOpen: !prev.isOpen }))
               }
               className={`profile-card ${
-                isSearch ? "deActiveSearchprofile-card" : ""
+                isSearch || location.pathname === "/"
+                  ? "deActiveSearchprofile-card"
+                  : ""
               }`}
             >
               <div className="profile-info">
@@ -147,7 +149,9 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                 />
                 <span
                   className={`${
-                    isSearch ? "deActiveSearchprofile-name" : "profile-name"
+                    isSearch || location.pathname === "/"
+                      ? "deActiveSearchprofile-name"
+                      : "profile-name"
                   }`}
                 >
                   {state.userData.name || "N/A"}
@@ -155,7 +159,9 @@ const TopBar = ({ searchTxt, setSearchText }) => {
               </div>
               <span
                 className={`${
-                  isSearch ? "deActiveSearchDetailArrow" : "topbarDetailArrow"
+                  isSearch || location.pathname === "/"
+                    ? "deActiveSearchDetailArrow"
+                    : "topbarDetailArrow"
                 } arrow ${state.isOpen ? "rotated" : ""}`}
               >
                 ❮
@@ -166,7 +172,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
       </div>
       <div className="topBarContainer">
         <div className="topBarInnerContainer">
-          <div className="searchWrapper">
+          <div className={location.pathname !== "/" ? "searchWrapper" : ""}>
             {location.pathname !== "/" ? (
               <>
                 <input
