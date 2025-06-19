@@ -178,8 +178,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                 <Search className="icon" size={20} />
               </>
             ) : (
-              <div>
-                {" "}
+              <div className="topbar-name-wrapper">
                 <span>Hi!</span>
                 {state.userData.name || "N/A"}
               </div>

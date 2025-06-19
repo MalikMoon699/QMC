@@ -47,13 +47,12 @@
   max-width: 220px;
 }
 
-.searchWrapper .icon{
+.searchWrapper .icon {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   left: 10px;
 }
-
 
 .topBarActionsWrapper {
   display: flex;
@@ -276,44 +275,52 @@
   border-radius: 50%;
 }
 
-.topBarContainer{
+.topBarContainer {
   display: block;
 }
-.mobiletopBarContainer{
+.mobiletopBarContainer {
   display: none !important;
 }
 
-
-.deActiveSearchWrapper{
+.deActiveSearchWrapper {
   font-size: 14px;
 }
-.deActiveSearchWrapper input{
+.deActiveSearchWrapper input {
   width: 0%;
   padding: 8px 19px;
 }
 
- .deActiveSearchprofile-name{
-    display: none;
-  }
+.deActiveSearchprofile-name {
+  display: none;
+}
 
-  .deActiveSearchDetailArrow{
-    display: none;
-  }
+.deActiveSearchDetailArrow {
+  display: none;
+}
 
-  .deActiveSearchprofile-card{
-    min-width: 0px;
-    padding: 5px;
-  }
+.deActiveSearchprofile-card {
+  min-width: 0px;
+  padding: 5px;
+}
 
+.topbar-name-wrapper {
+  color: #ff4d4d;
+  font-size: 30px;
+}
+
+.topbar-name-wrapper span {
+  color: black;
+  margin-right: 5px;
+}
 
 @media only screen and (max-width: 425px) {
-  .topBarActionsWrapper{
+  .topBarActionsWrapper {
     width: auto;
   }
-  .topBarContainer{
+  .topBarContainer {
     display: none;
   }
-.mobiletopBarContainer{
-  display: block !important;
-}
+  .mobiletopBarContainer {
+    display: block !important;
+  }
 }
