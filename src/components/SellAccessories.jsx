@@ -26,6 +26,21 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
 
   const [fields, setFields] = useState([{ id: 1, fieldName: "", body: "" }]);
 
+  useEffect(() => {
+    if (productToUpdate) {
+      setBrandName(productToUpdate.brandName || "");
+      setDeviceModal(productToUpdate.deviceModel || "");
+      setDescription(productToUpdate.description || "");
+      setPrice(productToUpdate.price || "");
+      setExistingImages(productToUpdate.images || []);
+      setFields(
+        productToUpdate.fields?.length > 0
+          ? productToUpdate.fields
+          : [{ id: 1, fieldName: "", body: "" }]
+      );
+    }
+  }, [productToUpdate]);
+
   const handleFieldNameChange = (id, value) => {
     setFields(
       fields.map((field) =>
@@ -387,7 +402,7 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
               disabled={uploading}
               onClick={handleSubmit}
             >
-              Sell
+              {productToUpdate ? "Update" : "Sell"}
             </button>
           </div>
         </form>
