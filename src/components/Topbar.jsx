@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../assets/styles/TopBar.css";
-import SearchIcon from "../assets/images/icons/Search.png";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../utils/FirebaseConfig";
 import TopBarModal from "./TopBarModal";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-// import Notifications from "./Notifications";
 import { useLocation } from "react-router-dom";
 import { Search } from "lucide-react";
 
@@ -126,13 +124,12 @@ const TopBar = ({ searchTxt, setSearchText }) => {
               </>
             ) : (
               <div className="topbar-name-wrapper">
-                <span>Hi!</span>
+                <span style={{ border: "none", padding: "0px" }}>Hi!</span>
                 {state.userData.name || "N/A"}
               </div>
             )}
           </div>
           <div className="topBarActionsWrapper">
-            {/* <Notifications /> */}
             <div
               onClick={() =>
                 setState((prev) => ({ ...prev, isOpen: !prev.isOpen }))
@@ -187,13 +184,12 @@ const TopBar = ({ searchTxt, setSearchText }) => {
               </>
             ) : (
               <div className="topbar-name-wrapper">
-                <span>Hi!</span>
+                <span style={{ border: "none", padding: "0px" }}>Hi!</span>
                 {state.userData.name || "N/A"}
               </div>
             )}
           </div>
           <div className="topBarActionsWrapper">
-            {/* <Notifications /> */}
             <div
               onClick={() =>
                 setState((prev) => ({ ...prev, isOpen: !prev.isOpen }))

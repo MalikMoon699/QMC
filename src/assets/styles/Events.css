@@ -17,7 +17,6 @@
   padding: 7px;
   margin-bottom: 10px;
   border-radius: 8px;
-  width: 140px;
   transition: all 0.2s ease-in-out;
   text-align: center;
 }
@@ -58,6 +57,10 @@
 .single-event-container {
   padding: 20px;
   cursor: default !important;
+}
+
+.single-event-container > .mobile-card {
+  min-height: 410px;
 }
 
 .events-type-container {
@@ -136,18 +139,17 @@ input[type="checkbox"]:checked:after {
 }
 
 @media only screen and (max-width: 425px) {
-  .events-type-container h1{
+  .events-type-container h1 {
     font-size: x-large;
     font-weight: 500;
   }
 }
 
 @media only screen and (max-width: 375px) {
-  .events-type-container h1{
+  .events-type-container h1 {
     font-size: large;
     font-weight: 500;
-  width: 36% !important;
-
+    width: 36% !important;
   }
   .single-event-container {
     padding: 5px;

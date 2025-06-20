@@ -304,7 +304,14 @@ const AddEvents = ({ onClose, EventToUpdate }) => {
               </div>
               <div className="devices-list">
                 {loading ? (
-                  <div style={{height:'200px', display:"flex",alignItems:"center",justifyContent:"center"}}>
+                  <div
+                    style={{
+                      height: "200px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
                     <Loader loading={true} />
                   </div>
                 ) : filteredDevices.length > 0 ? (
@@ -316,8 +323,16 @@ const AddEvents = ({ onClose, EventToUpdate }) => {
                         onChange={() => handleDeviceSelection(device)}
                       />
                       <img src={device.images?.[0] || demo1} />
-                      <div>
-                        <h3>{device.deviceModel}</h3>
+                      <div style={{ overflow: "hidden" }}>
+                        <h3
+                          style={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            textWrap: "noWrap",
+                          }}
+                        >
+                          {device.deviceModel}
+                        </h3>
                         <p>{device.brandName}</p>
                       </div>
                     </div>
