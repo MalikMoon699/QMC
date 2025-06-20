@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import QMCLogo from "../assets/images/logo/QMCLogo.png";
 import { toast } from "react-toastify";
 import React,{ useState } from "react";
-import { Fan, LayoutDashboard, LogOut, Menu, SquareX, TabletSmartphone, TriangleAlert, Users,Calendar1, Bell } from "lucide-react";
+import { Fan, LayoutDashboard, LogOut, Menu, SquareX, TabletSmartphone, TriangleAlert, Users,Calendar1, Bell, ShieldCheck } from "lucide-react";
 
 const Sidebar = () => {
   const { currentUser, role } = useAuth();
@@ -145,6 +145,18 @@ const Sidebar = () => {
                     </span>
                     Notifications
                   </li>
+                  <li
+                    className={location.pathname === "/aboutUs" ? "active" : ""}
+                    onClick={() => {
+                      toggleMenuClose();
+                      navigate("/aboutUs");
+                    }}
+                  >
+                    <span className="sidebarIcon">
+                      <ShieldCheck />
+                    </span>
+                    About Us
+                  </li>
                 </ul>
               </nav>
             </div>
@@ -155,9 +167,7 @@ const Sidebar = () => {
               </div>
             </div>
             {isModalOpen && (
-              <div
-                className="modal-overlay"
-              >
+              <div className="modal-overlay">
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
@@ -260,6 +270,18 @@ const Sidebar = () => {
                   <Bell />
                 </span>
                 Notifications
+              </li>
+              <li
+                className={location.pathname === "/aboutUs" ? "active" : ""}
+                onClick={() => {
+                  toggleMenuClose();
+                  navigate("/aboutUs");
+                }}
+              >
+                <span className="sidebarIcon">
+                  <ShieldCheck />
+                </span>
+                About Us
               </li>
             </ul>
           </nav>

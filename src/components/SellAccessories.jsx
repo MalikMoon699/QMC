@@ -14,12 +14,12 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
   const [errors, setErrors] = useState({});
   const [brandName, setBrandName] = useState("");
   const [description, setDescription] = useState("");
-  const [deviceModal, setDeviceModal] = useState("");
+  const [deviceModel, setDeviceModel] = useState("");
   const [price, setPrice] = useState("");
   const [images, setImages] = useState([]);
-  const [selectedImage, setSelectedImage] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [existingImages, setExistingImages] = useState([]);
-  const [currentUserDetails, setCurrentUserDetails] = useState([]);
+  const [currentUserDetails, setCurrentUserDetails] = useState({});
   const [uploading, setUploading] = useState(false);
   const [isImageClicked, setIsImageClicked] = useState(false);
   const fileInputRef = useRef(null);
@@ -29,15 +29,26 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
   useEffect(() => {
     if (productToUpdate) {
       setBrandName(productToUpdate.brandName || "");
-      setDeviceModal(productToUpdate.deviceModel || "");
+      setDeviceModel(productToUpdate.deviceModel || "");
       setDescription(productToUpdate.description || "");
       setPrice(productToUpdate.price || "");
       setExistingImages(productToUpdate.images || []);
       setFields(
         productToUpdate.fields?.length > 0
-          ? productToUpdate.fields
+          ? productToUpdate.fields.map((field, index) => ({
+              id: field.id || index + 1,
+              fieldName: field.fieldName || "",
+              body: field.body || "",
+            }))
           : [{ id: 1, fieldName: "", body: "" }]
       );
+    } else {
+      setBrandName("");
+      setDeviceModel("");
+      setDescription("");
+      setPrice("");
+      setExistingImages([]);
+      setFields([{ id: 1, fieldName: "", body: "" }]);
     }
   }, [productToUpdate]);
 
@@ -47,14 +58,16 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
         field.id === id ? { ...field, fieldName: value } : field
       )
     );
+    setErrors((prev) => ({ ...prev, fields: "" }));
   };
 
-  const handlebodyChange = (id, value) => {
+  const handleBodyChange = (id, value) => {
     setFields(
       fields.map((field) =>
         field.id === id ? { ...field, body: value } : field
       )
     );
+    setErrors((prev) => ({ ...prev, fields: "" }));
   };
 
   const handleAddFilesClick = () => {
@@ -76,8 +89,6 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
     }
   };
 
-  
-
   const addNewField = (e) => {
     e.preventDefault();
     const newId =
@@ -95,8 +106,7 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
     const getUserDetails = async () => {
       if (currentUser) {
         const userDetails = await fetchCurrentUser(currentUser);
-        const currentUserDetail = userDetails.userData;
-        setCurrentUserDetails(currentUserDetail);
+        setCurrentUserDetails(userDetails.userData || {});
       }
     };
     getUserDetails();
@@ -106,12 +116,16 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
     e.preventDefault();
 
     const newErrors = {};
-    if (!brandName) newErrors.fields = "Please add Product Brand Name";
-    if (!deviceModal) newErrors.fields = "Please add Product Modal";
-    if (!price) newErrors.fields = "Please add Product Price";
-    if (!description) newErrors.fields = "Please add Product description";
-    if (!fields || fields < 2)
-      newErrors.fields = "Please add at least 2 fields";
+    if (!brandName) newErrors.brandName = "Please add a product brand name";
+    if (!deviceModel) newErrors.deviceModel = "Please add a product model";
+    if (!price) newErrors.price = "Please add a product price";
+    if (!description)
+      newErrors.description = "Please add a product description";
+    if (
+      fields.length < 1 ||
+      fields.some((field) => !field.fieldName || !field.body)
+    )
+      newErrors.fields = "Please add at least one complete field";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -130,16 +144,16 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
       );
 
       const productData = {
-        createdBy: currentUserDetails.name,
-        createdByEmail: currentUserDetails.email,
-        createdByPhoneNumber: currentUserDetails.phoneNumber,
-        brandName: brandName,
-        deviceModel: deviceModal,
-        description: description,
-        price: price,
+        createdBy: currentUserDetails.name || "",
+        createdByEmail: currentUserDetails.email || "",
+        createdByPhoneNumber: currentUserDetails.phoneNumber || "",
+        brandName,
+        deviceModel,
+        description,
+        price,
         fields,
         images: [...existingImages, ...imageUrls],
-        userId: auth.currentUser?.uid,
+        userId: auth.currentUser?.uid || "",
         createdAt: new Date(),
       };
 
@@ -168,6 +182,11 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
     onClose();
   };
 
+  const handleImageUploadClose = () => {
+    setIsImageClicked(false);
+    setSelectedImage(null);
+  };
+
   return (
     <div className="modal-overlay">
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
@@ -192,7 +211,7 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
               {errors.brandName}
             </p>
           )}
-          {errors.description && (
+          {errors.deviceModel && (
             <p
               style={{
                 textAlign: "center",
@@ -201,7 +220,7 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
               }}
               className="login-form-error"
             >
-              {errors.description}
+              {errors.deviceModel}
             </p>
           )}
           {errors.price && (
@@ -216,6 +235,18 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
               {errors.price}
             </p>
           )}
+          {errors.description && (
+            <p
+              style={{
+                textAlign: "center",
+                fontSize: "17px",
+                marginTop: "0px",
+              }}
+              className="login-form-error"
+            >
+              {errors.description}
+            </p>
+          )}
           {errors.fields && (
             <p
               style={{
@@ -228,7 +259,7 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
               {errors.fields}
             </p>
           )}
-          {errors.deviceModal && (
+          {errors.submit && (
             <p
               style={{
                 textAlign: "center",
@@ -237,7 +268,7 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
               }}
               className="login-form-error"
             >
-              {errors.deviceModal}
+              {errors.submit}
             </p>
           )}
           <label>Brand Name</label>
@@ -251,15 +282,15 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
               setErrors((prev) => ({ ...prev, brandName: "" }));
             }}
           />
-          <label>Device Modal</label>
+          <label>Device Model</label>
           <input
             type="text"
             className="login-input"
-            placeholder="Device Modal"
-            value={deviceModal}
+            placeholder="Device Model"
+            value={deviceModel}
             onChange={(e) => {
-              setDeviceModal(e.target.value);
-              setErrors((prev) => ({ ...prev, deviceModal: "" }));
+              setDeviceModel(e.target.value);
+              setErrors((prev) => ({ ...prev, deviceModel: "" }));
             }}
           />
           {fields.map((field, index) => (
@@ -273,7 +304,7 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
                   onChange={(e) =>
                     handleFieldNameChange(field.id, e.target.value)
                   }
-                  placeholder="price,model,brand,etc..."
+                  placeholder="price, model, brand, etc..."
                 />
               </div>
               <span className="dashed-column-line"></span>
@@ -284,12 +315,9 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
                   <input
                     type="text"
                     className="field-input"
-                    placeholder="10000,IPhone 16,Apple,etc..."
+                    placeholder="10000, IPhone 16, Apple, etc..."
                     value={field.body}
-                    onChange={(e) => {
-                      handlebodyChange(field.id, e.target.value);
-                      setErrors((prev) => ({ ...prev, field: "" }));
-                    }}
+                    onChange={(e) => handleBodyChange(field.id, e.target.value)}
                   />
                   <button
                     type="button"
@@ -362,7 +390,7 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
                   <img
                     onClick={() => {
                       setIsImageClicked(true);
-                      setSelectedImage;
+                      setSelectedImage(image);
                     }}
                     src={URL.createObjectURL(image)}
                     alt={`upload-${index}`}

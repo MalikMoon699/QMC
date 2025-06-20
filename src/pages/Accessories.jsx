@@ -18,7 +18,7 @@ const Accessories = () => {
   const [statusFilter, setStatusFilter] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
   const [isSellerApplicationOpen, setIsSellerApplicationOpen] = useState(false);
-  const [isUpdateModal, setIsUpdateModal] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [sellModalOpen, setSellModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [devices, setDevices] = useState([]);
@@ -52,7 +52,7 @@ const Accessories = () => {
     if (statusFilter !== "All") {
       filtered = devices.filter(
         (record) =>
-          record.deviceType.toLowerCase() === statusFilter.toLowerCase()
+          record.deviceType?.toLowerCase() === statusFilter.toLowerCase()
       );
     }
     if (searchTxt.trim()) {
@@ -86,7 +86,7 @@ const Accessories = () => {
         prev.filter((device) => device.id !== selectedCard.id)
       );
       toast.success("Product marked as sold out!");
-      setIsUpdateModal(false);
+      setIsUpdateModalOpen(false);
       setIsOpen(false);
       setSelectedCard(null);
     } catch (error) {
@@ -95,8 +95,7 @@ const Accessories = () => {
     }
   };
 
-  const handleOpenUpdateModal = () => {
-    setIsUpdateModal(false);
+  const handleUpdateClick = () => {
     setSellModalOpen(true);
   };
 
@@ -229,7 +228,7 @@ const Accessories = () => {
                     currentUser?.email === selectedCard.createdByEmail) && (
                     <h3
                       onClick={() => {
-                        setIsUpdateModal(true);
+                        setIsUpdateModalOpen(true);
                       }}
                       style={{
                         cursor: "pointer",
@@ -298,10 +297,10 @@ const Accessories = () => {
         </div>
       )}
 
-      {isUpdateModal && (
+      {isUpdateModalOpen && (
         <div
           onClick={() => {
-            setIsUpdateModal(false);
+            setIsUpdateModalOpen(false);
           }}
           className="modal-overlay"
         >
@@ -321,7 +320,7 @@ const Accessories = () => {
                 </button>
                 <button
                   className="logout-delte-btn logout-delte-btn-same"
-                  onClick={handleOpenUpdateModal}
+                  onClick={handleUpdateClick}
                 >
                   Update
                 </button>
@@ -332,11 +331,12 @@ const Accessories = () => {
       )}
       {sellModalOpen && (
         <SellAccessories
+          key={selectedCard ? "update" : "sell"}
           onClose={() => {
             setSellModalOpen(false);
             setSelectedCard(null);
           }}
-          productToUpdate={isUpdateModal ? selectedCard : null}
+          productToUpdate={selectedCard}
         />
       )}
       {isSellerApplicationOpen && (
