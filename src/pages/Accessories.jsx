@@ -336,7 +336,7 @@ const Accessories = () => {
             setSellModalOpen(false);
             setSelectedCard(null);
           }}
-          productToUpdate={selectedCard}
+          productToUpdate={isUpdateModal ? selectedCard : null}
         />
       )}
       {isSellerApplicationOpen && (
