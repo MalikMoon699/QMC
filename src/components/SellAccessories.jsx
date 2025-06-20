@@ -333,7 +333,7 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
           ))}
           <div className="field-row">
             <span
-              style={{ margin: "-43px 0px -8px 19px" }}
+              style={{ margin: "-50px 0px -10px 19px" }}
               className="dashed-column-line"
             ></span>
           </div>
