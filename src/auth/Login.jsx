@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { auth, provider } from "../utils/FirebaseConfig";
-import { signInWithPopup } from "firebase/auth";
+import { signInWithPopup, sendPasswordResetEmail } from "firebase/auth";
 import { useAuth } from "../context/AuthContext";
 import "../assets/styles/Login.css";
 import logo from "../../public/QMCLogo.png";
@@ -16,6 +16,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isForgetOpen, setIsForgetOpen] = useState(false);
   const navigate = useNavigate();
   const { login, loading: authLoading } = useAuth();
   const location = useLocation();
@@ -47,7 +48,43 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
- const handleGoogleLogin = async () => {
+  const sendPasswordReset = async (email) => {
+    try {
+      setLoading(true);
+      await sendPasswordResetEmail(auth, email);
+      console.log("Password reset email sent.");
+      return { success: true, message: "Check Your Email." };
+    } catch (error) {
+      console.error("Error sending password reset email:", error.message);
+      return { success: false, message: error.message };
+    }
+    finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePasswordReset = async () => {
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      toast.error("Please enter a valid email.");
+      return;
+    }
+    const res = await sendPasswordReset(email);
+    if (res.success) {
+      toast.success(res.message);
+      isForgetClose();
+    } else {
+      toast.error(res.message);
+    }
+  };
+
+  const isForgetClose = () => {
+    setIsForgetOpen(false);
+    setEmail("");
+    setPassword("");
+    setErrors({});
+  };
+
+  const handleGoogleLogin = async () => {
     try {
       setLoading(true);
       const result = await signInWithPopup(auth, provider);
@@ -155,8 +192,23 @@ const Login = () => {
             </div>
           </div>
           {errors.password && (
-            <p className="login-form-error">{errors.password}</p>
+            <p style={{ marginBottom: "15px" }} className="login-form-error">
+              {errors.password}
+            </p>
           )}
+          <p
+            onClick={() => {
+              setIsForgetOpen(true);
+            }}
+            style={{
+              textDecoration: "underline",
+              cursor: "pointer",
+              margin: "-10px 0px 20px 8px",
+            }}
+            className="login-form-error"
+          >
+            forget email or password?
+          </p>
           <button
             type="submit"
             disabled={loading || authLoading}
@@ -201,6 +253,57 @@ const Login = () => {
           </button>
         </form>
       </div>
+      {isForgetOpen && (
+        <div
+          onClick={isForgetClose}
+          style={{ backdropFilter: "blur(10px)" }}
+          className="modal-overlay"
+        >
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            className="modal-content"
+          >
+            <div className="sidebar-modal">
+              <div className="contentWrapper">
+                <h2>Forget Email or Password</h2>
+              </div>
+              <input
+                type="email"
+                placeholder="Email"
+                className="login-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <div className="logout-btn-container">
+                <button
+                  onClick={isForgetClose}
+                  className="logout-cencel-btn logout-delte-btn-same"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handlePasswordReset}
+                  disabled={loading || authLoading}
+                  style={{display: "flex", }}
+                  className="logout-delte-btn logout-delte-btn-same"
+                >
+                  {loading || authLoading ? (
+                    <span className="loader"></span>
+                  ) : (
+                    <span
+                      className={`login-text ${loading ? "slide-out" : ""}`}
+                    >
+                      Submit
+                    </span>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
