@@ -1,0 +1,68 @@
+.report-user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(230 30 83);
+  border-radius: 8px;
+  padding: 10px 20px;
+  background-color: #fef4f6;
+  box-shadow: 0 0 10px #0000001a;
+  margin-bottom: 15px;
+}
+
+.report-user-button {
+  background: no-repeat;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+}
+
+.report-textarea {
+  min-height: 150px;
+  max-height: 150px;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+.devices-list{
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px;
+}
+
+@media only screen and (max-width: 485px) {
+  .report-user-list {
+    width: 100%;
+  }
+  .report-user-list .searchWrapper {
+    width: 100%;
+  }
+  .report-user-list .device-item img {
+    height: 50px;
+    width: 50px;
+    border: 2px solid #eb3c2f;
+    border-radius: 10px;
+    object-fit: cover;
+    margin: 0px 6px;
+  }
+
+  .report-user-list .device-item p {
+    width: 100%;
+  }
+  .report-user-container{
+    padding: 10px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .report-user-list input[type="checkbox"] {
+    width: 20px;
+    height: 16px;
+  }
+
+}

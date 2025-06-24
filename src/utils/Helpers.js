@@ -47,6 +47,26 @@ export const fetchCurrentUser = async (user) => {
   return null;
 };
 
+export const fetchAllUsers = async () => {
+  const collectionsToCheck = ["SELLERS", "USERS"];
+  const allUsers = [];
+
+  for (const collectionName of collectionsToCheck) {
+    const collectionRef = collection(db, collectionName);
+    const querySnapshot = await getDocs(collectionRef);
+
+    querySnapshot.forEach((doc) => {
+      allUsers.push({
+        collectionName,
+        userId: doc.id,
+        userData: doc.data(),
+      });
+    });
+  }
+
+  return allUsers;
+};
+
 export const getCroppedImg=(imageSrc, pixelCrop)=>{
   const canvas = document.createElement("canvas");
   const image = new Image();
