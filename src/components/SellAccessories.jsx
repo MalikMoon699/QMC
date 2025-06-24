@@ -311,7 +311,13 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
               <span className="dashed-row-line"></span>
               <div className="field-column">
                 <div className="field-label">Body</div>
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    position: "relative",
+                  }}
+                >
                   <input
                     type="text"
                     className="field-input"
@@ -319,14 +325,16 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
                     value={field.body}
                     onChange={(e) => handleBodyChange(field.id, e.target.value)}
                   />
-                  <button
-                    type="button"
-                    style={{ background: "white", margin: "0px 0px 0px 2px" }}
-                    className="add-button"
-                    onClick={removeField}
-                  >
-                    <CircleMinus size={20} />
-                  </button>
+                  {index !== 0 && (
+                    <button
+                      type="button"
+                      style={{ background: "white", margin: "0px 0px 0px 2px" }}
+                      className="add-button"
+                      onClick={removeField}
+                    >
+                      <CircleMinus size={20} />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

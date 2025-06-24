@@ -150,45 +150,138 @@ const Notifications = () => {
       ) : (
         <ul style={{ listStyle: "none", padding: 0 }}>
           {filteredNotifications.map((notification) => (
-            <li
-              key={notification.id}
-              style={{
-                border: "1px solid #ccc",
-                padding: "10px",
-                marginBottom: "10px",
-                borderRadius: "5px",
-              }}
-            >
-              <p>
-                <strong>Name:</strong> {notification.userName}
-              </p>
-              <p>
-                <strong>Email:</strong> {notification.userEmail}
-              </p>
-              <p>
-                <strong>Age:</strong> {notification.userAge}
-              </p>
-              <p>
-                <strong>ID Card Number:</strong> {notification.idCardNumber}
-              </p>
-              <p>
-                <strong>Status:</strong> {notification.status}
-              </p>
-              <p>
-                <strong>userId:</strong> {notification.userId}
-              </p>
-              <p>
-                <strong>Submitted:</strong>{" "}
-                {notification.createdAt
-                  ? new Date(notification.createdAt).toLocaleString()
-                  : "N/A"}
-              </p>
-              {role === "Admin" && notification.status !== "Approved" && (
-                <button onClick={() => handleApprove(notification)}>
-                  Approve
-                </button>
+            <React.Fragment key={notification.id}>
+              {notification.notificationType === "application" && (
+                <li
+                  key={notification.id}
+                  style={{
+                    border: "1px solid #ccc",
+                    padding: "10px",
+                    marginBottom: "10px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <p>
+                    <strong>Name:</strong> {notification.userName}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {notification.userEmail}
+                  </p>
+                  <p>
+                    <strong>Age:</strong> {notification.userAge}
+                  </p>
+                  <p>
+                    <strong>Notification Type:</strong>{" "}
+                    {notification.notificationType}
+                  </p>
+                  <p>
+                    <strong>ID Card Number:</strong> {notification.idCardNumber}
+                  </p>
+                  <p>
+                    <strong>Status:</strong> {notification.status}
+                  </p>
+                  <p>
+                    <strong>userId:</strong> {notification.userId}
+                  </p>
+                  <p>
+                    <strong>Submitted:</strong>{" "}
+                    {notification.createdAt
+                      ? new Date(notification.createdAt).toLocaleString()
+                      : "N/A"}
+                  </p>
+                  {role === "Admin" && notification.status !== "Approved" && (
+                    <button onClick={() => handleApprove(notification)}>
+                      Approve
+                    </button>
+                  )}
+                </li>
               )}
-            </li>
+              {notification.notificationType === "feedback" && (
+                <li
+                  key={notification.id}
+                  style={{
+                    border: "1px solid #ccc",
+                    padding: "10px",
+                    marginBottom: "10px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <p>
+                    <strong>Name:</strong> {notification.userName}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {notification.userEmail}
+                  </p>
+                  <div style={{ background: "red" }}>
+                    {notification.reportAbout.map((report, index) => (
+                      <p key={index}>
+                        <strong>Report {index + 1}:</strong>
+                        <br />
+                        Name: {report.name} <br />
+                        Email: {report.email} <br />
+                        UID: {report.uid}
+                      </p>
+                    ))}
+                  </div>
+
+                  <p>
+                    <strong>Notification Type:</strong>{" "}
+                    {notification.notificationType}
+                  </p>
+                  <p>
+                    <strong>Feed Back:</strong> {notification.description}
+                  </p>
+                  <p>
+                    <strong>Submitted:</strong>{" "}
+                    {notification.createdAt
+                      ? new Date(notification.createdAt).toLocaleString()
+                      : "N/A"}
+                  </p>
+                </li>
+              )}
+              {notification.notificationType === "report" && (
+                <li
+                  key={notification.id}
+                  style={{
+                    border: "1px solid #ccc",
+                    padding: "10px",
+                    marginBottom: "10px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <p>
+                    <strong>Name:</strong> {notification.userName}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {notification.userEmail}
+                  </p>
+                  <div style={{ background: "red" }}>
+                    {notification.reportAbout.map((report, index) => (
+                      <p key={index}>
+                        <strong>Report {index + 1}:</strong>
+                        <br />
+                        Name: {report.name} <br />
+                        Email: {report.email} <br />
+                        UID: {report.uid}
+                      </p>
+                    ))}
+                  </div>
+                  <p>
+                    <strong>Notification Type:</strong>{" "}
+                    {notification.notificationType}
+                  </p>
+                  <p>
+                    <strong>Feed Back:</strong> {notification.description}
+                  </p>
+                  <p>
+                    <strong>Submitted:</strong>{" "}
+                    {notification.createdAt
+                      ? new Date(notification.createdAt).toLocaleString()
+                      : "N/A"}
+                  </p>
+                </li>
+              )}
+            </React.Fragment>
           ))}
         </ul>
       )}

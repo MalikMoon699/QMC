@@ -59,14 +59,16 @@ const SellerApplication = ({ onClose }) => {
     }
 
     try {
-        const customId = await generateCustomId("NOTIFICATIONS");
+      const customId = await generateCustomId("NOTIFICATIONS");
       const notificationRef = doc(db, "NOTIFICATIONS", customId);
       await setDoc(notificationRef, {
         userId: currentUser.uid,
         userName,
         userEmail,
+        notificationType: "application",
         userAge,
         idCardNumber,
+
         status: "pending",
         createdAt: new Date().toISOString(),
       });
@@ -198,7 +200,7 @@ const SellerApplication = ({ onClose }) => {
           <div className="modal-content">
             <div className="sidebar-modal">
               <div className="contentWrapper">
-                <CircleCheckBig color="green" size={50}  />
+                <CircleCheckBig color="green" size={50} />
                 <h3>Your Request Submitted Successfully</h3>
                 <p>We will contact you soon.</p>
               </div>
