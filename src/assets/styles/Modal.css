@@ -246,4 +246,12 @@
     min-width: 100vw;
     min-height: 100vh;
   }
+
+  .modal-content {
+    min-height: 100vh !important;
+    min-width: 100vw !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

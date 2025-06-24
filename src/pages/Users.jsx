@@ -5,7 +5,7 @@ import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import { db } from "../utils/FirebaseConfig";
 import "../assets/styles/Users.css";
 import Loader from "../components/Loader";
-import { Mail, Phone } from "lucide-react";
+import { AlertTriangle, Mail, Phone } from "lucide-react";
 
 const ProfileImage = "https://media-hosting.imagekit.io/65285a76faae4aaf...";
 
@@ -15,6 +15,7 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [statusFilter, setStatusFilter] = useState("All");
   const [loading, setLoading] = useState(true);
+  const [updateRole, setUpdateRole] = useState(null); // Store user ID and collection
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -82,6 +83,30 @@ const Users = () => {
     []
   );
 
+  const handleUpdateRole = useCallback(async () => {
+    if (!updateRole) return;
+    const { userId, collection, currentRole } = updateRole;
+    const newRole = currentRole === "user" ? "seller" : "user";
+    try {
+      setLoading(true);
+      const userDocRef = doc(db, collection, userId);
+      await updateDoc(userDocRef, { role: newRole });
+
+      // Update local state to reflect the new role
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === userId ? { ...user, role: newRole } : user
+        )
+      );
+
+      setUpdateRole(null); // Close modal
+      setLoading(false);
+    } catch (error) {
+      console.error("Error updating user role:", error);
+      setLoading(false);
+    }
+  }, [updateRole]);
+
   const filteredUsersData = useMemo(() => {
     let filtered = users;
     if (statusFilter !== "All") {
@@ -139,13 +164,21 @@ const Users = () => {
               <div className="user-card__info_content">
                 <div className="user-card__text user-card__info">
                   <h3>{user.name}</h3>
-                  <h3 className="user-card__role">
+                  <h3
+                    className="user-card__role"
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                      setUpdateRole({
+                        userId: user.id,
+                        collection: user.collection,
+                        currentRole: user.role,
+                      })
+                    }
+                  >
                     {user.role === "user" ? "Customer" : "Seller"}
                   </h3>
                 </div>
-                <div className="user-card_details_container">
-
-                </div>
+                <div className="user-card_details_container"></div>
                 <div className="user-card_personal_details_container ">
                   <div className="user-card__contact">
                     <Mail />
@@ -200,6 +233,39 @@ const Users = () => {
           <div className="empty-message">No Users</div>
         )}
       </div>
+      {updateRole && (
+        <div className="modal-overlay">
+          <div className="modal-content" style={{ width: "400px" }}>
+            <div className="sidebar-modal">
+              <div className="contentWrapper">
+                <AlertTriangle color="red" size={80}/>
+                <h3>Update User Role</h3>
+                <p>{`Are you sure you want to update the role of this user from ${
+                  updateRole.currentRole === "user" ? "Customer" : "Seller"
+                } to ${
+                  updateRole.currentRole === "user" ? "Seller" : "Customer"
+                }?`}</p>
+              </div>
+              <div className="update-role-container">
+                <div className="logout-btn-container">
+                  <button
+                    onClick={() => setUpdateRole(null)}
+                    className="logout-cencel-btn logout-delte-btn-same"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleUpdateRole}
+                    className="logout-delte-btn logout-delte-btn-same"
+                  >
+                    Update
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
