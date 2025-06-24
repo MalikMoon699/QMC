@@ -30,6 +30,7 @@ const AboutUs = () => {
   const [feedBack, setFeedBack] = useState(false);
   const [reportUserOpen, setReportUserOpen] = useState(false);
   const [reportIssue, setReportIssue] = useState(false);
+  const [error, setError] = useState("");
   const [updateImg, setUpdateImg] = useState("");
   const [updateName, setUpdateName] = useState("");
   const [updateEmail, setUpdateEmail] = useState("");
@@ -38,7 +39,7 @@ const AboutUs = () => {
   const [updateLocation, setUpdateLocation] = useState("");
   const [updateId, setUpdateId] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  const [searchUser, setSearchUser] = useState(""); // New state for search input
+  const [searchUser, setSearchUser] = useState("");
 
   useEffect(() => {
     getUserDetails();
@@ -144,7 +145,7 @@ const AboutUs = () => {
   const handleReport = async () => {
     try {
       if (!description) {
-        console.error("No description provided");
+        setError("No description provided");
         return;
       }
 
@@ -169,7 +170,7 @@ const AboutUs = () => {
   const handleFeedBack = async () => {
     try {
       if (!description) {
-        console.error("No description provided");
+        setError("No description provided");
         return;
       }
 
@@ -228,28 +229,25 @@ const AboutUs = () => {
     setSelected([]);
     setDescription("");
     setReportIssue(false);
-    setSearchUser(""); // Reset search input
+    setSearchUser(""); 
   };
 
   const handleFeedBackClose = () => {
     setSelected([]);
     setDescription("");
     setFeedBack(false);
-    setSearchUser(""); // Reset search input
+    setSearchUser("");
   };
 
   const handleReportUserOpen = () => {
     setReportUserOpen((prev) => !prev);
   };
 
-  // Filter users based on search input
   const filteredUsers = allUserDetail.filter(
     (user) =>
       user.name?.toLowerCase().includes(searchUser.toLowerCase()) ||
       user.email?.toLowerCase().includes(searchUser.toLowerCase())
   );
-
-  console.log("selected Data:", selected);
 
   return (
     <div>
@@ -332,6 +330,7 @@ const AboutUs = () => {
             </div>
             <div>
               <div className="sidebar-modal" style={{ width: "100%" }}>
+              {error && <div className="error-message">{error}</div>}
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <label>Feed Back:</label>
                   <textarea
