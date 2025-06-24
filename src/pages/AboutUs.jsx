@@ -10,13 +10,23 @@ import {
 import React, { useState, useCallback, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  setDoc,
+} from "firebase/firestore";
 import { db, storage } from "../utils/FirebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { demo5 } from "../utils/Demoimages";
 import "../assets/styles/AboutUs.css";
 import Loader from "../components/Loader";
-import { fetchCurrentUser, fetchAllUsers } from "../utils/Helpers";
+import {
+  fetchCurrentUser,
+  fetchAllUsers,
+  generateCustomId,
+} from "../utils/Helpers";
 
 const AboutUs = () => {
   const { currentUser, role } = useAuth();
@@ -152,15 +162,15 @@ const AboutUs = () => {
       const reportData = {
         userId: currentUserDetails.uid,
         userEmail: currentUserDetails.email,
-        userName: currentUserDetails.displayName,
+        userName: currentUserDetails.name,
         notificationType: "report",
         reportAbout: selected,
         description: description,
         createdAt: new Date(),
       };
-
-      const reportDocRef = doc(db, "NOTIFICATIONS", currentUser.id);
-      await updateDoc(reportDocRef, reportData);
+      const customId = await generateCustomId("NOTIFICATIONS");
+      const reportDocRef = doc(db, "NOTIFICATIONS", customId);
+      await setDoc(reportDocRef, reportData);
       handleReportClose();
     } catch (error) {
       console.error("Error reporting issue:", error);
@@ -177,15 +187,15 @@ const AboutUs = () => {
       const reportData = {
         userId: currentUserDetails.uid,
         userEmail: currentUserDetails.email,
-        userName: currentUserDetails.displayName,
+        userName: currentUserDetails.name,
         notificationType: "feedback",
         reportAbout: selected,
         description: description,
         createdAt: new Date(),
       };
-
-      const reportDocRef = doc(db, "NOTIFICATIONS", currentUser.id);
-      await updateDoc(reportDocRef, reportData);
+      const customId = await generateCustomId("NOTIFICATIONS");
+      const reportDocRef = doc(db, "NOTIFICATIONS", customId);
+      await setDoc(reportDocRef, reportData);
       handleFeedBackClose();
     } catch (error) {
       console.error("Error reporting issue:", error);
@@ -229,7 +239,7 @@ const AboutUs = () => {
     setSelected([]);
     setDescription("");
     setReportIssue(false);
-    setSearchUser(""); 
+    setSearchUser("");
   };
 
   const handleFeedBackClose = () => {
@@ -330,7 +340,7 @@ const AboutUs = () => {
             </div>
             <div>
               <div className="sidebar-modal" style={{ width: "100%" }}>
-              {error && <div className="error-message">{error}</div>}
+                {error && <div className="error-message">{error}</div>}
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <label>Feed Back:</label>
                   <textarea
@@ -375,19 +385,37 @@ const AboutUs = () => {
                                 boxShadow: "0px 0px 20px rgb(0 0 0 / 10%)",
                               }}
                               className="device-item"
-                              key={user.userId}
+                              key={user.userId || user.uid}
                             >
                               <input
                                 type="checkbox"
-                                checked={selected.includes(user.userId)}
+                                checked={selected.some(
+                                  (u) => u.uid === (user.userId || user.uid)
+                                )}
                                 onChange={() => {
-                                  setSelected((prev) =>
-                                    prev.includes(user.userId)
-                                      ? prev.filter((id) => id !== user.userId)
-                                      : [...prev, user.userId]
-                                  );
+                                  setSelected((prev) => {
+                                    const uid = user.userId || user.uid;
+
+                                    const isAlreadySelected = prev.some(
+                                      (u) => u.uid === uid
+                                    );
+
+                                    if (isAlreadySelected) {
+                                      return prev.filter((u) => u.uid !== uid);
+                                    } else {
+                                      return [
+                                        ...prev,
+                                        {
+                                          uid: uid,
+                                          name: user.name || "",
+                                          email: user.email || "",
+                                        },
+                                      ];
+                                    }
+                                  });
                                 }}
                               />
+
                               <img src={user.profileImg || demo5} alt="" />
                               <div style={{ overflow: "hidden" }}>
                                 <h3
@@ -485,17 +513,32 @@ const AboutUs = () => {
                                 boxShadow: "0px 0px 20px rgb(0 0 0 / 10%)",
                               }}
                               className="device-item"
-                              key={user.userId}
+                              key={user.userId || user.uid}
                             >
                               <input
                                 type="checkbox"
-                                checked={selected.includes(user.userId)}
+                                checked={selected.some(
+                                  (u) => u.uid === (user.userId || user.uid)
+                                )}
                                 onChange={() => {
-                                  setSelected((prev) =>
-                                    prev.includes(user.userId)
-                                      ? prev.filter((id) => id !== user.userId)
-                                      : [...prev, user.userId]
-                                  );
+                                  setSelected((prev) => {
+                                    const uid = user.userId || user.uid;
+                                    const isAlreadySelected = prev.some(
+                                      (u) => u.uid === uid
+                                    );
+                                    if (isAlreadySelected) {
+                                      return prev.filter((u) => u.uid !== uid);
+                                    } else {
+                                      return [
+                                        ...prev,
+                                        {
+                                          uid: uid,
+                                          name: user.name || "",
+                                          email: user.email || "",
+                                        },
+                                      ];
+                                    }
+                                  });
                                 }}
                               />
                               <img src={user.profileImg || demo5} alt="" />

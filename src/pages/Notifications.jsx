@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { db } from "../utils/FirebaseConfig";
 import { useAuth } from "../context/AuthContext";
+import { useOutletContext } from "react-router-dom";
 import {
   collection,
   query,
@@ -14,8 +15,10 @@ import Loader from "../components/Loader";
 
 const Notifications = () => {
   const { currentUser, role } = useAuth();
+  const { searchTxt } = useOutletContext();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [statusFilter, setStatusFilter] = useState("All");
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -90,17 +93,63 @@ const Notifications = () => {
     }
   };
 
+  const filteredNotifications = useMemo(() => {
+    let filtered = notifications;
+
+    if (statusFilter !== "All") {
+      filtered = notifications.filter(
+        (record) =>
+          record.notificationType &&
+          record.notificationType.toLowerCase() === statusFilter.toLowerCase()
+      );
+    }
+
+    if (searchTxt.trim()) {
+      filtered = filtered.filter((notification) =>
+        [
+          notification.userName,
+          notification.userEmail,
+          notification.description,
+        ].some((field) =>
+          field && typeof field === "string"
+            ? field.toLowerCase().includes(searchTxt.toLowerCase())
+            : false
+        )
+      );
+    }
+
+    return filtered.sort((a, b) =>
+      a.createdAt && b.createdAt
+        ? new Date(b.createdAt) - new Date(a.createdAt)
+        : 0
+    );
+  }, [notifications, statusFilter, searchTxt]);
+
   return (
     <div style={{ padding: "20px" }}>
-      <h2>Your Notifications</h2>
+      <div className="mobile-summary-header mobiles-summary-header">
+        <div className="mobiles-status-title">Notifications</div>
+        <div className="action-btn-container">
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="custom-select"
+          >
+            <option value="All">All</option>
+            <option value="application">Applications</option>
+            <option value="feedBack">Feed Back</option>
+            <option value="report">Reports</option>
+          </select>
+        </div>
+      </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {loading ? (
-        <Loader  loading={true}/>
+        <Loader loading={true} />
       ) : notifications.length === 0 ? (
         <p>No notifications found.</p>
       ) : (
         <ul style={{ listStyle: "none", padding: 0 }}>
-          {notifications.map((notification) => (
+          {filteredNotifications.map((notification) => (
             <li
               key={notification.id}
               style={{
