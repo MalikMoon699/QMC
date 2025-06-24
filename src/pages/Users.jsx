@@ -15,8 +15,8 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [statusFilter, setStatusFilter] = useState("All");
   const [loading, setLoading] = useState(true);
-  const [updateRole, setUpdateRole] = useState(null); // Store user ID and collection
-
+  const [updateRole, setUpdateRole] = useState(null);
+  
   const fetchUsers = useCallback(async () => {
     try {
       const collections = ["SELLERS", "USERS"];
@@ -91,15 +91,12 @@ const Users = () => {
       setLoading(true);
       const userDocRef = doc(db, collection, userId);
       await updateDoc(userDocRef, { role: newRole });
-
-      // Update local state to reflect the new role
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user.id === userId ? { ...user, role: newRole } : user
         )
       );
-
-      setUpdateRole(null); // Close modal
+      setUpdateRole(null);
       setLoading(false);
     } catch (error) {
       console.error("Error updating user role:", error);
