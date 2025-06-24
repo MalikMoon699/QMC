@@ -52,11 +52,13 @@
   font-family: "Poppins", sans-serif;
   transition: 0.3s all ease;
   border: 1px solid #e9496c;
+  height: fit-content;
 }
 
 .single-event-container {
   padding: 20px;
   cursor: default !important;
+  height: fit-content;
 }
 
 .single-event-container > .mobile-card {

@@ -225,3 +225,25 @@
   font-weight: bold;
   cursor: pointer;
 }
+
+@media only screen and (max-width: 425px) {
+  .modal-header {
+    border-radius: 0px;
+  }
+
+  .modal-overlay {
+    padding: 0px;
+  }
+
+  .modal-card {
+    border-radius: 0px;
+    min-width: 100vw;
+    min-height: 100vh;
+  }
+
+  .sidebar-modal-container {
+    border-radius: 0px;
+    min-width: 100vw;
+    min-height: 100vh;
+  }
+}
