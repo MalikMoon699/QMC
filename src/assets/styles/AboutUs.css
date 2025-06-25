@@ -149,7 +149,7 @@
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   scroll-snap-align: center;
-  padding: 20px 0px;
+  padding: 20px 400px;
   width: 100%;
   justify-content: center;
   -ms-overflow-style: none; 
