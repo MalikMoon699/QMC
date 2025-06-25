@@ -6,6 +6,10 @@ import {
   ChevronDown,
   ChevronUp,
   Search,
+  Mail,
+  Phone,
+  MapPin,
+  ShieldUser,
 } from "lucide-react";
 import React, { useState, useCallback, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
@@ -27,6 +31,7 @@ import {
   fetchAllUsers,
   generateCustomId,
 } from "../utils/Helpers";
+import { toast } from "react-toastify";
 
 const AboutUs = () => {
   const { currentUser, role } = useAuth();
@@ -50,6 +55,31 @@ const AboutUs = () => {
   const [updateId, setUpdateId] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [searchUser, setSearchUser] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const carouselRef = React.useRef(null);
+
+  const handleNavigation = (direction) => {
+    const sellers = allUserDetail.filter((user) => user.role === "seller");
+    if (direction === "prev" && currentIndex > 0) {
+      setCurrentIndex((prev) => prev - 1);
+    } else if (direction === "next" && currentIndex < sellers.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    }
+  };
+
+  useEffect(() => {
+    const sellers = allUserDetail.filter((user) => user.role === "seller");
+    const selectedCard = carouselRef.current?.children[currentIndex];
+    if (selectedCard) {
+      selectedCard.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
+  }, [currentIndex, allUserDetail]);
+  
+
 
   useEffect(() => {
     getUserDetails();
@@ -259,6 +289,16 @@ const AboutUs = () => {
       user.email?.toLowerCase().includes(searchUser.toLowerCase())
   );
 
+  const copyClicked = (email, message) => {
+    navigator.clipboard.writeText(email);
+    toast.success(message);
+  };
+
+  console.log(
+    "allUserDetail",
+    allUserDetail.filter((user) => user.role === "seller")
+  );
+
   return (
     <div>
       <div className="mobile-summary-header mobiles-summary-header">
@@ -306,27 +346,169 @@ const AboutUs = () => {
           </button>
         )}
       </div>
-      <div>
-        <div className="left-side-container">
+      <div className="aboutUs-main-container">
+        <div className="owner-details-container">
           {adminData.length > 0 ? (
             adminData.map((admin, index) => (
-              <div key={index} className="mobile-summary-header">
-                <img
-                  style={{ height: "20px", width: "20px" }}
-                  src={admin.profileImg}
-                  alt={`${admin.name}'s profile`}
-                />
-                <h2>{admin.name}</h2>
-                <h2>{admin.email}</h2>
-                <h2>{admin.phoneNumber}</h2>
-                <h2>{admin.location}</h2>
+              <div key={index} className="owner-details-innercontainer">
+                <div className="owner-details-first-child">
+                  <img src={admin.profileImg} alt={`${admin.name}'s profile`} />
+                </div>
+                <div className="owner-details-second-child">
+                  <div className="copy-item-constainer">
+                    <ShieldUser />
+                    <span
+                      className="copy-item"
+                      onClick={() =>
+                        copyClicked(admin.name, "Name copied successfully")
+                      }
+                    >
+                      {admin.name}
+                    </span>
+                  </div>
+
+                  <div className="copy-item-constainer">
+                    <Mail />
+                    <span
+                      className="copy-item"
+                      onClick={() =>
+                        copyClicked(admin.email, "Email copied successfully")
+                      }
+                    >
+                      {admin.email}
+                    </span>
+                  </div>
+                  <div className="copy-item-constainer">
+                    <Phone />
+                    <span
+                      className="copy-item"
+                      onClick={() =>
+                        copyClicked(
+                          admin.phoneNumber,
+                          "Phone Number copied successfully."
+                        )
+                      }
+                    >
+                      {admin.phoneNumber}
+                    </span>
+                  </div>
+                  <div className="copy-item-constainer">
+                    <MapPin size={30} />
+                    <span
+                      className="copy-item"
+                      onClick={() =>
+                        copyClicked(
+                          admin.location,
+                          "Location copied successfully."
+                        )
+                      }
+                    >
+                      {admin.location}
+                    </span>
+                  </div>
+                </div>
               </div>
             ))
           ) : (
             <div>No admin data available</div>
           )}
         </div>
-        <div className="right-side-container"></div>
+        <div className="users-counts-container">
+          <div className="users-counts">
+            <h3>{allUserDetail?.length}</h3>
+            <span>Total Users</span>
+          </div>
+          <div className="users-counts">
+            <h3>
+              {allUserDetail?.filter((user) => user.role === "seller").length}
+            </h3>
+            <span>Sellers</span>
+          </div>
+          <div className="users-counts">
+            <h3>
+              {allUserDetail?.filter((user) => user.role === "user").length}
+            </h3>
+            <span>Customers</span>
+          </div>
+        </div>
+        <div className="sellers-container">
+          <button
+            className="about_prev-btn"
+            onClick={() => handleNavigation("prev")}
+            disabled={currentIndex === 0}
+          >
+            {"<"}
+          </button>
+          <div className="sellers-carousel" ref={carouselRef}>
+            {allUserDetail?.some((user) => user.role === "seller") ? (
+              allUserDetail
+                .filter((user) => user.role === "seller")
+                .map((user, index) => (
+                  <div
+                    key={user.id}
+                    className={`user-card about_user-card ${
+                      index === currentIndex ? "selected_about_user-card" : ""
+                    }`}
+                  >
+                    <div className="user-card__info_img">
+                      <img
+                        src={user.profileImg || demo5}
+                        alt={`${user.name}'s profile`}
+                      />
+                    </div>
+                    <div className="user-card__info_content">
+                      <div className="user-card__text user-card__info about_user-card__info">
+                        <h3>{user.name}</h3>
+                      </div>
+                      <div className="user-card_details_container"></div>
+                      <div className="user-card_personal_details_container about_user-card_personal_details_container">
+                        <div className="user-card__contact">
+                          <Mail />
+                          <p
+                            className="copy-item"
+                            onClick={() =>
+                              copyClicked(
+                                user.email,
+                                "Email copied successfully"
+                              )
+                            }
+                          >
+                            {user.email}
+                          </p>
+                        </div>
+                        <div className="user-card__contact">
+                          <Phone />
+                          <p
+                            className="copy-item"
+                            onClick={() =>
+                              copyClicked(
+                                user.phoneNumber,
+                                "Phone Number copied successfully"
+                              )
+                            }
+                          >
+                            {user.phoneNumber}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+            ) : (
+              <div className="no-seller-message">No seller data available</div>
+            )}
+          </div>
+          <button
+            className="about_next-btn"
+            onClick={() => handleNavigation("next")}
+            disabled={
+              currentIndex >=
+              allUserDetail.filter((user) => user.role === "seller").length - 1
+            }
+          >
+            {">"}
+          </button>
+        </div>
       </div>
 
       {feedBack && (
