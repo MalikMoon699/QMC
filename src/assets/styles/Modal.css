@@ -208,7 +208,6 @@
 .modal-card {
   background-color: white;
   color: black;
-  z-index: 9999;
   border-radius: 10px;
   overflow-x: hidden;
   overflow-y: auto;

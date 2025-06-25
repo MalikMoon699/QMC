@@ -597,11 +597,10 @@ const AboutUs = () => {
                 <div style={{ position: "relative", cursor: "pointer" }}>
                   <img src={updateImg || demo5} alt="Profile preview" />
                   <span className="edit-icon">
-                    <label htmlFor="imageUpload" style={{ cursor: "pointer" }}>
+                    <label style={{ cursor: "pointer" }}>
                       <Pen size={20} color="red" />
                     </label>
                     <input
-                      id="imageUpload"
                       type="file"
                       accept="image/*"
                       style={{ display: "none" }}

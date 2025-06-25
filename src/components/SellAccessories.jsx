@@ -5,7 +5,6 @@ import "../assets/styles/SellAccessories.css";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
-import ImageUpload from "./ImageUpload";
 import { generateCustomId, fetchCurrentUser } from "../utils/Helpers";
 import { CircleMinus, PlusCircle, Plus, X } from "lucide-react";
 
@@ -443,7 +442,6 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
           </div>
         </form>
       </div>
-      {isImageClicked && <ImageUpload onClose={handleImageUploadClose} />}
     </div>
   );
 };
