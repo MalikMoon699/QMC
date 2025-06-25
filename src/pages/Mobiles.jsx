@@ -159,11 +159,6 @@ const Mobiles = () => {
                   <h3 className="mobile-card__role">{device.brandName}</h3>
                 </div>
                 <div className="mobile-card_details_container">
-                  <p className="mobile_card_details">
-                    <strong>DeviceType:</strong>
-                    <span className="dashed-line"></span>
-                    {device.deviceType}
-                  </p>
                   {device.ram ? (
                     <p className="mobile_card_details">
                       <strong>RAM:</strong>

@@ -56,9 +56,7 @@ const Events = () => {
     }
     if (searchTxt.trim()) {
       filtered = filtered.filter((device) =>
-        [
-          device.eventName,
-        ].some((field) =>
+        [device.eventName].some((field) =>
           field && typeof field === "string"
             ? field.toLowerCase().includes(searchTxt.toLowerCase())
             : false
@@ -141,8 +139,7 @@ const Events = () => {
                 </h1>
                 <button
                   className="action-btn"
-                  style={{ backgroundColor: "#ef3f2c"
-                  }}
+                  style={{ backgroundColor: "#ef3f2c" }}
                   onClick={() => {
                     setIsOpen(true);
                     setSelectedCard(device);
@@ -170,30 +167,35 @@ const Events = () => {
                             {selectedDevice.brandName}
                           </h3>
                         </div>
-                        <div className="mobile-card_details_container">
-                          <p className="mobile_card_details">
-                            <strong>DeviceType:</strong>
+                        {selectedDevice.fields?.map((field, idx) => (
+                          <p key={idx} className="mobile_card_details">
+                            <strong>{field.fieldName}:</strong>
                             <span className="dashed-line"></span>
-                            {selectedDevice.deviceType}
+                            {field.body}
                           </p>
-                          {selectedDevice.ram ? (
+                        ))}
+                        <div className="mobile-card_details_container">
+                          {selectedDevice.ram && (
                             <p className="mobile_card_details">
                               <strong>RAM:</strong>
                               <span className="dashed-line"></span>
                               {selectedDevice.ram}GB
                             </p>
-                          ) : (
+                          )}
+                          {selectedDevice.batteryHealth && (
                             <p className="mobile_card_details">
                               <strong>Battery Health:</strong>
                               <span className="dashed-line"></span>
                               {selectedDevice.batteryHelth || "N/A"}%
                             </p>
                           )}
-                          <p className="mobile_card_details">
-                            <strong>Memory:</strong>
-                            <span className="dashed-line"></span>
-                            {selectedDevice.memory}GB
-                          </p>
+                          {selectedDevice.memory && (
+                            <p className="mobile_card_details">
+                              <strong>Memory:</strong>
+                              <span className="dashed-line"></span>
+                              {selectedDevice.memory}GB
+                            </p>
+                          )}
                           <p
                             style={{ color: "green" }}
                             className="mobile_card_details"

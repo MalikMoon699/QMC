@@ -155,7 +155,6 @@ body {
 .empty-message {
   height: 67vh;
   width: 100%;
-  padding: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
