@@ -17,9 +17,11 @@ const Events = () => {
   const { searchTxt } = useOutletContext();
   const [statusFilter, setStatusFilter] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
+  const [isEventOpen, setIsEventOpen] = useState(false);
   const [isUpdateModal, setIsUpdateModal] = useState(false);
   const [sellModalOpen, setSellModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [selectedEventCard, setSelectedEventCard] = useState(null);
   const [devices, setDevices] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -152,7 +154,14 @@ const Events = () => {
               <div className="mobiles-container single-event-container">
                 {device.selectedEvents?.length > 0 ? (
                   device.selectedEvents.map((selectedDevice, idx) => (
-                    <div key={idx} className="mobile-card">
+                    <div
+                      onClick={() => {
+                        setSelectedEventCard(selectedDevice);
+                        setIsEventOpen(true);
+                      }}
+                      key={idx}
+                      className="mobile-card"
+                    >
                       <Slider
                         slides={
                           selectedDevice.images?.length
@@ -167,13 +176,15 @@ const Events = () => {
                             {selectedDevice.brandName}
                           </h3>
                         </div>
-                        {selectedDevice.fields?.map((field, idx) => (
-                          <p key={idx} className="mobile_card_details">
-                            <strong>{field.fieldName}:</strong>
-                            <span className="dashed-line"></span>
-                            {field.body}
-                          </p>
-                        ))}
+                        {selectedDevice.fields
+                          ?.slice(0, 2)
+                          .map((field, idx) => (
+                            <p key={idx} className="mobile_card_details">
+                              <strong>{field.fieldName}:</strong>
+                              <span className="dashed-line"></span>
+                              {field.body}
+                            </p>
+                          ))}
                         <div className="mobile-card_details_container">
                           {selectedDevice.ram && (
                             <p className="mobile_card_details">
@@ -349,6 +360,93 @@ const Events = () => {
                     <strong>Description: </strong>
                     {selectedCard.description ||
                       "------------------------------------"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isEventOpen && selectedEventCard && (
+        <div className="modal-overlay">
+          <div onClick={(e) => e.stopPropagation()} className="modal-card">
+            <div className="modal-header">
+              <button
+                className="back-button"
+                onClick={() => {
+                  setIsEventOpen(false);
+                  setSelectedEventCard(null);
+                }}
+              >
+                ❮
+              </button>
+              <h3 className="modal-title">{selectedEventCard.deviceModel}</h3>
+            </div>
+            <div className="mobile-card mobile-modal-card">
+              <Slider
+                style={{ maxHeight: "450px" }}
+                slides={
+                  selectedEventCard.images?.length
+                    ? selectedEventCard.images
+                    : fallbackImages
+                }
+              />
+              <div className="mobile-card__info_content">
+                <div className="mobile-card__text mobile-card__info mobile-card_details_container">
+                  <h3>{selectedEventCard.deviceModel}</h3>
+                  <h3 className="mobile-card__role">
+                    {selectedEventCard.brandName}
+                  </h3>
+                </div>
+                <div className="mobile-card_details_container">
+                  {selectedEventCard.fields?.length > 0 &&
+                    selectedEventCard.fields.map((selectedDevice, idx) => (
+                      <p key={idx} className="mobile_card_details">
+                        <strong>{selectedDevice.fieldName}:</strong>
+                        <span className="dashed-line"></span>
+                        {selectedDevice.body}
+                      </p>
+                    ))}
+                  <p
+                    style={{ color: "#00a400" }}
+                    className="mobile_card_details"
+                  >
+                    <strong>Sell By:</strong>
+                    <span className="dashed-line"></span>
+                    {selectedEventCard.createdBy}
+                  </p>
+                  <p
+                    style={{ color: "#00c000" }}
+                    className="mobile_card_details"
+                  >
+                    <strong>Seller Mail:</strong>
+                    <span className="dashed-line"></span>
+                    {selectedEventCard.createdByEmail}
+                  </p>
+                  <p
+                    style={{ color: "#00c000" }}
+                    className="mobile_card_details"
+                  >
+                    <strong>Seller Number:</strong>
+                    <span className="dashed-line"></span>
+                    {selectedEventCard.createdByPhoneNumber}
+                  </p>
+                  <p style={{ color: "red" }} className="mobile_card_details">
+                    <strong>Price:</strong>
+                    <span className="dashed-line"></span>
+                    {selectedEventCard.price} PKR
+                  </p>
+                </div>
+                <div
+                  style={{
+                    paddingTop: "10px",
+                  }}
+                  className="mobile_card_details"
+                >
+                  <p>
+                    <strong>Description: </strong>
+                    {selectedEventCard.description}
                   </p>
                 </div>
               </div>

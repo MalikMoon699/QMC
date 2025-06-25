@@ -159,7 +159,7 @@ const Accessories = () => {
                 </div>
                 <div className="mobile-card_details_container">
                   {device.fields?.length > 0 &&
-                    device.fields.map((selectedDevice, idx) => (
+                    device.fields.slice(0, 2).map((selectedDevice, idx) => (
                       <p key={idx} className="mobile_card_details">
                         <strong>{selectedDevice.fieldName}:</strong>
                         <span className="dashed-line"></span>
