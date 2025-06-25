@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState, useRef } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
 import { auth, db } from "../utils/FirebaseConfig";
 import {
   onAuthStateChanged,
@@ -50,7 +56,7 @@ export const AuthProvider = ({ children }) => {
         email: user.email,
         role: userRole,
         isActive: true,
-        profileImg: "",
+        profileImg: additionalData.profileImage || "",
         name: additionalData.name || "",
         phoneNumber: additionalData.phoneNumber || "",
         uid: user.uid,

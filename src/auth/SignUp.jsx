@@ -26,6 +26,9 @@ const SignUp = () => {
   const [step, setStep] = useState(1);
   const { createUserDocument, role: currentUserRole } = useAuth();
 
+  const ProfileImage =
+    "https://png.pngtree.com/png-clipart/20200701/original/pngtree-single-person-character-in-vector-png-image_5359691.jpg";
+
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -80,7 +83,11 @@ const SignUp = () => {
         email,
         password
       );
-      await createUserDocument(user, role, { name, phoneNumber });
+      await createUserDocument(user, role, {
+        name,
+        phoneNumber,
+        profileImage: ProfileImage,
+      });
       toast.success(`SignUp successfully!`);
 
       if (currentUserRole === "admin" || currentUserRole === "seller") {
