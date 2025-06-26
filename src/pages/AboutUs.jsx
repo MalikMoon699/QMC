@@ -294,11 +294,6 @@ const AboutUs = () => {
     toast.success(message);
   };
 
-  console.log(
-    "allUserDetail",
-    allUserDetail.filter((user) => user.role === "seller")
-  );
-
   return (
     <div>
       <div className="mobile-summary-header mobiles-summary-header">
@@ -450,7 +445,7 @@ const AboutUs = () => {
                       index === currentIndex ? "selected_about_user-card" : ""
                     }`}
                   >
-                    <div className="user-card__info_img">
+                    <div className="about_user-card__info_img">
                       <img
                         src={user.profileImg || demo5}
                         alt={`${user.name}'s profile`}
@@ -462,8 +457,8 @@ const AboutUs = () => {
                       </div>
                       <div className="user-card_details_container"></div>
                       <div className="user-card_personal_details_container about_user-card_personal_details_container">
-                        <div className="user-card__contact">
-                          <Mail />
+                        <div className="about_user-card__contact">
+                          <Mail size={20} />
                           <p
                             className="copy-item"
                             onClick={() =>
@@ -476,7 +471,7 @@ const AboutUs = () => {
                             {user.email}
                           </p>
                         </div>
-                        <div className="user-card__contact">
+                        <div className="about_user-card__contact">
                           <Phone />
                           <p
                             className="copy-item"

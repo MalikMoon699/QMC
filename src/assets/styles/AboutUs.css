@@ -76,12 +76,16 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 100%;
 }
 
 .copy-item {
   cursor: pointer;
   font-size: 20px;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .copy-item:hover {
@@ -96,6 +100,7 @@
   padding: 40px;
   gap: 20px;
   overflow: hidden;
+  flex-wrap: wrap;
   width: 100%;
   border: 1px solid red;
   border-radius: 8px;
@@ -145,14 +150,14 @@
 .sellers-carousel {
   display: flex;
   gap: 40px;
-  overflow-x: auto;
+  overflow-x: hidden;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   scroll-snap-align: center;
   padding: 20px 400px;
   width: 100%;
   justify-content: center;
-  -ms-overflow-style: none; 
+  -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
@@ -162,11 +167,16 @@
 
 .about_user-card {
   flex: 0 0 400px;
+  height: 400px;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   scroll-snap-align: center;
+}
+
+.about_user-card:first-child {
+  margin-left: 900px;
 }
 
 .about_user-card:hover {
@@ -190,27 +200,38 @@
   padding: 10px;
 }
 
-.user-card__info_img img {
+.about_user-card__info_img {
+  position: relative;
+  overflow: hidden;
+}
+
+.about_user-card__info_img img {
   width: 100%;
   height: 200px;
   object-fit: cover;
   border-radius: 8px 8px 0 0;
+  object-position: top;
+  display: block;
+  border-bottom: 0.5px solid #e9496c;
 }
 
 .user-card__info_content {
   padding: 15px;
 }
 
-.user-card__contact {
+.about_user-card__contact {
   display: flex;
   align-items: center;
   gap: 10px;
   margin: 5px 0;
 }
 
-.user-card__contact p {
+.about_user-card__contact p {
   margin: 0;
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .no-seller-message {
@@ -222,11 +243,11 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.about_prev-btn{
+.about_prev-btn {
   left: 5%;
 }
 
-.about_next-btn{
+.about_next-btn {
   right: 5%;
 }
 
@@ -272,49 +293,83 @@
   z-index: 1;
 }
 
-/* .sellers-container{
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  position: relative;
-  margin-top: 40px;
-  padding: 40px;
-  gap: 20px;
-  overflow: hidden;
-  width: 100%;
-  border: 1px solid red;
-  border-radius: 8px;
-  box-shadow: 0px 0px 15px #ff000033;
+@media only screen and (max-width: 1185px) {
+  .owner-details-innercontainer {
+    flex-direction: column;
+  }
+
+  .owner-details-first-child {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid red;
+  }
+  .owner-details-second-child {
+    width: 100%;
+    padding: 10px 40px;
+    overflow: hidden;
+  }
+
+  .owner-details-first-child img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    padding: 0px 10px;
+  }
 }
 
-.sellers-container::after{
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #000000;
-  z-index: 1;
-  opacity: 0.5;
+@media only screen and (max-width: 815px) {
+  .about_user-card {
+    flex: 0 0 370px;
+  }
 }
 
-.about_user-card{
-  width: 400px;
+@media only screen and (max-width: 768px) {
+  .about_user-card {
+    flex: 0 0 400px;
+  }
 }
 
-.selected_about_user-card{
-  transform: scale(1.08);
-  z-index: 1000;
+@media only screen and (max-width: 485px) {
+  .about_user-card {
+    flex: 0 0 340px;
+  }
 }
 
-.about_user-card__info{
-  margin-bottom: 5px;
+@media only screen and (max-width: 425px) {
+  .about_user-card {
+    flex: 0 0 320px;
+  }
+
+  .owner-details-second-child {
+    padding: 10px 20px;
+  }
+
+  .copy-item {
+    font-size: 15px;
+    font-weight: 500;
+}
 }
 
-.about_user-card_personal_details_container{
-  height: auto;
-} */
+@media only screen and (max-width: 400px) {
+  .about_user-card {
+    flex: 0 0 300px;
+    height: 380px;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .about_user-card {
+    flex: 0 0 280px;
+    height: 350px;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .about_user-card {
+    flex: 0 0 250px;
+    height: 330px;
+  }
+}
 
 @media only screen and (max-width: 485px) {
   .report-user-list {
