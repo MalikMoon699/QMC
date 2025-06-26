@@ -343,6 +343,9 @@ const AboutUs = () => {
       </div>
       <div className="aboutUs-main-container">
         <div className="owner-details-container">
+          <div className="about_header">
+            <h3> Owner Details</h3>
+          </div>
           {adminData.length > 0 ? (
             adminData.map((admin, index) => (
               <div key={index} className="owner-details-innercontainer">
@@ -409,100 +412,114 @@ const AboutUs = () => {
           )}
         </div>
         <div className="users-counts-container">
-          <div className="users-counts">
-            <h3>{allUserDetail?.length}</h3>
-            <span>Total Users</span>
+          <div className="about_header">
+            <h3> Users Counts</h3>
           </div>
-          <div className="users-counts">
-            <h3>
-              {allUserDetail?.filter((user) => user.role === "seller").length}
-            </h3>
-            <span>Sellers</span>
-          </div>
-          <div className="users-counts">
-            <h3>
-              {allUserDetail?.filter((user) => user.role === "user").length}
-            </h3>
-            <span>Customers</span>
+          <div className="users-counts-innercontainer">
+            <div className="users-counts">
+              <h3>{allUserDetail?.length}</h3>
+              <span>Total Users</span>
+            </div>
+            <div className="users-counts">
+              <h3>
+                {allUserDetail?.filter((user) => user.role === "seller").length}
+              </h3>
+              <span>Sellers</span>
+            </div>
+            <div className="users-counts">
+              <h3>
+                {allUserDetail?.filter((user) => user.role === "user").length}
+              </h3>
+              <span>Customers</span>
+            </div>
           </div>
         </div>
-        <div className="sellers-container">
-          <button
-            className="about_prev-btn"
-            onClick={() => handleNavigation("prev")}
-            disabled={currentIndex === 0}
-          >
-            {"<"}
-          </button>
-          <div className="sellers-carousel" ref={carouselRef}>
-            {allUserDetail?.some((user) => user.role === "seller") ? (
-              allUserDetail
-                .filter((user) => user.role === "seller")
-                .map((user, index) => (
-                  <div
-                    key={user.id}
-                    className={`user-card about_user-card ${
-                      index === currentIndex ? "selected_about_user-card" : ""
-                    }`}
-                  >
-                    <div className="about_user-card__info_img">
-                      <img
-                        src={user.profileImg || demo5}
-                        alt={`${user.name}'s profile`}
-                      />
-                    </div>
-                    <div className="user-card__info_content">
-                      <div className="user-card__text user-card__info about_user-card__info">
-                        <h3>{user.name}</h3>
-                      </div>
-                      <div className="user-card_details_container"></div>
-                      <div className="user-card_personal_details_container about_user-card_personal_details_container">
-                        <div className="about_user-card__contact">
-                          <Mail size={20} />
-                          <p
-                            className="copy-item"
-                            onClick={() =>
-                              copyClicked(
-                                user.email,
-                                "Email copied successfully"
-                              )
-                            }
-                          >
-                            {user.email}
-                          </p>
-                        </div>
-                        <div className="about_user-card__contact">
-                          <Phone />
-                          <p
-                            className="copy-item"
-                            onClick={() =>
-                              copyClicked(
-                                user.phoneNumber,
-                                "Phone Number copied successfully"
-                              )
-                            }
-                          >
-                            {user.phoneNumber}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))
-            ) : (
-              <div className="no-seller-message">No seller data available</div>
-            )}
+        <div className="sellers-outerContainer">
+          <div className="about_header">
+            <h3> Sellers Details</h3>
           </div>
-          <button
-            className="about_next-btn"
-            onClick={() => handleNavigation("next")}
-            disabled={
-              currentIndex >=
-              allUserDetail.filter((user) => user.role === "seller").length - 1
-            }
-          >
-            {">"}
-          </button>
+
+          <div className="sellers-container">
+            <button
+              className="about_prev-btn"
+              onClick={() => handleNavigation("prev")}
+              disabled={currentIndex === 0}
+            >
+              {"<"}
+            </button>
+            <div className="sellers-carousel" ref={carouselRef}>
+              {allUserDetail?.some((user) => user.role === "seller") ? (
+                allUserDetail
+                  .filter((user) => user.role === "seller")
+                  .map((user, index) => (
+                    <div
+                      key={user.id}
+                      className={`user-card about_user-card ${
+                        index === currentIndex ? "selected_about_user-card" : ""
+                      }`}
+                    >
+                      <div className="about_user-card__info_img">
+                        <img
+                          src={user.profileImg || demo5}
+                          alt={`${user.name}'s profile`}
+                        />
+                      </div>
+                      <div className="user-card__info_content">
+                        <div className="user-card__text user-card__info about_user-card__info">
+                          <h3>{user.name}</h3>
+                        </div>
+                        <div className="user-card_details_container"></div>
+                        <div className="user-card_personal_details_container about_user-card_personal_details_container">
+                          <div className="about_user-card__contact">
+                            <Mail size={20} />
+                            <p
+                              className="copy-item"
+                              onClick={() =>
+                                copyClicked(
+                                  user.email,
+                                  "Email copied successfully"
+                                )
+                              }
+                            >
+                              {user.email}
+                            </p>
+                          </div>
+                          <div className="about_user-card__contact">
+                            <Phone />
+                            <p
+                              className="copy-item"
+                              onClick={() =>
+                                copyClicked(
+                                  user.phoneNumber,
+                                  "Phone Number copied successfully"
+                                )
+                              }
+                            >
+                              {user.phoneNumber}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+              ) : (
+                <div className="no-seller-message">
+                  No seller data available
+                </div>
+              )}
+            </div>
+            <button
+              className="about_next-btn"
+              onClick={() => handleNavigation("next")}
+              disabled={
+                currentIndex >=
+                allUserDetail.filter((user) => user.role === "seller").length -
+                  1
+              }
+            >
+              {">"}
+            </button>
+          </div>
         </div>
       </div>
 
