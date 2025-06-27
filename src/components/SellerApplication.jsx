@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { doc, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { generateCustomId, fetchCurrentUser } from "../utils/Helpers";
+import Loader from "./Loader";
 
 const SellerApplication = ({ onClose }) => {
   const { currentUser } = useAuth();
@@ -14,6 +15,7 @@ const SellerApplication = ({ onClose }) => {
   const [idCardNumber, setIdCardNumber] = useState("");
   const [isFormSubmit, setIsFormSubmit] = useState(false);
   const [lessAge, setLessAge] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const validateForm = () => {
     const newErrors = {};
@@ -55,10 +57,11 @@ const SellerApplication = ({ onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-
+    setLoading(true);
     const age = calculateAge(userAge);
     if (age < 18) {
       setLessAge(true);
+      setLoading(false);
       return;
     }
 
@@ -81,10 +84,10 @@ const SellerApplication = ({ onClose }) => {
     } catch (error) {
       console.error("Error submitting application:", error);
       toast.error("Failed to submit application. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
-
-  console.log("currentUserData:", currentUserData);
 
   return (
     <>
@@ -139,13 +142,27 @@ const SellerApplication = ({ onClose }) => {
             {errors.idCardNumber && (
               <p className="login-form-error">{errors.idCardNumber}</p>
             )}
-            <button
-              style={{ width: "100%", justifyContent: "center" }}
-              className="continue-btn"
-              type="submit"
-            >
-              Submit Request
-            </button>
+
+            {loading ? (
+              <div
+                style={{
+                  backgroundColor: "#b7b6b5",
+                  maxHeight: "50px",
+                  cursor: "not-allowed",
+                }}
+                className="counterLoader continue-btn"
+              >
+                <Loader loading={true} size={20} />
+              </div>
+            ) : (
+              <button
+                style={{ width: "100%", justifyContent: "center" }}
+                className="continue-btn"
+                type="submit"
+              >
+                Submit Request
+              </button>
+            )}
           </form>
         </div>
       </div>

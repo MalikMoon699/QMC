@@ -3,6 +3,7 @@ import { db } from "../utils/FirebaseConfig";
 import { useAuth } from "../context/AuthContext";
 import "../assets/styles/Notifications.css";
 import { useOutletContext } from "react-router-dom";
+import { demo5 } from "../utils/Demoimages";
 import moment from "moment";
 import {
   collection,
@@ -15,11 +16,14 @@ import {
 import Loader from "../components/Loader";
 import { Bell, Flag, MessageCircle, User, UserCog } from "lucide-react";
 import { toast } from "react-toastify";
+import NotificationsModal from "../components/NotificationsModal";
 
 const Notifications = () => {
   const { currentUser, role } = useAuth();
   const { searchTxt } = useOutletContext();
   const [notifications, setNotifications] = useState([]);
+  const [selectedNotifications, setSelectedNotifications] = useState([]);
+  const [notificationsModal, setNotificationsModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("total");
 
@@ -137,8 +141,18 @@ const Notifications = () => {
     (n) => n.notificationType === "report"
   ).length;
 
+  const handleDetailModalOpen = (notification) => {
+    setNotificationsModal(true);
+    setSelectedNotifications(notification);
+  };
+  
+  const handleDetailModalClose = () => {
+    setNotificationsModal(false);
+    setSelectedNotifications([]);
+  };
+
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ paddingTop: "20px" }}>
       <div className="tabsWrapper">
         <div
           onClick={() => {
@@ -238,178 +252,111 @@ const Notifications = () => {
       ) : notifications.length === 0 ? (
         <p>No notifications found.</p>
       ) : (
-        <ul style={{ listStyle: "none", padding: 0 }}>
+        <div className="notification-container">
           {filteredNotifications.map((notification) => (
             <React.Fragment key={notification.id}>
-              {notification.notificationType === "application" && (
-                <li
+              {notification.notificationType === "application" ? (
+                <div
+                  onClick={() => handleDetailModalOpen(notification)}
+                  className="notification"
                   key={notification.id}
-                  style={{
-                    border: "1px solid #ccc",
-                    padding: "10px",
-                    marginBottom: "10px",
-                    borderRadius: "5px",
-                  }}
                 >
-                  <p>
-                    <strong>Name:</strong> {notification.userName}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {notification.userEmail}
-                  </p>
-                  <p>
-                    <strong>Age:</strong> {notification.userAge}
-                  </p>
-                  <p>
-                    <strong>Notification Type:</strong>{" "}
-                    {notification.notificationType}
-                  </p>
-                  <p>
-                    <strong>ID Card Number:</strong> {notification.idCardNumber}
-                  </p>
-                  <p>
-                    <strong>Status:</strong> {notification.status}
-                  </p>
-                  <p>
-                    <strong>userId:</strong> {notification.userId}
-                  </p>
-                  <p>
-                    <strong>Submitted:</strong>{" "}
-                    {notification?.createdAt
-                      ? moment(
-                          notification.createdAt,
-                          "YYYY-MM-DD HH:mm:ss.SSS Z"
-                        )
-                          .fromNow()
-                          .charAt(0)
-                          .toUpperCase() +
-                        moment(
-                          notification.createdAt,
-                          "YYYY-MM-DD HH:mm:ss.SSS Z"
-                        )
-                          .fromNow()
-                          .slice(1)
-                      : "DD-MM-YYYY"}
-                  </p>
-                  {role === "admin" && notification.status !== "Approved" && (
-                    <button onClick={() => handleApprove(notification)}>
-                      Approve
-                    </button>
-                  )}
-                </li>
-              )}
-              {notification.notificationType === "feedback" && (
-                <li
-                  key={notification.id}
-                  style={{
-                    border: "1px solid #ccc",
-                    padding: "10px",
-                    marginBottom: "10px",
-                    borderRadius: "5px",
-                  }}
-                >
-                  <p>
-                    <strong>Name:</strong> {notification.userName}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {notification.userEmail}
-                  </p>
-                  <div style={{ background: "red" }}>
-                    {notification.reportAbout.map((report, index) => (
-                      <p key={index}>
-                        <strong>Report {index + 1}:</strong>
-                        <br />
-                        Name: {report.name} <br />
-                        Email: {report.email} <br />
-                        UID: {report.uid}
-                      </p>
-                    ))}
+                  <div className="notification-content">
+                    <img src={notification.userImg || demo5} />{" "}
+                    <div className="notification-details-wrapper">
+                      <h3>{notification.userName}</h3>
+                      <h3>{notification.userEmail}</h3>
+                      <p>{notification.idCardNumber}</p>
+                    </div>
                   </div>
+                  <div className="notification-date-wrapper">
+                    <h4>
+                      {notification?.createdAt
+                        ? moment(
+                            notification.createdAt,
+                            "YYYY-MM-DD HH:mm:ss.SSS Z"
+                          )
+                            .fromNow()
+                            .charAt(0)
+                            .toUpperCase() +
+                          moment(
+                            notification.createdAt,
+                            "YYYY-MM-DD HH:mm:ss.SSS Z"
+                          )
+                            .fromNow()
+                            .slice(1)
+                        : "DD-MM-YYYY"}
+                    </h4>
+                    {role === "admin" && notification.status !== "Approved" && (
+                      <button
+                        className="application-approve-btn"
+                        onClick={() => handleApprove(notification)}
+                      >
+                        Approve
+                      </button>
+                    )}
+                    {role !== "admin" && notification.status === "Approved" && (
+                      <button className="application-approve-btn">
+                        Approved
+                      </button>
+                    )}
+                    {role !== "admin" && notification.status !== "Approved" && (
+                      <button className="application-approved-btn application-approve-btn">
+                        {notification.status}
+                      </button>
+                    )}
 
-                  <p>
-                    <strong>Notification Type:</strong>{" "}
-                    {notification.notificationType}
-                  </p>
-                  <p>
-                    <strong>Feed Back:</strong> {notification.description}
-                  </p>
-                  <p>
-                    <strong>Submitted:</strong>{" "}
-                    {notification?.createdAt
-                      ? moment(
-                          notification.createdAt,
-                          "YYYY-MM-DD HH:mm:ss.SSS Z"
-                        )
-                          .fromNow()
-                          .charAt(0)
-                          .toUpperCase() +
-                        moment(
-                          notification.createdAt,
-                          "YYYY-MM-DD HH:mm:ss.SSS Z"
-                        )
-                          .fromNow()
-                          .slice(1)
-                      : "DD-MM-YYYY"}
-                  </p>
-                </li>
-              )}
-              {notification.notificationType === "report" && (
-                <li
-                  key={notification.id}
-                  style={{
-                    border: "1px solid #ccc",
-                    padding: "10px",
-                    marginBottom: "10px",
-                    borderRadius: "5px",
-                  }}
-                >
-                  <p>
-                    <strong>Name:</strong> {notification.userName}
-                  </p>
-                  <p>
-                    <strong>Email:</strong> {notification.userEmail}
-                  </p>
-                  <div style={{ background: "red" }}>
-                    {notification.reportAbout.map((report, index) => (
-                      <p key={index}>
-                        <strong>Report {index + 1}:</strong>
-                        <br />
-                        Name: {report.name} <br />
-                        Email: {report.email} <br />
-                        UID: {report.uid}
-                      </p>
-                    ))}
+                    {role === "admin" && notification.status === "Approved" && (
+                      <button className="application-approved-btn application-approve-btn">
+                        {notification.status}
+                      </button>
+                    )}
                   </div>
-                  <p>
-                    <strong>Notification Type:</strong>{" "}
-                    {notification.notificationType}
-                  </p>
-                  <p>
-                    <strong>Feed Back:</strong> {notification.description}
-                  </p>
-                  <p>
-                    <strong>Submitted:</strong>{" "}
-                    {notification?.createdAt
-                      ? moment(
-                          notification.createdAt,
-                          "YYYY-MM-DD HH:mm:ss.SSS Z"
-                        )
-                          .fromNow()
-                          .charAt(0)
-                          .toUpperCase() +
-                        moment(
-                          notification.createdAt,
-                          "YYYY-MM-DD HH:mm:ss.SSS Z"
-                        )
-                          .fromNow()
-                          .slice(1)
-                      : "DD-MM-YYYY"}
-                  </p>
-                </li>
+                </div>
+              ) : (
+                <div
+                  onClick={() => handleDetailModalOpen(notification)}
+                  key={notification.id}
+                  className="notification"
+                >
+                  <div className="notification-content">
+                    <img src={notification.userImg || demo5} />
+                    <div className="notification-details-wrapper">
+                      <h3>{notification.userName}</h3>
+                      <h3>{notification.userEmail}</h3>
+                      <p>{notification.description}</p>
+                    </div>
+                  </div>
+                  <div className="notification-date-wrapper">
+                    <h4>
+                      {notification?.createdAt
+                        ? moment(
+                            notification.createdAt,
+                            "YYYY-MM-DD HH:mm:ss.SSS Z"
+                          )
+                            .fromNow()
+                            .charAt(0)
+                            .toUpperCase() +
+                          moment(
+                            notification.createdAt,
+                            "YYYY-MM-DD HH:mm:ss.SSS Z"
+                          )
+                            .fromNow()
+                            .slice(1)
+                        : "DD-MM-YYYY"}
+                    </h4>
+                  </div>
+                </div>
               )}
             </React.Fragment>
           ))}
-        </ul>
+        </div>
+      )}
+      {notificationsModal && (
+        <NotificationsModal
+          onClose={handleDetailModalClose}
+          selectedNotifications={selectedNotifications}
+        />
       )}
     </div>
   );

@@ -189,6 +189,7 @@ const AboutUs = () => {
 
       const reportData = {
         userId: currentUserDetails.uid,
+        userImg: currentUserDetails.profileImg,
         userEmail: currentUserDetails.email,
         userName: currentUserDetails.name,
         notificationType: "report",
@@ -216,6 +217,7 @@ const AboutUs = () => {
 
       const reportData = {
         userId: currentUserDetails.uid,
+        userImg: currentUserDetails.profileImg,
         userEmail: currentUserDetails.email,
         userName: currentUserDetails.name,
         notificationType: "feedback",
