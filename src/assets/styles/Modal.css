@@ -126,6 +126,7 @@
   border-top: 1px solid #44444438;
   padding-top: 1rem;
   overflow: auto;
+  scrollbar-width: none;
   display: flex;
   flex-direction: column;
   font-weight: 500;
@@ -203,6 +204,7 @@
   width: 300px;
   max-height: 90vh;
   overflow-y: auto;
+  scrollbar-width: none;
 }
 
 .modal-card {
@@ -211,6 +213,7 @@
   border-radius: 10px;
   overflow-x: hidden;
   overflow-y: auto;
+  scrollbar-width: none;
   min-width: 300px;
   max-height: 90vh;
 }
@@ -226,12 +229,16 @@
 }
 
 @media only screen and (max-width: 425px) {
-
   .modal-content {
     min-height: 100vh !important;
     min-width: 100vw !important;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+}
+@media only screen and (max-width: 451px) {
+  .modal-card {
+    min-width: 95% !important;
   }
 }

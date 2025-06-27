@@ -35,14 +35,12 @@
   height: -webkit-fill-available;
 }
 
-/* .counterIcon {
-  padding: 10px;
-  border-radius: 50px;
+.counterLoader {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to bottom, #99d7b0, #84d7e9);
-} */
+  max-height: 150px;
+}
 
 .countWrapper {
   display: flex;

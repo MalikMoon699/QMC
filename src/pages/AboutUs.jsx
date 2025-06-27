@@ -603,6 +603,7 @@ const AboutUs = () => {
                                         ...prev,
                                         {
                                           uid: uid,
+                                          userImg: user.profileImg || "",
                                           name: user.name || "",
                                           email: user.email || "",
                                         },
@@ -729,6 +730,7 @@ const AboutUs = () => {
                                         ...prev,
                                         {
                                           uid: uid,
+                                          userImg: user.profileImg || "",
                                           name: user.name || "",
                                           email: user.email || "",
                                         },

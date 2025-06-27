@@ -149,4 +149,5 @@
 .accessories-card{
   max-height: 410px;
   overflow: auto;
+  scrollbar-width: none;
 }

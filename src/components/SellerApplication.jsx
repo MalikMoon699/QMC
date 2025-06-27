@@ -67,6 +67,7 @@ const SellerApplication = ({ onClose }) => {
       const notificationRef = doc(db, "NOTIFICATIONS", customId);
       await setDoc(notificationRef, {
         userId: currentUser.uid,
+        userImg: currentUserData.profileImg,
         userName: currentUserData.name,
         userEmail: currentUserData.email,
         notificationType: "application",
@@ -82,6 +83,8 @@ const SellerApplication = ({ onClose }) => {
       toast.error("Failed to submit application. Please try again.");
     }
   };
+
+  console.log("currentUserData:", currentUserData);
 
   return (
     <>

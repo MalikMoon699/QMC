@@ -148,10 +148,16 @@ const Notifications = () => {
         >
           <div className="counterContentWrapper">
             <h3>Total</h3>
-            <div className="countWrapper">
-              <h3>{notifications.length}</h3>
-              <span>Notifications</span>
-            </div>
+            {loading ? (
+              <div className="counterLoader">
+                <Loader loading={true} size={30} />
+              </div>
+            ) : (
+              <div className="countWrapper">
+                <h3>{notifications.length}</h3>
+                <span>Notifications</span>
+              </div>
+            )}
           </div>
           <div className="counterIcon">
             <Bell color="#ea5173" />
@@ -165,10 +171,16 @@ const Notifications = () => {
         >
           <div className="counterContentWrapper">
             <h3>Application</h3>
-            <div className="countWrapper">
-              <h3>{applicationCount}</h3>
-              <span>Notifications</span>
-            </div>
+            {loading ? (
+              <div className="counterLoader">
+                <Loader loading={true} size={30} />
+              </div>
+            ) : (
+              <div className="countWrapper">
+                <h3>{applicationCount}</h3>
+                <span>Notifications</span>
+              </div>
+            )}
           </div>
           <div className="counterIcon">
             <UserCog color="#ea5173" />
@@ -182,10 +194,16 @@ const Notifications = () => {
         >
           <div className="counterContentWrapper">
             <h3>Feedback</h3>
-            <div className="countWrapper">
-              <h3>{feedbackCount}</h3>
-              <span>Notifications</span>
-            </div>
+            {loading ? (
+              <div className="counterLoader">
+                <Loader loading={true} size={30} />
+              </div>
+            ) : (
+              <div className="countWrapper">
+                <h3>{feedbackCount}</h3>
+                <span>Notifications</span>
+              </div>
+            )}
           </div>
           <div className="counterIcon">
             <MessageCircle color="#ea5173" />
@@ -199,10 +217,16 @@ const Notifications = () => {
         >
           <div className="counterContentWrapper">
             <h3>Report</h3>
-            <div className="countWrapper">
-              <h3>{reportCount}</h3>
-              <span>Notifications</span>
-            </div>
+            {loading ? (
+              <div className="counterLoader">
+                <Loader loading={true} size={30} />
+              </div>
+            ) : (
+              <div className="countWrapper">
+                <h3>{reportCount}</h3>
+                <span>Notifications</span>
+              </div>
+            )}
           </div>
           <div className="counterIcon">
             <Flag color="#ea5173" />
@@ -311,9 +335,21 @@ const Notifications = () => {
                   </p>
                   <p>
                     <strong>Submitted:</strong>{" "}
-                    {notification.createdAt
-                      ? new Date(notification.createdAt).toLocaleString()
-                      : "N/A"}
+                    {notification?.createdAt
+                      ? moment(
+                          notification.createdAt,
+                          "YYYY-MM-DD HH:mm:ss.SSS Z"
+                        )
+                          .fromNow()
+                          .charAt(0)
+                          .toUpperCase() +
+                        moment(
+                          notification.createdAt,
+                          "YYYY-MM-DD HH:mm:ss.SSS Z"
+                        )
+                          .fromNow()
+                          .slice(1)
+                      : "DD-MM-YYYY"}
                   </p>
                 </li>
               )}
@@ -353,9 +389,21 @@ const Notifications = () => {
                   </p>
                   <p>
                     <strong>Submitted:</strong>{" "}
-                    {notification.createdAt
-                      ? new Date(notification.createdAt).toLocaleString()
-                      : "N/A"}
+                    {notification?.createdAt
+                      ? moment(
+                          notification.createdAt,
+                          "YYYY-MM-DD HH:mm:ss.SSS Z"
+                        )
+                          .fromNow()
+                          .charAt(0)
+                          .toUpperCase() +
+                        moment(
+                          notification.createdAt,
+                          "YYYY-MM-DD HH:mm:ss.SSS Z"
+                        )
+                          .fromNow()
+                          .slice(1)
+                      : "DD-MM-YYYY"}
                   </p>
                 </li>
               )}

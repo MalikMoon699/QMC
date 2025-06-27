@@ -33,6 +33,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding: 10px;
+  scrollbar-width: none;
 }
 
 .aboutUs-main-container {

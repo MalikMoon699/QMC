@@ -385,7 +385,6 @@ const Events = () => {
             </div>
             <div className="mobile-card mobile-modal-card">
               <Slider
-                style={{ maxHeight: "450px" }}
                 slides={
                   selectedEventCard.images?.length
                     ? selectedEventCard.images
