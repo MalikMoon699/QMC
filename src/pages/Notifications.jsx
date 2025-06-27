@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { db } from "../utils/FirebaseConfig";
 import { useAuth } from "../context/AuthContext";
+import "../assets/styles/Notifications.css";
 import { useOutletContext } from "react-router-dom";
 import moment from "moment";
 import {
@@ -10,17 +11,17 @@ import {
   getDocs,
   doc,
   updateDoc,
-  setDoc,
 } from "firebase/firestore";
 import Loader from "../components/Loader";
+import { Bell, Flag, MessageCircle, User, UserCog } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Notifications = () => {
   const { currentUser, role } = useAuth();
   const { searchTxt } = useOutletContext();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [statusFilter, setStatusFilter] = useState("All");
-  const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState("total");
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -48,7 +49,6 @@ const Notifications = () => {
         setNotifications(notificationsData);
       } catch (error) {
         console.error("Error fetching notifications:", error);
-        setError("Failed to load notifications.");
       } finally {
         setLoading(false);
       }
@@ -87,21 +87,20 @@ const Notifications = () => {
         )
       );
 
-      alert("Notification approved and user role updated to seller!");
+      toast.success("Application approved successfully!!");
     } catch (error) {
       console.error("Error approving notification:", error);
-      setError("Failed to approve notification.");
     }
   };
 
   const filteredNotifications = useMemo(() => {
     let filtered = notifications;
 
-    if (statusFilter !== "All") {
+    if (activeTab !== "total") {
       filtered = notifications.filter(
         (record) =>
-          record.notificationType &&
-          record.notificationType.toLowerCase() === statusFilter.toLowerCase()
+          (record?.notificationType || "").toLowerCase() ===
+          activeTab.toLowerCase()
       );
     }
 
@@ -124,26 +123,92 @@ const Notifications = () => {
         ? new Date(b.createdAt) - new Date(a.createdAt)
         : 0
     );
-  }, [notifications, statusFilter, searchTxt]);
+  }, [notifications, activeTab, searchTxt]);
+
+  const applicationCount = notifications.filter(
+    (n) => n.notificationType === "application"
+  ).length;
+
+  const feedbackCount = notifications.filter(
+    (n) => n.notificationType === "feedback"
+  ).length;
+
+  const reportCount = notifications.filter(
+    (n) => n.notificationType === "report"
+  ).length;
 
   return (
     <div style={{ padding: "20px" }}>
-      <div className="mobile-summary-header mobiles-summary-header">
-        <div className="mobiles-status-title">Notifications</div>
-        <div className="action-btn-container">
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="custom-select"
-          >
-            <option value="All">All</option>
-            <option value="application">Applications</option>
-            <option value="feedBack">Feed Back</option>
-            <option value="report">Reports</option>
-          </select>
+      <div className="tabsWrapper">
+        <div
+          onClick={() => {
+            setActiveTab("total");
+          }}
+          className={`${activeTab === "total" ? "active-tab" : ""} tab`}
+        >
+          <div className="counterContentWrapper">
+            <h3>Total</h3>
+            <div className="countWrapper">
+              <h3>{notifications.length}</h3>
+              <span>Notifications</span>
+            </div>
+          </div>
+          <div className="counterIcon">
+            <Bell color="#ea5173" />
+          </div>
+        </div>
+        <div
+          onClick={() => {
+            setActiveTab("application");
+          }}
+          className={`${activeTab === "application" ? "active-tab" : ""} tab`}
+        >
+          <div className="counterContentWrapper">
+            <h3>Application</h3>
+            <div className="countWrapper">
+              <h3>{applicationCount}</h3>
+              <span>Notifications</span>
+            </div>
+          </div>
+          <div className="counterIcon">
+            <UserCog color="#ea5173" />
+          </div>
+        </div>
+        <div
+          onClick={() => {
+            setActiveTab("feedback");
+          }}
+          className={`${activeTab === "feedback" ? "active-tab" : ""} tab`}
+        >
+          <div className="counterContentWrapper">
+            <h3>Feedback</h3>
+            <div className="countWrapper">
+              <h3>{feedbackCount}</h3>
+              <span>Notifications</span>
+            </div>
+          </div>
+          <div className="counterIcon">
+            <MessageCircle color="#ea5173" />
+          </div>
+        </div>
+        <div
+          onClick={() => {
+            setActiveTab("report");
+          }}
+          className={`${activeTab === "report" ? "active-tab" : ""} tab`}
+        >
+          <div className="counterContentWrapper">
+            <h3>Report</h3>
+            <div className="countWrapper">
+              <h3>{reportCount}</h3>
+              <span>Notifications</span>
+            </div>
+          </div>
+          <div className="counterIcon">
+            <Flag color="#ea5173" />
+          </div>
         </div>
       </div>
-      {error && <p style={{ color: "red" }}>{error}</p>}
       {loading ? (
         <Loader loading={true} />
       ) : notifications.length === 0 ? (
