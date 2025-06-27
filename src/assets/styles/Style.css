@@ -14,8 +14,6 @@ body {
   width: 100vw;
 }
 
-
-
 /* ---------------------------------- */
 .app-container {
   display: flex;
@@ -212,6 +210,95 @@ body {
   background-color: transparent;
   border: none;
   margin-bottom: -5px;
+}
+
+/* ---------- Filter Section -------------- */
+
+.filter-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-btn-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(239, 63, 44);
+}
+
+.range-filter-input {
+  width: 50%;
+  padding: 7px;
+  border-radius: 5px;
+  border: 1px solid #e53935;
+  outline: none;
+  font-size: 14px;
+  color: #e53935;
+  background-color: white;
+}
+
+.range-filter-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: absolute;
+  bottom: -62px;
+  background: white;
+  z-index: 1000;
+  right: -2px;
+  padding: 10px;
+  border: 1px solid #e53935;
+  width: 400px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px black;
+}
+
+.range-filter-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.range-filter-btn-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-apply-btn {
+  background-color: rgb(239, 63, 44);
+  border: none;
+  padding: 7px 15px;
+  border-radius: 5px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 560px) {
+  .filter-btn-container {
+    gap: 3px !important;
+    padding: 9px 8px !important;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .range-filter-container {
+    left: -136%;
+    bottom: -104px;
+    width: 300px;
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 335px) {
+  .filter-btn-container {
+    gap: 3px !important;
+    padding: 9px 14px !important;
+  }
 }
 
 @media only screen and (max-width: 768px) {

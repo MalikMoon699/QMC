@@ -4,7 +4,7 @@ import "../assets/styles/Mobile.css";
 import { useAuth } from "../context/AuthContext";
 import { demo1, demo2, demo3, demo4 } from "../utils/Demoimages";
 import Slider from "../components/Slider";
-import { MessageCircleWarning, Plus, Store } from "lucide-react";
+import { Funnel,MessageCircleWarning, Plus, Store } from "lucide-react";
 import SellAccessories from "../components/SellAccessories";
 import { db } from "../utils/FirebaseConfig";
 import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
@@ -15,7 +15,11 @@ import SellerApplication from "../components/SellerApplication";
 const Accessories = () => {
   const { currentUser, role } = useAuth();
   const { searchTxt } = useOutletContext();
-  const [statusFilter, setStatusFilter] = useState("All");
+    const [isFilter,setIsFilter]=useState(false)
+  const [startPriceInput, setStartPriceInput] = useState("");
+  const [endPriceInput, setEndPriceInput] = useState("");
+  const [activeStartPrice, setActiveStartPrice] = useState("");
+  const [activeEndPrice, setActiveEndPrice] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isSellerApplicationOpen, setIsSellerApplicationOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -49,20 +53,22 @@ const Accessories = () => {
 
   const filteredMobilesData = useMemo(() => {
     let filtered = devices;
-    if (statusFilter !== "All") {
-      filtered = devices.filter(
-        (record) =>
-          record.deviceType?.toLowerCase() === statusFilter.toLowerCase()
-      );
+    if (activeStartPrice && activeEndPrice) {
+      filtered = filtered.filter((device) => {
+        const price = parseFloat(device.price);
+        return (
+          price >= parseFloat(activeStartPrice) &&
+          price <= parseFloat(activeEndPrice)
+        );
+      });
     }
+
     if (searchTxt.trim()) {
       filtered = filtered.filter((device) =>
         [
           device.brandName,
           device.deviceType,
           device.deviceModel,
-          device.memory,
-          device.ram,
           device.price,
         ].some((field) =>
           field && typeof field === "string"
@@ -76,7 +82,7 @@ const Accessories = () => {
         ? new Date(b.createdAt) - new Date(a.createdAt)
         : 0
     );
-  }, [devices, statusFilter, searchTxt]);
+  }, [devices, searchTxt, activeStartPrice, activeEndPrice]);
 
   const handleDeleteProduct = async () => {
     if (!selectedCard?.id) return;
@@ -99,6 +105,20 @@ const Accessories = () => {
     setSellModalOpen(true);
   };
 
+  const handleClearFilter = () => {
+    setStartPriceInput("");
+    setEndPriceInput("");
+    setActiveStartPrice("");
+    setActiveEndPrice("");
+    setIsFilter(false);
+  };
+
+
+  const handleApplyFilter = () => {
+    setActiveStartPrice(startPriceInput);
+    setActiveEndPrice(endPriceInput);
+  };
+
   return (
     <div>
       <div className="mobile-summary-header mobiles-summary-header">
@@ -108,7 +128,7 @@ const Accessories = () => {
             <button
               onClick={() => setSellModalOpen(true)}
               style={{ backgroundColor: "#ef3f2c" }}
-              className="action-btn"
+              className="action-btn filter-btn-container"
             >
               <Plus size={20} /> Sell Your Product
             </button>
@@ -116,24 +136,62 @@ const Accessories = () => {
           {role === "user" && (
             <button
               onClick={() => setIsSellerApplicationOpen(true)}
-              className="action-btn"
+              className="action-btn filter-btn-container"
               style={{ backgroundColor: "#ef3f2c" }}
             >
               <Store size={15} />
               Apply for Seller
             </button>
           )}
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="custom-select"
-          >
-            <option value="All">All</option>
-            <option value="android">Android</option>
-            <option value="iphone">IPhone</option>
-            <option value="ipad">IPad</option>
-            <option value="tablet">Tablet</option>
-          </select>
+          <div className="filter-container">
+            <button
+              onClick={() => {
+                setIsFilter((prev) => !prev);
+              }}
+              className="action-btn filter-btn-container"
+            >
+              <Funnel size={15} /> <p>Range Filter</p>
+            </button>
+            {isFilter && (
+              <div className="range-filter-container">
+                <div className="range-filter-input-container">
+                  <input
+                    type="number"
+                    value={startPriceInput}
+                    min={0}
+                    onChange={(e) => setStartPriceInput(e.target.value)}
+                    placeholder="Start Price"
+                    className="range-filter-input"
+                  />
+                  to
+                  <input
+                    type="number"
+                    value={endPriceInput}
+                    min={startPriceInput || 0}
+                    onChange={(e) => setEndPriceInput(e.target.value)}
+                    placeholder="End Price"
+                    className="range-filter-input"
+                  />
+                </div>
+                <div className="range-filter-btn-container">
+                  <button
+                    onClick={handleApplyFilter}
+                    className="filter-apply-btn"
+                  >
+                    Apply
+                  </button>
+                  {endPriceInput && startPriceInput && (
+                    <button
+                      onClick={handleClearFilter}
+                      className="filter-apply-btn"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <div className="mobiles-container">

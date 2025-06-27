@@ -15,7 +15,6 @@ import AddEvents from "../components/AddEvents";
 const Events = () => {
   const { currentUser, role } = useAuth();
   const { searchTxt } = useOutletContext();
-  const [statusFilter, setStatusFilter] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
   const [isEventOpen, setIsEventOpen] = useState(false);
   const [isUpdateModal, setIsUpdateModal] = useState(false);
@@ -50,12 +49,7 @@ const Events = () => {
 
   const filteredMobilesData = useMemo(() => {
     let filtered = devices;
-    if (statusFilter !== "All") {
-      filtered = devices.filter(
-        (record) =>
-          record.deviceType.toLowerCase() === statusFilter.toLowerCase()
-      );
-    }
+
     if (searchTxt.trim()) {
       filtered = filtered.filter((device) =>
         [device.eventName].some((field) =>
@@ -70,7 +64,7 @@ const Events = () => {
         ? new Date(b.createdAt) - new Date(a.createdAt)
         : 0
     );
-  }, [devices, statusFilter, searchTxt]);
+  }, [devices, searchTxt]);
 
   const handleDeleteEvent = async () => {
     if (!selectedCard?.id) return;
@@ -109,17 +103,6 @@ const Events = () => {
               Add Event Sale
             </button>
           )}
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="custom-select"
-          >
-            <option value="All">All</option>
-            <option value="android">Android</option>
-            <option value="iphone">IPhone</option>
-            <option value="ipad">IPad</option>
-            <option value="tablet">Tablet</option>
-          </select>
         </div>
       </div>
       <div className="events-container">
