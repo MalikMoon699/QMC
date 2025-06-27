@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { auth, db } from "../utils/FirebaseConfig";
 import { CircleCheckBig, CircleX } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { doc, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
-import { generateCustomId } from "../utils/Helpers";
+import { generateCustomId, fetchCurrentUser } from "../utils/Helpers";
 
 const SellerApplication = ({ onClose }) => {
   const { currentUser } = useAuth();
   const [errors, setErrors] = useState({});
-  const [userName, setUserName] = useState(currentUser.displayName || "");
-  const [userEmail, setUserEmail] = useState(currentUser?.email || "");
+  const [currentUserData, setCurrentUserData] = useState([]);
   const [userAge, setUserAge] = useState("");
   const [idCardNumber, setIdCardNumber] = useState("");
   const [isFormSubmit, setIsFormSubmit] = useState(false);
@@ -18,12 +17,6 @@ const SellerApplication = ({ onClose }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!userName.trim()) newErrors.userName = "Name is required";
-    if (!userEmail.trim()) {
-      newErrors.userEmail = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(userEmail)) {
-      newErrors.userEmail = "Invalid email format";
-    }
     if (!userAge) newErrors.userAge = "Date of birth is required";
     if (!idCardNumber.trim()) {
       newErrors.idCardNumber = "ID card number is required";
@@ -33,6 +26,17 @@ const SellerApplication = ({ onClose }) => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+  useEffect(() => {
+    const getUserDetails = async () => {
+      if (currentUser) {
+        const userDetails = await fetchCurrentUser(currentUser);
+        const currentUserDetail = userDetails.userData;
+        setCurrentUserData(currentUserDetail);
+      }
+    };
+    getUserDetails();
+  }, [currentUser]);
 
   const calculateAge = (birthDate) => {
     const today = new Date();
@@ -63,12 +67,11 @@ const SellerApplication = ({ onClose }) => {
       const notificationRef = doc(db, "NOTIFICATIONS", customId);
       await setDoc(notificationRef, {
         userId: currentUser.uid,
-        userName,
-        userEmail,
+        userName: currentUserData.name,
+        userEmail: currentUserData.email,
         notificationType: "application",
         userAge,
         idCardNumber,
-
         status: "pending",
         createdAt: new Date().toISOString(),
       });
@@ -105,32 +108,7 @@ const SellerApplication = ({ onClose }) => {
             <h3 className="modal-title">Seller Application</h3>
           </div>
           <form style={{ padding: "20px" }} onSubmit={handleSubmit}>
-            <input
-              className="login-input"
-              type="text"
-              placeholder="Enter Your Name."
-              value={userName}
-              onChange={(e) => {
-                setUserName(e.target.value);
-                setErrors((prev) => ({ ...prev, userName: "" }));
-              }}
-            />
-            {errors.userName && (
-              <p className="login-form-error">{errors.userName}</p>
-            )}
-            <input
-              className="login-input"
-              type="email"
-              placeholder="Enter Your Email."
-              value={userEmail}
-              onChange={(e) => {
-                setUserEmail(e.target.value);
-                setErrors((prev) => ({ ...prev, userEmail: "" }));
-              }}
-            />
-            {errors.userEmail && (
-              <p className="login-form-error">{errors.userEmail}</p>
-            )}
+            <label>Date of Birth:</label>
             <input
               className="login-input"
               type="date"
@@ -143,6 +121,7 @@ const SellerApplication = ({ onClose }) => {
             {errors.userAge && (
               <p className="login-form-error">{errors.userAge}</p>
             )}
+            <label>ID card Number:</label>
             <input
               className="login-input"
               type="number"

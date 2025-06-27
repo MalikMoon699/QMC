@@ -12,7 +12,6 @@ import {
   ShieldUser,
 } from "lucide-react";
 import React, { useState, useCallback, useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import {
   collection,
@@ -35,7 +34,6 @@ import { toast } from "react-toastify";
 
 const AboutUs = () => {
   const { currentUser, role } = useAuth();
-  const { searchTxt } = useOutletContext();
   const [adminData, setAdminData] = useState([]);
   const [selected, setSelected] = useState([]);
   const [currentUserDetails, setCurrentUserDetails] = useState([]);
@@ -78,8 +76,6 @@ const AboutUs = () => {
       });
     }
   }, [currentIndex, allUserDetail]);
-  
-
 
   useEffect(() => {
     getUserDetails();
@@ -163,6 +159,7 @@ const AboutUs = () => {
         console.error("No admin ID provided for update");
         return;
       }
+      handleUpdateClose();
 
       const profileImgUrl = await uploadImage(imageFile, updateId);
 
@@ -176,7 +173,7 @@ const AboutUs = () => {
       const adminDocRef = doc(db, "ADMIN", updateId);
       await updateDoc(adminDocRef, updatedData);
       await fetchAdmin();
-      handleUpdateClose();
+      toast.success("Details updated successfully");
     } catch (error) {
       console.error("Error updating admin:", error);
     }
@@ -188,6 +185,7 @@ const AboutUs = () => {
         setError("No description provided");
         return;
       }
+      handleReportClose();
 
       const reportData = {
         userId: currentUserDetails.uid,
@@ -196,12 +194,13 @@ const AboutUs = () => {
         notificationType: "report",
         reportAbout: selected,
         description: description,
-        createdAt: new Date(),
+        createdAt: new Date().toISOString(),
       };
       const customId = await generateCustomId("NOTIFICATIONS");
       const reportDocRef = doc(db, "NOTIFICATIONS", customId);
       await setDoc(reportDocRef, reportData);
-      handleReportClose();
+
+      toast.success("Reported issue submitted successfully");
     } catch (error) {
       console.error("Error reporting issue:", error);
     }
@@ -213,6 +212,7 @@ const AboutUs = () => {
         setError("No description provided");
         return;
       }
+      handleFeedBackClose();
 
       const reportData = {
         userId: currentUserDetails.uid,
@@ -221,12 +221,12 @@ const AboutUs = () => {
         notificationType: "feedback",
         reportAbout: selected,
         description: description,
-        createdAt: new Date(),
+        createdAt: new Date().toISOString(),
       };
       const customId = await generateCustomId("NOTIFICATIONS");
       const reportDocRef = doc(db, "NOTIFICATIONS", customId);
       await setDoc(reportDocRef, reportData);
-      handleFeedBackClose();
+      toast.success("Feedback submitted successfully");
     } catch (error) {
       console.error("Error reporting issue:", error);
     }
@@ -269,6 +269,7 @@ const AboutUs = () => {
     setSelected([]);
     setDescription("");
     setReportIssue(false);
+    setReportUserOpen(false);
     setSearchUser("");
   };
 
@@ -276,6 +277,7 @@ const AboutUs = () => {
     setSelected([]);
     setDescription("");
     setFeedBack(false);
+    setReportUserOpen(false);
     setSearchUser("");
   };
 
@@ -549,7 +551,7 @@ const AboutUs = () => {
                     onClick={handleReportUserOpen}
                     className="report-user-button"
                   >
-                    <p> Report any User</p>
+                    <p> Feed Back any User</p>
                     <span>
                       {reportUserOpen ? (
                         <ChevronUp size={25} style={{ paddingTop: "5px" }} />

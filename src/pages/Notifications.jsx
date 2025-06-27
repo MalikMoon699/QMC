@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { db } from "../utils/FirebaseConfig";
 import { useAuth } from "../context/AuthContext";
 import { useOutletContext } from "react-router-dom";
+import moment from "moment";
 import {
   collection,
   query,
@@ -185,11 +186,23 @@ const Notifications = () => {
                   </p>
                   <p>
                     <strong>Submitted:</strong>{" "}
-                    {notification.createdAt
-                      ? new Date(notification.createdAt).toLocaleString()
-                      : "N/A"}
+                    {notification?.createdAt
+                      ? moment(
+                          notification.createdAt,
+                          "YYYY-MM-DD HH:mm:ss.SSS Z"
+                        )
+                          .fromNow()
+                          .charAt(0)
+                          .toUpperCase() +
+                        moment(
+                          notification.createdAt,
+                          "YYYY-MM-DD HH:mm:ss.SSS Z"
+                        )
+                          .fromNow()
+                          .slice(1)
+                      : "DD-MM-YYYY"}
                   </p>
-                  {role === "Admin" && notification.status !== "Approved" && (
+                  {role === "admin" && notification.status !== "Approved" && (
                     <button onClick={() => handleApprove(notification)}>
                       Approve
                     </button>
