@@ -211,6 +211,7 @@
 .about_user-card__info_img {
   position: relative;
   overflow: hidden;
+  border-bottom: 0.5px solid #e9496c;
 }
 
 .about_user-card__info_img img {
@@ -220,7 +221,6 @@
   border-radius: 8px 8px 0 0;
   object-position: top;
   display: block;
-  border-bottom: 0.5px solid #e9496c;
 }
 
 .user-card__info_content {
