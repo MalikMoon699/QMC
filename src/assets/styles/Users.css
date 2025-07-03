@@ -67,7 +67,6 @@
   font-family: "Poppins", sans-serif;
   transition: 0.3s all ease;
   border: 1px solid #e9496c;
-  /* max-width: 400px; */
 }
 
 .user-card:hover {
@@ -156,13 +155,6 @@
 
 .user-card__contact h4:hover {
   text-decoration: underline;
-}
-
-.mobile_card_details {
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .mobile_card_details .dashed-line {

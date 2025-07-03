@@ -1,6 +1,6 @@
 .mobiles-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  grid-template-columns: repeat(auto-fit, minmax(325px, 1fr)) !important;
   gap: 20px;
   width: 100%;
 }
@@ -237,19 +237,217 @@
   border: 2px solid #eb3c2f;
 }
 
+@media only screen and (max-width: 1024px) {
+.mobiles-container {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+}
+
+ .mobile-card {
+    height: 350px;
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 979px) {
+.mobiles-container {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+}
+
+ .mobile-card {
+    height: 340px;
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 840px) {
+ .mobile-card {
+    height: 300px;
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .mobile-summary-header {
+    flex-direction: column;
+    align-items: start;
+    margin-bottom: 30px;
+  }
+  .mobiles-container {
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)) !important;
+    gap: 10px;
+  }
+
+  .mobile-card {
+    height: 300px;
+    width: 100%;
+  }
+
+  .slider-container {
+    max-height: 155px !important;
+  }
+
+  .prev-btn {
+    left: 8px !important;
+  }
+
+  .next-btn {
+    right: 8px !important;
+  }
+
+  .prev-btn,
+  .next-btn {
+    padding: 3px 9.5px !important;
+    font-size: 14px !important;
+  }
+
+  .dots {
+    padding: 7px 10px !important;
+  }
+
+  .mobile-card__info_content {
+    padding: 6px;
+  }
+
+  .mobile-card_details_container {
+    padding-bottom: 2px;
+  }
+
+  .mobile-card__text {
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .mobile-card__info {
+    gap: 8px;
+    margin-bottom: 4px;
+    padding-bottom: 2px;
+  }
+
+  .mobile-card__role {
+    border-radius: 1.5px;
+    padding: 0px 0px;
+    font-size: 9px;
+    font-weight: 500;
+    min-width: 40px;
+  }
+
+  .mobile_card_details {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+@media only screen and (max-width: 740px) {
+  .mobile-card {
+    height: 275px;
+    width: 100%;
+  }
+
+  .slider-container {
+    max-height: 150px !important;
+  }
+}
+
 @media only screen and (max-width: 450px) {
   .mobile-summary-header {
     flex-direction: column;
     align-items: start;
     margin-bottom: 30px;
   }
+  .mobiles-container {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)) !important;
+    gap: 10px;
+  }
+
+  .mobile-card {
+    height: 215px;
+    width: 100%;
+  }
+
+  .prev-btn {
+    left: 5px !important;
+  }
+
+  .next-btn {
+    right: 5px !important;
+  }
+
+  .prev-btn,
+  .next-btn {
+    padding: 0px 6px !important;
+    font-size: 12px !important;
+  }
+
+  .dots {
+    bottom: 8px !important;
+    gap: 3px !important;
+    padding: 5px 8px !important;
+  }
+
+  .dot {
+    width: 8px !important;
+    height: 8px !important;
+  }
+
+  .mobile-card__info_content {
+    padding: 6px;
+  }
+
+  .mobile-card_details_container {
+    padding-bottom: 2px;
+  }
+
+  .mobile-card__text {
+    font-size: 10px;
+    font-weight: 400;
+  }
+
+  .mobile-card__info {
+    gap: 8px;
+    margin-bottom: 4px;
+    padding-bottom: 2px;
+  }
+
+  .mobile-card__role {
+    border-radius: 1.5px;
+    padding: 0px 0px;
+    font-size: 7px;
+    font-weight: 500;
+    min-width: 40px;
+  }
+
+  .mobile_card_details {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 
 @media only screen and (max-width: 375px) {
-  .mobiles-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
-    gap: 20px;
+  .mobile-card {
+    height: 180px;
     width: 100%;
+  }
+
+  .mobile-card__info_content {
+    padding: 4px;
+  }
+
+  .mobile-card__text {
+    font-size: 7px;
+    font-weight: 300;
+  }
+
+  .mobile-card__info {
+    margin-bottom: 0px;
+  }
+
+  .mobile_card_details {
+    font-size: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 }
