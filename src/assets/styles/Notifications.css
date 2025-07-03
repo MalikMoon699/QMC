@@ -2,7 +2,7 @@
   border-bottom: 1px solid #fbdee5;
   padding-bottom: 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
   gap: 20px;
   width: 100%;
 }
@@ -11,12 +11,12 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 50px;
+  gap: 43px;
   background: #fff;
   border: 1px solid #ec5d7d;
   border-radius: 8px;
   padding: 15px 20px;
-  height: 150px;
+  height: 140px;
   width: 100%;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -152,6 +152,105 @@ h3 {
   white-space: nowrap;
 }
 
+@media only screen and (max-width: 1250px) {
+  .tabsWrapper {
+    grid-template-columns: repeat(auto-fit, minmax(291px, 1fr)) !important;
+  }
+
+  .tab {
+    gap: 50px;
+    height: 150px;
+  }
+}
+
+@media only screen and (max-width: 942px) {
+  .tabsWrapper {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+  }
+
+  .tab {
+    gap: 50px;
+    height: 150px;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .tab {
+    gap: 35px;
+    height: 130px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .tabsWrapper {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) !important;
+  }
+
+  .tab {
+    gap: 10px;
+    padding: 10px;
+    height: 80px;
+  }
+
+  .counterIcon {
+    margin: -5px -4px;
+  }
+
+  .counterIcon > svg {
+    height: 12px;
+    width: 12px;
+  }
+
+  .counterContentWrapper > h3 {
+    font-size: 10px;
+  }
+  .countWrapper {
+    gap: 4px;
+  }
+  .countWrapper > h3 {
+    font-size: 12px;
+  }
+  .countWrapper > span {
+    font-size: 8px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .tabsWrapper {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
+  }
+
+  .tab {
+    gap: 10px;
+    padding: 15px;
+    height: 110px;
+  }
+
+  .counterIcon {
+    margin: 0px 0px;
+  }
+
+  .counterIcon > svg {
+    height: 20px;
+    width: 20px;
+  }
+
+  .countWrapper {
+    gap: 8px;
+  }
+
+  .counterContentWrapper > h3 {
+    font-size: 16px;
+  }
+
+  .countWrapper > h3 {
+    font-size: 16px;
+  }
+  .countWrapper > span {
+    font-size: 14px;
+  }
+}
+
 @media only screen and (max-width: 450px) {
   .notification {
     padding: 4px;
@@ -169,7 +268,7 @@ h3 {
   .application-approve-btn {
     font-size: 10px;
     border-radius: 7px;
-}
+  }
 
   .notification-content {
     gap: 6px;
@@ -187,6 +286,37 @@ h3 {
 }
 
 @media only screen and (max-width: 380px) {
+
+  .tabsWrapper {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
+  }
+
+  .tab {
+    gap: 8px;
+    padding: 10px;
+    height: 80px;
+  }
+
+  .counterIcon > svg {
+    height: 20px;
+    width: 20px;
+  }
+
+  .countWrapper {
+    gap: 4px;
+  }
+
+  .counterContentWrapper > h3 {
+    font-size: 12px;
+  }
+
+  .countWrapper > h3 {
+    font-size: 12px;
+  }
+  .countWrapper > span {
+    font-size: 8px;
+  }
+
   .notification {
     padding: 3px;
   }
@@ -203,7 +333,7 @@ h3 {
   .application-approve-btn {
     font-size: 8px;
     border-radius: 5px;
-}
+  }
 
   .notification-content {
     gap: 4px;
