@@ -164,7 +164,7 @@ const Notifications = () => {
             <h3>Total</h3>
             {loading ? (
               <div className="counterLoader">
-                <Loader loading={true} size={30} />
+                <Loader className={"counterLoader"} loading={true} size={30} />
               </div>
             ) : (
               <div className="countWrapper">
