@@ -267,7 +267,7 @@ const AddEvents = ({ onClose, EventToUpdate }) => {
                   }`}
                   onClick={() => setActiveTab("SMARTDEVICES")}
                 >
-                  Smart Devices
+                  Devices
                 </div>
                 <div
                   className={`tab tab-${
