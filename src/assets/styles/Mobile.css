@@ -345,7 +345,7 @@
   }
 
   .slider-container {
-    max-height: 150px !important;
+    max-height: 210px !important;
   }
 }
 
@@ -361,8 +361,13 @@
   }
 
   .mobile-card {
-    height: 215px;
+    height: 255px;
     width: 100%;
+  }
+
+  .slider-container {
+    max-height: 250px !important;
+    min-height: 130px !important;
   }
 
   .prev-btn {
@@ -427,8 +432,13 @@
 
 @media only screen and (max-width: 375px) {
   .mobile-card {
-    height: 180px;
+    height: 200px;
     width: 100%;
+  }
+
+  .slider-container {
+    max-height: 130px !important;
+    min-height: 100px !important;
   }
 
   .mobile-card__info_content {
