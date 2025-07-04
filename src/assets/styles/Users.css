@@ -292,17 +292,16 @@
 
   .user-card__status-Active {
     font-size: 8px;
-}
+  }
 
-.user-card__status-InActive {
-  font-size: 8px;
-}
+  .user-card__status-InActive {
+    font-size: 8px;
+  }
 
-.user-card__status-indicator {
-  height: 3px;
-  width: 3px;
-}
-
+  .user-card__status-indicator {
+    height: 3px;
+    width: 3px;
+  }
 }
 
 @media only screen and (max-width: 375px) {
@@ -313,8 +312,13 @@
   }
 
   .user-card {
-    height: 200px;
+    height: 220px;
   }
+
+  .user-card__info_content {
+    padding: 6px !important;
+}
+
 
   .users-container {
     grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)) !important;

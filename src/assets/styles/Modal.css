@@ -23,6 +23,40 @@
   scrollbar-width: none;
 }
 
+.mobile-modal-card > .slider-container {
+  max-height: 100% !important;
+  min-height: 100% !important;
+  height: 100% !important;
+}
+
+.mobile-modal-card .mobile-card__text {
+  font-size: 16px !important;
+  padding: 0px 0px !important;
+}
+
+.mobile-modal-card .mobile-card_details_container {
+  padding: 8px 0px !important;
+}
+
+.mobile-modal-card .mobile_card_details {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mobile-modal-card .mobile-card__info {
+  padding-top: 0px !important;
+}
+
+.mobile-modal-card .mobile-card__info_content {
+  padding: 10px;
+}
+
+.modal-card > .mobile-card {
+  height: 100%;
+}
+
 .sidebar-modal {
   padding: 16px;
 }
