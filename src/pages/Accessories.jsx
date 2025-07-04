@@ -7,7 +7,13 @@ import Slider from "../components/Slider";
 import { Funnel,MessageCircleWarning, Plus, Store } from "lucide-react";
 import SellAccessories from "../components/SellAccessories";
 import { db } from "../utils/FirebaseConfig";
-import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  deleteDoc,
+  doc,
+  setDoc,
+} from "firebase/firestore";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
 import SellerApplication from "../components/SellerApplication";
@@ -83,11 +89,19 @@ const Accessories = () => {
         : 0
     );
   }, [devices, searchTxt, activeStartPrice, activeEndPrice]);
-
   const handleDeleteProduct = async () => {
     if (!selectedCard?.id) return;
+
     try {
+      const deletedItemRef = doc(db, "SOLDOUT_ITEMS", selectedCard.id);
+      await setDoc(deletedItemRef, {
+        ...selectedCard,
+        deletedAt: new Date().toISOString(),
+        type: "accessory",
+      });
+
       await deleteDoc(doc(db, "ACCESSORIES", selectedCard.id));
+
       setDevices((prev) =>
         prev.filter((device) => device.id !== selectedCard.id)
       );
@@ -100,6 +114,7 @@ const Accessories = () => {
       toast.error("Failed to mark product as sold out.");
     }
   };
+
 
   const handleUpdateClick = () => {
     setSellModalOpen(true);

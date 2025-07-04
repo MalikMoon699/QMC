@@ -12,7 +12,13 @@ import {
 } from "lucide-react";
 import SellProducts from "../components/SellProducts";
 import { db } from "../utils/FirebaseConfig";
-import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  deleteDoc,
+  doc,
+  setDoc,
+} from "firebase/firestore";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
 import SellerApplication from "../components/SellerApplication";
@@ -93,7 +99,14 @@ const Mobiles = () => {
 
   const handleDeleteProduct = async () => {
     if (!selectedCard?.id) return;
+
     try {
+      const soldOutRef = doc(db, "SOLDOUT_ITEMS", selectedCard.id);
+      await setDoc(soldOutRef, {
+        ...selectedCard,
+        type: "mobile",
+        soldOutAt: new Date().toISOString(),
+      });
       await deleteDoc(doc(db, "SMARTDEVICES", selectedCard.id));
       setDevices((prev) =>
         prev.filter((device) => device.id !== selectedCard.id)
@@ -103,11 +116,11 @@ const Mobiles = () => {
       setIsOpen(false);
       setSelectedCard(null);
     } catch (error) {
-      console.error("Error deleting product:", error);
+      console.error("Error marking product as sold out:", error);
       toast.error("Failed to mark product as sold out.");
     }
   };
-
+  
   const handleOpenUpdateModal = () => {
     setIsUpdateModal(false);
     setSellModalOpen(true);
