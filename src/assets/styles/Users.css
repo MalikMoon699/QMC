@@ -317,7 +317,7 @@
   }
 
   .users-container {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) !important;
+    grid-template-columns: repeat(auto-fit, minmax(112px, 1fr)) !important;
     gap: 10px;
   }
 }
