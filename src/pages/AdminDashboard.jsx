@@ -17,6 +17,7 @@ import {
   fetchSoldOutItems,
 } from "../utils/Helpers";
 import { toast } from "react-toastify";
+import Loader from "../components/Loader";
 
 const AdminDashboard = () => {
   const { currentUser, role } = useAuth();
@@ -25,6 +26,7 @@ const AdminDashboard = () => {
   const [switchData, setSwitchData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [soldOutItemsDetails, setSoldOutItemsDetails] = useState(false);
+  const [switchLoading, setSwitchLoading] = useState(false);
   const [soldOutAllItems, setSoldOutAllItems] = useState(false);
   const [adminId, setAdminId] = useState(null);
 
@@ -70,6 +72,7 @@ const AdminDashboard = () => {
     if (!adminId) return;
 
     const newSwitchValue = !switchData;
+    setSwitchLoading(true);
     try {
       const adminDocRef = doc(db, "ADMIN", adminId);
       await updateDoc(adminDocRef, { isSwitch: newSwitchValue });
@@ -79,6 +82,8 @@ const AdminDashboard = () => {
       );
     } catch (error) {
       console.error("Error updating switch:", error);
+    } finally {
+      setSwitchLoading(false);
     }
   };
 
@@ -98,7 +103,15 @@ const AdminDashboard = () => {
               onClick={handleUpdateSwitch}
               className={`toggle-switch ${switchData === true ? "on" : "off"}`}
             >
-              <div className="toggle-knob"></div>
+              {switchLoading ? (
+                <Loader
+                  loading={true}
+                  size={13}
+                  className={"switch-loader toggle-knob"}
+                />
+              ) : (
+                <div className="toggle-knob"></div>
+              )}
             </div>
           )}
         </div>

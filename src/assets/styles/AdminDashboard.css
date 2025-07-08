@@ -165,3 +165,9 @@
 .toggle-switch.off .toggle-knob {
   left: 2px;
 }
+
+.switch-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
