@@ -90,7 +90,6 @@ export const fetchSmartDevices = async () => {
       id: doc.id,
       ...doc.data(),
     }));
-    console.log("Fetched Smart Devices:", smartDevicesData);
     return smartDevicesData;
   } catch (error) {
     console.error("Error fetching smart devices:", error);
@@ -105,7 +104,6 @@ export const fetchEvents = async () => {
       id: doc.id,
       ...doc.data(),
     }));
-    console.log("Fetched Events:", eventsData);
     return eventsData;
   } catch (error) {
     console.error("Error fetching events:", error);
@@ -120,7 +118,6 @@ export const fetchAccessories = async () => {
       id: doc.id,
       ...doc.data(),
     }));
-    console.log("Fetched Accessories:", accessoriesData);
     return accessoriesData;
   } catch (error) {
     console.error("Error fetching accessories:", error);
@@ -148,8 +145,6 @@ export const fetchSoldOutItems = async (fetchType = "Admin", currentUser = null)
     }));
 
     items.sort((a, b) => new Date(b.deletedAt) - new Date(a.deletedAt));
-    console.log("Fetched Sold Out fetchType:", fetchType);
-    console.log("Fetched Sold Out Items:", items);
     return items;
   } catch (error) {
     console.error("Error fetching sold-out items:", error);
