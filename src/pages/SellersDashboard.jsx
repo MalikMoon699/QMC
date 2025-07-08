@@ -1,9 +1,10 @@
 import React from 'react'
+import AdminDashboard from './AdminDashboard';
 
 const SellersDashboard = () => {
   return (
     <div>
-      <h1>SellersDashboard</h1>
+<AdminDashboard />
     </div>
   );
 }

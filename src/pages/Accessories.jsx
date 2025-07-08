@@ -328,7 +328,11 @@ const Accessories = () => {
                   >
                     <strong>Sell By:</strong>
                     <span className="dashed-line"></span>
-                    {selectedCard.createdBy}
+                    {selectedCard.createdByEmail === currentUser?.email ? (
+                      "You"
+                    ) : (
+                      selectedCard.createdBy
+                    )}
                   </p>
                   <p
                     style={{ color: "#00c000" }}

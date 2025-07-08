@@ -1,0 +1,122 @@
+.recent-solds-container {
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #ec5d7d;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.recent-sold-item-iner-container {
+  padding: 10px;
+}
+
+.recent-sold-content-detail {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.recent-sold-item {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #ec5d7d;
+  border-radius: 10px;
+  padding: 8px;
+  margin-top: 15px;
+  box-shadow: 0px 0px 10px #0000001c;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.recent-sold-item:hover{
+    transform: translate(0px, -5px);
+}
+
+.recent-sold-image-container {
+  border: 1px solid red;
+  height: 60px;
+  width: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.recent-sold-image-container img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.recent-solds-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  padding: 19px 5px;
+  background: #eb3c2f;
+}
+
+.recent-sold-type {
+  font-weight: 600;
+  margin: 0;
+  color: #111827;
+}
+
+.recent-sold-name {
+  font-size: 14px;
+  margin: 4px 0 0;
+  color: #6b7280;
+}
+
+.recent-sold-info {
+  text-align: right;
+}
+
+.recent-sold-price {
+  font-weight: 600;
+  margin: 0;
+  color: #111827;
+}
+
+.status {
+  font-size: 13px;
+  padding: 2px 10px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.status {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.view-recent-solds_btn-container {
+  text-align: center;
+  cursor: pointer;
+  border-top: 1px solid #ec5d7d;
+  padding: 20px;
+}
+
+.view-recent-solds_btn-container {
+  text-align: center;
+  cursor: pointer;
+  border-top: 1px solid #ec5d7d;
+  padding: 20px;
+}
+
+.view-recent-solds_btn-container:hover {
+  background-color: rgba(255, 0, 0, 0.107);
+}
+
+.view-recent-solds_btn {
+  font-size: 14px;
+  color: #ee0909;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}

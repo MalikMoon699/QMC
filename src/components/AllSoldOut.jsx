@@ -1,49 +1,11 @@
 import React, { useEffect, useState } from "react";
-import "../assets/styles/AdminDashboard.css";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../utils/FirebaseConfig";
-import AllSoldOut from "../components/AllSoldOut";
-import { useAuth } from "../context/AuthContext";
 import { demo1, demo2, demo3, demo4 } from "../utils/Demoimages";
 import moment from "moment";
 import Slider from "../components/Slider";
-import {
-  fetchCurrentUser,
-  fetchAdminUsers,
-  fetchAllUsers,
-  fetchSmartDevices,
-  fetchEvents,
-  fetchAccessories,
-  fetchSoldOutItems,
-} from "../utils/Helpers";
 
-const AdminDashboard = () => {
-  const { currentUser, role } = useAuth();
-  const [fetchType, setFetchType] = useState("Admin");
-  const [soldOutData, setSoldOutData] = useState([]);
+const AllSoldOut = ({ soldOutData, onClose }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [soldOutItemsDetails, setSoldOutItemsDetails] = useState(false);
-  const [soldOutAllItems, setSoldOutAllItems] = useState(false);
-
-  useEffect(() => {
-    const getData = async () => {
-      const result = await fetchSoldOutItems(fetchType, currentUser);
-      setSoldOutData(result);
-    };
-
-    if (currentUser) {
-      getData();
-    }
-  }, [fetchType, currentUser]);
-
-  useEffect(() => {
-    fetchCurrentUser(currentUser);
-    fetchAdminUsers();
-    fetchAllUsers();
-    fetchSmartDevices();
-    fetchEvents();
-    fetchAccessories();
-  }, []);
 
   const handleOpenDetailsModal = (item) => {
     setSoldOutItemsDetails(true);
@@ -56,16 +18,16 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div>
-      <div>
-        <button onClick={() => setFetchType("Admin")}>Admin</button>
-        <button onClick={() => setFetchType("All")}>All</button>
-      </div>
-      <h1>{soldOutData.length}</h1>
-      <div className="recent-solds-container">
-        <h3 className="recent-solds-title">Recent Sold Out</h3>
+    <div className="modal-overlay">
+      <div className="modal-card">
+        <div className="modal-header">
+          <button onClick={onClose} className="back-button">
+            ❮
+          </button>
+          <h3 className="modal-title">All Your Sold Out</h3>
+        </div>
         <div className="recent-sold-item-iner-container">
-          {soldOutData.slice(0, 5).map((item, index) => (
+          {soldOutData.map((item, index) => (
             <div
               onClick={() => handleOpenDetailsModal(item)}
               className="recent-sold-item"
@@ -99,17 +61,6 @@ const AdminDashboard = () => {
             </div>
           ))}
         </div>
-
-        <div className="view-recent-solds_btn-container">
-          <button
-            onClick={() => {
-              setSoldOutAllItems(true);
-            }}
-            className="view-recent-solds_btn"
-          >
-            View All Recent Solds
-          </button>
-        </div>
       </div>
 
       {soldOutItemsDetails && selectedItem && (
@@ -133,22 +84,15 @@ const AdminDashboard = () => {
                 <div className="mobile-card__info_content">
                   <div className="mobile-card__text mobile-card__info mobile-card_details_container">
                     <h3>{selectedItem.brandName}</h3>
-                    {(role === "admin" ||
-                      currentUser?.email === selectedItem.createdByEmail) && (
-                      <h3
-                        onClick={() => {
-                          setIsUpdateModalOpen(true);
-                        }}
-                        style={{
-                          cursor: "pointer",
-                          padding: "3px 13px",
-                          fontSize: "12px",
-                        }}
-                        className="mobile-card__role"
-                      >
-                        Update
-                      </h3>
-                    )}
+                    <h3
+                      style={{
+                        padding: "3px 13px",
+                        fontSize: "12px",
+                      }}
+                      className="mobile-card__role"
+                    >
+                      Sold Out
+                    </h3>
                   </div>
                   <div className="mobile-card_details_container">
                     {selectedItem.fields?.length > 0 &&
@@ -304,17 +248,8 @@ const AdminDashboard = () => {
           </div>
         </div>
       )}
-
-      {soldOutAllItems && (
-        <AllSoldOut
-          soldOutData={soldOutData}
-          onClose={() => {
-            setSoldOutAllItems(false);
-          }}
-        />
-      )}
     </div>
   );
 };
 
-export default AdminDashboard;
+export default AllSoldOut;
