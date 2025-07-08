@@ -359,7 +359,9 @@ const Mobiles = () => {
                   >
                     <strong>Sell By:</strong>
                     <span className="dashed-line"></span>
-                    {selectedCard.createdBy}
+                    {selectedCard.createdByEmail === currentUser?.email
+                      ? "You"
+                      : selectedCard.createdBy}
                   </p>
                   <p
                     style={{ color: "#00c000" }}
@@ -401,9 +403,7 @@ const Mobiles = () => {
       )}
 
       {isUpdateModal && (
-        <div
-          className="modal-overlay"
-        >
+        <div className="modal-overlay">
           <div style={{ minWidth: "350px" }} className="modal-content">
             <div className="sidebar-modal">
               <div className="contentWrapper">
