@@ -171,3 +171,10 @@
   align-items: center;
   justify-content: center;
 }
+
+.dashboard-lists-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}

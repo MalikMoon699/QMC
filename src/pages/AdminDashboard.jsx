@@ -18,6 +18,7 @@ import {
 } from "../utils/Helpers";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
+import { Bell, Flag, MessageCircle, User, UserCog } from "lucide-react";
 
 const AdminDashboard = () => {
   const { currentUser, role } = useAuth();
@@ -29,17 +30,28 @@ const AdminDashboard = () => {
   const [switchLoading, setSwitchLoading] = useState(false);
   const [soldOutAllItems, setSoldOutAllItems] = useState(false);
   const [adminId, setAdminId] = useState(null);
+  const [usersCount, setUsersCount] = useState(null);
+  const [devicesCount, setDevicesCount] = useState(null);
+  const [accessoriesCount, setAccessoriesCount] = useState(null);
+  const [soldOutCount, setSoldOutCount] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const getData = async () => {
-      const result = await fetchSoldOutItems(fetchType, currentUser);
-      setSoldOutData(result);
-    };
-
     if (currentUser) {
       getData();
     }
+    fetchAllUsersLength();
+    fetchAllDevicesLength();
+    fetchAllAccessoriesLength();
   }, [fetchType, currentUser]);
+
+  const getData = async () => {
+    setLoading(true);
+    const result = await fetchSoldOutItems(fetchType, currentUser);
+    setSoldOutData(result);
+    setSoldOutCount(result.length);
+    setLoading(false);
+  };
 
   const getswitchData = async () => {
     const result = await fetchAdminUsers();
@@ -49,13 +61,49 @@ const AdminDashboard = () => {
     }
   };
 
+  const fetchAllUsersLength = async () => {
+    setLoading(true);
+    const result = await fetchAllUsers();
+    setUsersCount(result.length);
+    setLoading(false);
+  };
+
+  const fetchAllDevicesLength = async () => {
+    setLoading(true);
+    const result = await fetchSmartDevices();
+
+    if (fetchType === "Admin") {
+      const owndevices = result.filter(
+        (device) => device.userId === currentUser.uid
+      );
+      setDevicesCount(owndevices.length);
+      setLoading(false);
+    } else {
+      setDevicesCount(result.length);
+      setLoading(false);
+    }
+  };
+
+  const fetchAllAccessoriesLength = async () => {
+    setLoading(true);
+    const result = await fetchAccessories();
+
+    if (fetchType === "Admin") {
+      const owndevices = result.filter(
+        (device) => device.userId === currentUser.uid
+      );
+      setAccessoriesCount(owndevices.length);
+      setLoading(false);
+    } else {
+      setAccessoriesCount(result.length);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchCurrentUser(currentUser);
     getswitchData();
-    fetchAllUsers();
-    fetchSmartDevices();
     fetchEvents();
-    fetchAccessories();
   }, []);
 
   const handleOpenDetailsModal = (item) => {
@@ -128,53 +176,233 @@ const AdminDashboard = () => {
           </div>
         )}
       </div>
-      <div className="recent-solds-container">
-        <h3 className="recent-solds-title">Recent Sold Out</h3>
-        <div className="recent-sold-item-iner-container">
-          {soldOutData.slice(0, 5).map((item, index) => (
-            <div
-              onClick={() => handleOpenDetailsModal(item)}
-              className="recent-sold-item"
-              key={item.id || index}
-            >
-              <div className="recent-sold-content-detail">
-                <div className="recent-sold-image-container">
-                  <img src={(item.images && item.images[0]) || demo1} />
-                </div>
-                <div>
-                  <p className="recent-sold-type">
-                    {item.type === "accessory" ? "Accessories" : "SmartDevices"}
-                  </p>
-                  <p className="recent-sold-name">
-                    {item.deviceModel || "Unnamed Device"}
-                  </p>
-                </div>
+      <div className="tabsWrapper">
+        <div className="active-tab tab">
+          <div className="counterContentWrapper">
+            <h3>Total Users</h3>
+            {loading ? (
+              <div className="counterLoader">
+                <Loader className={"counterLoader"} loading={true} size={30} />
               </div>
-              <div className="recent-sold-info">
-                <p className="recent-sold-price">
-                  {item.deletedAt
-                    ? moment(item.deletedAt.toDate?.() || item.deletedAt)
-                        .fromNow()
-                        .replace(/^./, (c) => c.toUpperCase())
-                    : "Unknown Time"}
-                </p>
-                <span className="status completed">
-                  {item.price || "0.00"} PKR
-                </span>
+            ) : (
+              <div className="countWrapper">
+                <h3>{usersCount}</h3>
+                <span>Users</span>
               </div>
-            </div>
-          ))}
+            )}
+          </div>
+          <div className="counterIcon">
+            <Bell color="#ea5173" />
+          </div>
         </div>
+        <div className="active-tab tab">
+          <div className="counterContentWrapper">
+            <h3>Smart Devices</h3>
+            {loading ? (
+              <div className="counterLoader">
+                <Loader loading={true} size={30} />
+              </div>
+            ) : (
+              <div className="countWrapper">
+                <h3>{devicesCount}</h3>
+                <span>Devices</span>
+              </div>
+            )}
+          </div>
+          <div className="counterIcon">
+            <UserCog color="#ea5173" />
+          </div>
+        </div>
+        <div className="active-tab tab">
+          <div className="counterContentWrapper">
+            <h3>Accessories</h3>
+            {loading ? (
+              <div className="counterLoader">
+                <Loader loading={true} size={30} />
+              </div>
+            ) : (
+              <div className="countWrapper">
+                <h3>{accessoriesCount}</h3>
+                <span>Accessories</span>
+              </div>
+            )}
+          </div>
+          <div className="counterIcon">
+            <MessageCircle color="#ea5173" />
+          </div>
+        </div>
+        <div className="active-tab tab">
+          <div className="counterContentWrapper">
+            <h3>Sold Out</h3>
+            {loading ? (
+              <div className="counterLoader">
+                <Loader loading={true} size={30} />
+              </div>
+            ) : (
+              <div className="countWrapper">
+                <h3>{soldOutCount}</h3>
+                <span>Items</span>
+              </div>
+            )}
+          </div>
+          <div className="counterIcon">
+            <Flag color="#ea5173" />
+          </div>
+        </div>
+      </div>
+      <div className="dashboard-lists-container">
+        <div className="recent-solds-container">
+          <h3 className="recent-solds-title">Recent Sold Out</h3>
+          <div className="recent-sold-item-iner-container">
+            {soldOutData.slice(0, 5).map((item, index) => (
+              <div
+                onClick={() => handleOpenDetailsModal(item)}
+                className="recent-sold-item"
+                key={item.id || index}
+              >
+                <div className="recent-sold-content-detail">
+                  <div className="recent-sold-image-container">
+                    <img src={(item.images && item.images[0]) || demo1} />
+                  </div>
+                  <div>
+                    <p className="recent-sold-type">
+                      {item.type === "accessory"
+                        ? "Accessories"
+                        : "SmartDevices"}
+                    </p>
+                    <p className="recent-sold-name">
+                      {item.deviceModel || "Unnamed Device"}
+                    </p>
+                  </div>
+                </div>
+                <div className="recent-sold-info">
+                  <p className="recent-sold-price">
+                    {item.deletedAt
+                      ? moment(item.deletedAt.toDate?.() || item.deletedAt)
+                          .fromNow()
+                          .replace(/^./, (c) => c.toUpperCase())
+                      : "Unknown Time"}
+                  </p>
+                  <span className="status completed">
+                    {item.price || "0.00"} PKR
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
 
-        <div className="view-recent-solds_btn-container">
-          <button
-            onClick={() => {
-              setSoldOutAllItems(true);
-            }}
-            className="view-recent-solds_btn"
-          >
-            View All Recent Solds
-          </button>
+          <div className="view-recent-solds_btn-container">
+            <button
+              onClick={() => {
+                setSoldOutAllItems(true);
+              }}
+              className="view-recent-solds_btn"
+            >
+              View All Recent Solds
+            </button>
+          </div>
+        </div>
+        <div className="recent-solds-container">
+          <h3 className="recent-solds-title">Recent Accessories Added</h3>
+          <div className="recent-sold-item-iner-container">
+            {soldOutData.slice(0, 5).map((item, index) => (
+              <div
+                onClick={() => handleOpenDetailsModal(item)}
+                className="recent-sold-item"
+                key={item.id || index}
+              >
+                <div className="recent-sold-content-detail">
+                  <div className="recent-sold-image-container">
+                    <img src={(item.images && item.images[0]) || demo1} />
+                  </div>
+                  <div>
+                    <p className="recent-sold-type">
+                      {item.type === "accessory"
+                        ? "Accessories"
+                        : "SmartDevices"}
+                    </p>
+                    <p className="recent-sold-name">
+                      {item.deviceModel || "Unnamed Device"}
+                    </p>
+                  </div>
+                </div>
+                <div className="recent-sold-info">
+                  <p className="recent-sold-price">
+                    {item.deletedAt
+                      ? moment(item.deletedAt.toDate?.() || item.deletedAt)
+                          .fromNow()
+                          .replace(/^./, (c) => c.toUpperCase())
+                      : "Unknown Time"}
+                  </p>
+                  <span className="status completed">
+                    {item.price || "0.00"} PKR
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="view-recent-solds_btn-container">
+            <button
+              onClick={() => {
+                setSoldOutAllItems(true);
+              }}
+              className="view-recent-solds_btn"
+            >
+              View All Recent Solds
+            </button>
+          </div>
+        </div>
+        <div className="recent-solds-container">
+          <h3 className="recent-solds-title">Recent Smart Devices Added</h3>
+          <div className="recent-sold-item-iner-container">
+            {soldOutData.slice(0, 5).map((item, index) => (
+              <div
+                onClick={() => handleOpenDetailsModal(item)}
+                className="recent-sold-item"
+                key={item.id || index}
+              >
+                <div className="recent-sold-content-detail">
+                  <div className="recent-sold-image-container">
+                    <img src={(item.images && item.images[0]) || demo1} />
+                  </div>
+                  <div>
+                    <p className="recent-sold-type">
+                      {item.type === "accessory"
+                        ? "Accessories"
+                        : "SmartDevices"}
+                    </p>
+                    <p className="recent-sold-name">
+                      {item.deviceModel || "Unnamed Device"}
+                    </p>
+                  </div>
+                </div>
+                <div className="recent-sold-info">
+                  <p className="recent-sold-price">
+                    {item.deletedAt
+                      ? moment(item.deletedAt.toDate?.() || item.deletedAt)
+                          .fromNow()
+                          .replace(/^./, (c) => c.toUpperCase())
+                      : "Unknown Time"}
+                  </p>
+                  <span className="status completed">
+                    {item.price || "0.00"} PKR
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="view-recent-solds_btn-container">
+            <button
+              onClick={() => {
+                setSoldOutAllItems(true);
+              }}
+              className="view-recent-solds_btn"
+            >
+              View All Recent Solds
+            </button>
+          </div>
         </div>
       </div>
 
