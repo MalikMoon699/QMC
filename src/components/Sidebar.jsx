@@ -3,8 +3,20 @@ import { auth } from "../utils/FirebaseConfig";
 import { useAuth } from "../context/AuthContext";
 import QMCLogo from "../assets/images/logo/QMCLogo.png";
 import { toast } from "react-toastify";
-import React,{ useState } from "react";
-import { Fan, LayoutDashboard, LogOut, Menu, SquareX, TabletSmartphone, TriangleAlert, Users,Calendar1, Bell, ShieldCheck } from "lucide-react";
+import React, { useState } from "react";
+import {
+  LayoutDashboard,
+  LogOut,
+  Menu,
+  SquareX,
+  TabletSmartphone,
+  TriangleAlert,
+  Users,
+  Calendar1,
+  Bell,
+  ShieldCheck,
+  Cable,
+} from "lucide-react";
 
 const Sidebar = () => {
   const { currentUser, role } = useAuth();
@@ -115,7 +127,7 @@ const Sidebar = () => {
                     }}
                   >
                     <span className="sidebarIcon">
-                      <Fan />
+                      <Cable />
                     </span>
                     Accessories
                   </li>
@@ -244,7 +256,7 @@ const Sidebar = () => {
                 onClick={() => navigate("/accessories")}
               >
                 <span className="sidebarIcon">
-                  <Fan />
+                  <Cable />
                 </span>
                 Accessories
               </li>

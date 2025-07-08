@@ -18,13 +18,13 @@ import {
 } from "../utils/Helpers";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
-import { Bell, Flag, MessageCircle, User, UserCog } from "lucide-react";
+import { Cable, Calendar1, RefreshCwOff, TabletSmartphone } from "lucide-react";
 import { useNavigate } from "react-router";
 
 const AdminDashboard = () => {
   const { currentUser, role } = useAuth();
   const [fetchType, setFetchType] = useState("Admin");
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [soldOutData, setSoldOutData] = useState([]);
   const [devicesData, setDevicesData] = useState([]);
   const [accessoriesData, setAccessoriesData] = useState([]);
@@ -178,8 +178,8 @@ const AdminDashboard = () => {
               onChange={(e) => setFetchType(e.target.value)}
               className="custom-select"
             >
-              <option value="All">All</option>
               <option value="Admin">Admin</option>
+              <option value="All">All</option>
             </select>
           </div>
         )}
@@ -200,7 +200,7 @@ const AdminDashboard = () => {
             )}
           </div>
           <div className="counterIcon">
-            <Bell color="#ea5173" />
+            <Calendar1 color="#ea5173" />
           </div>
         </div>
         <div className="active-tab tab">
@@ -218,7 +218,7 @@ const AdminDashboard = () => {
             )}
           </div>
           <div className="counterIcon">
-            <UserCog color="#ea5173" />
+            <TabletSmartphone color="#ea5173" />
           </div>
         </div>
         <div className="active-tab tab">
@@ -236,7 +236,7 @@ const AdminDashboard = () => {
             )}
           </div>
           <div className="counterIcon">
-            <MessageCircle color="#ea5173" />
+            <Cable color="#ea5173" />
           </div>
         </div>
         <div className="active-tab tab">
@@ -254,62 +254,11 @@ const AdminDashboard = () => {
             )}
           </div>
           <div className="counterIcon">
-            <Flag color="#ea5173" />
+            <RefreshCwOff color="#ea5173" />
           </div>
         </div>
       </div>
       <div className="dashboard-lists-container">
-        <div className="recent-solds-container">
-          <h3 className="recent-solds-title">Recent Sold Out</h3>
-          <div className="recent-sold-item-iner-container">
-            {soldOutData.slice(0, 5).map((item, index) => (
-              <div
-                onClick={() => handleOpenDetailsModal(item)}
-                className="recent-sold-item"
-                key={item.id || index}
-              >
-                <div className="recent-sold-content-detail">
-                  <div className="recent-sold-image-container">
-                    <img src={(item.images && item.images[0]) || demo1} />
-                  </div>
-                  <div>
-                    <p className="recent-sold-type">
-                      {item.type === "accessory"
-                        ? "Accessories"
-                        : "SmartDevices"}
-                    </p>
-                    <p className="recent-sold-name">
-                      {item.deviceModel || "Unnamed Device"}
-                    </p>
-                  </div>
-                </div>
-                <div className="recent-sold-info">
-                  <p className="recent-sold-price">
-                    {item.deletedAt
-                      ? moment(item.deletedAt.toDate?.() || item.deletedAt)
-                          .fromNow()
-                          .replace(/^./, (c) => c.toUpperCase())
-                      : "Unknown Time"}
-                  </p>
-                  <span className="status completed">
-                    {item.price || "0.00"} PKR
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="view-recent-solds_btn-container">
-            <button
-              onClick={() => {
-                setSoldOutAllItems(true);
-              }}
-              className="view-recent-solds_btn"
-            >
-              View All Recent Solds
-            </button>
-          </div>
-        </div>
         <div className="recent-solds-container">
           <h3 className="recent-solds-title">Recent Smart Devices Added</h3>
           <div className="recent-sold-item-iner-container">
@@ -409,6 +358,57 @@ const AdminDashboard = () => {
               className="view-recent-solds_btn"
             >
               View All Recent Added
+            </button>
+          </div>
+        </div>
+        <div className="recent-solds-container">
+          <h3 className="recent-solds-title">Recent Sold Out</h3>
+          <div className="recent-sold-item-iner-container">
+            {soldOutData.slice(0, 5).map((item, index) => (
+              <div
+                onClick={() => handleOpenDetailsModal(item)}
+                className="recent-sold-item"
+                key={item.id || index}
+              >
+                <div className="recent-sold-content-detail">
+                  <div className="recent-sold-image-container">
+                    <img src={(item.images && item.images[0]) || demo1} />
+                  </div>
+                  <div>
+                    <p className="recent-sold-type">
+                      {item.type === "accessory"
+                        ? "Accessories"
+                        : "SmartDevices"}
+                    </p>
+                    <p className="recent-sold-name">
+                      {item.deviceModel || "Unnamed Device"}
+                    </p>
+                  </div>
+                </div>
+                <div className="recent-sold-info">
+                  <p className="recent-sold-price">
+                    {item.deletedAt
+                      ? moment(item.deletedAt.toDate?.() || item.deletedAt)
+                          .fromNow()
+                          .replace(/^./, (c) => c.toUpperCase())
+                      : "Unknown Time"}
+                  </p>
+                  <span className="status completed">
+                    {item.price || "0.00"} PKR
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="view-recent-solds_btn-container">
+            <button
+              onClick={() => {
+                setSoldOutAllItems(true);
+              }}
+              className="view-recent-solds_btn"
+            >
+              View All Recent Solds
             </button>
           </div>
         </div>
