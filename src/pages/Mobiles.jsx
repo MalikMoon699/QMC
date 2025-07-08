@@ -105,7 +105,7 @@ const Mobiles = () => {
       await setDoc(soldOutRef, {
         ...selectedCard,
         type: "mobile",
-        soldOutAt: new Date().toISOString(),
+        deletedAt: new Date().toISOString(),
       });
       await deleteDoc(doc(db, "SMARTDEVICES", selectedCard.id));
       setDevices((prev) =>
@@ -402,9 +402,6 @@ const Mobiles = () => {
 
       {isUpdateModal && (
         <div
-          onClick={() => {
-            setIsUpdateModal(false);
-          }}
           className="modal-overlay"
         >
           <div style={{ minWidth: "350px" }} className="modal-content">
@@ -415,6 +412,14 @@ const Mobiles = () => {
                 <p>Are You Sure to Update or Sold Out</p>
               </div>
               <div className="logout-btn-container">
+                <button
+                  className="logout-cencel-btn logout-delte-btn-same"
+                  onClick={() => {
+                    setIsUpdateModal(false);
+                  }}
+                >
+                  Cancel
+                </button>
                 <button
                   className="logout-cencel-btn logout-delte-btn-same"
                   onClick={handleDeleteProduct}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../assets/styles/AdminDashboard.css";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../utils/FirebaseConfig";
 import AllSoldOut from "../components/AllSoldOut";
 import { useAuth } from "../context/AuthContext";
@@ -16,14 +16,17 @@ import {
   fetchAccessories,
   fetchSoldOutItems,
 } from "../utils/Helpers";
+import { toast } from "react-toastify";
 
 const AdminDashboard = () => {
   const { currentUser, role } = useAuth();
   const [fetchType, setFetchType] = useState("Admin");
   const [soldOutData, setSoldOutData] = useState([]);
+  const [switchData, setSwitchData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [soldOutItemsDetails, setSoldOutItemsDetails] = useState(false);
   const [soldOutAllItems, setSoldOutAllItems] = useState(false);
+  const [adminId, setAdminId] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -36,9 +39,17 @@ const AdminDashboard = () => {
     }
   }, [fetchType, currentUser]);
 
+  const getswitchData = async () => {
+    const result = await fetchAdminUsers();
+    if (result) {
+      setSwitchData(result.isSwitch);
+      setAdminId(result.id);
+    }
+  };
+
   useEffect(() => {
     fetchCurrentUser(currentUser);
-    fetchAdminUsers();
+    getswitchData();
     fetchAllUsers();
     fetchSmartDevices();
     fetchEvents();
@@ -55,13 +66,55 @@ const AdminDashboard = () => {
     setSelectedItem(null);
   };
 
+  const handleUpdateSwitch = async () => {
+    if (!adminId) return;
+
+    const newSwitchValue = !switchData;
+    try {
+      const adminDocRef = doc(db, "ADMIN", adminId);
+      await updateDoc(adminDocRef, { isSwitch: newSwitchValue });
+      setSwitchData(newSwitchValue);
+      toast.success(
+        `Shop is now ${newSwitchValue === true ? "Opened" : "Closed"}`
+      );
+    } catch (error) {
+      console.error("Error updating switch:", error);
+    }
+  };
+
   return (
     <div>
-      <div>
-        <button onClick={() => setFetchType("Admin")}>Admin</button>
-        <button onClick={() => setFetchType("All")}>All</button>
+      <div className="users-summary-header">
+        <div className="users-status-title shop-status">
+          Now Shop is
+          {role !== "admin" ? (
+            switchData === true ? (
+              " Open"
+            ) : (
+              " Closed"
+            )
+          ) : (
+            <div
+              onClick={handleUpdateSwitch}
+              className={`toggle-switch ${switchData === true ? "on" : "off"}`}
+            >
+              <div className="toggle-knob"></div>
+            </div>
+          )}
+        </div>
+        {role === "admin" && (
+          <div className="action-btn-container">
+            <select
+              value={fetchType}
+              onChange={(e) => setFetchType(e.target.value)}
+              className="custom-select"
+            >
+              <option value="All">All</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+        )}
       </div>
-      <h1>{soldOutData.length}</h1>
       <div className="recent-solds-container">
         <h3 className="recent-solds-title">Recent Sold Out</h3>
         <div className="recent-sold-item-iner-container">
@@ -133,22 +186,16 @@ const AdminDashboard = () => {
                 <div className="mobile-card__info_content">
                   <div className="mobile-card__text mobile-card__info mobile-card_details_container">
                     <h3>{selectedItem.brandName}</h3>
-                    {(role === "admin" ||
-                      currentUser?.email === selectedItem.createdByEmail) && (
-                      <h3
-                        onClick={() => {
-                          setIsUpdateModalOpen(true);
-                        }}
-                        style={{
-                          cursor: "pointer",
-                          padding: "3px 13px",
-                          fontSize: "12px",
-                        }}
-                        className="mobile-card__role"
-                      >
-                        Update
-                      </h3>
-                    )}
+                    <h3
+                      style={{
+                        padding: "3px 13px",
+                        fontSize: "12px",
+                      }}
+                      className="mobile-card__role"
+                    >
+                      {" "}
+                      Sold Out
+                    </h3>
                   </div>
                   <div className="mobile-card_details_container">
                     {selectedItem.fields?.length > 0 &&
@@ -216,22 +263,15 @@ const AdminDashboard = () => {
                 <div className="mobile-card__info_content">
                   <div className="mobile-card__text mobile-card__info mobile-card_details_container">
                     <h3>{selectedItem.brandName}</h3>
-                    {(role === "admin" ||
-                      currentUser?.email === selectedItem.createdByEmail) && (
-                      <h3
-                        onClick={() => {
-                          setIsUpdateModal(true);
-                        }}
-                        style={{
-                          cursor: "pointer",
-                          padding: "3px 13px",
-                          fontSize: "12px",
-                        }}
-                        className="mobile-card__role"
-                      >
-                        Update
-                      </h3>
-                    )}
+                    <h3
+                      style={{
+                        padding: "3px 13px",
+                        fontSize: "12px",
+                      }}
+                      className="mobile-card__role"
+                    >
+                      Sold Out
+                    </h3>
                   </div>
                   <div className="mobile-card_details_container">
                     <p className="mobile_card_details">

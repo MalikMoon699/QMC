@@ -328,11 +328,9 @@ const Accessories = () => {
                   >
                     <strong>Sell By:</strong>
                     <span className="dashed-line"></span>
-                    {selectedCard.createdByEmail === currentUser?.email ? (
-                      "You"
-                    ) : (
-                      selectedCard.createdBy
-                    )}
+                    {selectedCard.createdByEmail === currentUser?.email
+                      ? "You"
+                      : selectedCard.createdBy}
                   </p>
                   <p
                     style={{ color: "#00c000" }}
@@ -374,12 +372,7 @@ const Accessories = () => {
       )}
 
       {isUpdateModalOpen && (
-        <div
-          onClick={() => {
-            setIsUpdateModalOpen(false);
-          }}
-          className="modal-overlay"
-        >
+        <div className="modal-overlay">
           <div style={{ minWidth: "350px" }} className="modal-content">
             <div className="sidebar-modal">
               <div className="contentWrapper">
@@ -388,6 +381,14 @@ const Accessories = () => {
                 <p>Are You Sure to Update or Sold Out</p>
               </div>
               <div className="logout-btn-container">
+                <button
+                  className="logout-cencel-btn logout-delte-btn-same"
+                  onClick={() => {
+                    setIsUpdateModalOpen(false);
+                  }}
+                >
+                  Cancel
+                </button>
                 <button
                   className="logout-cencel-btn logout-delte-btn-same"
                   onClick={handleDeleteProduct}

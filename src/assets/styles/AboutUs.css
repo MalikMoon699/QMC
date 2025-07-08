@@ -100,7 +100,7 @@
   margin-top: 40px;
 }
 
-.users-counts-innercontainer{
+.users-counts-innercontainer {
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -134,7 +134,7 @@
   font-size: 30px;
 }
 
-.sellers-outerContainer{
+.sellers-outerContainer {
   margin-top: 40px;
   border: 1px solid red;
   border-radius: 8px;
@@ -317,6 +317,29 @@
   font-weight: 800;
   width: 100%;
   text-align: center;
+}
+
+.time-Update-Container {
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px;
+  flex-direction: row !important;
+  margin-bottom: 0rem !important;
+  border-top: none !important;
+  padding-top: 0rem !important;
+}
+
+.time-Update-Container > .login-input {
+  margin: 10px 0px 0px 0px;
+}
+
+.important-note {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 32px;
+  text-align: center;
+  padding: 20px;
+  word-spacing: 1px;
 }
 
 @media only screen and (max-width: 1185px) {

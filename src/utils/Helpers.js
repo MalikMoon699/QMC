@@ -37,7 +37,6 @@ export const fetchCurrentUser = async (user) => {
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
       const userDoc = querySnapshot.docs[0];
-      console.log("User document found for fetchCurrentUser:", userDoc.data());
       return {
         collectionName,
         userData: userDoc.data(),
@@ -50,23 +49,19 @@ export const fetchCurrentUser = async (user) => {
 };
 
 export const fetchAdminUsers = async () => {
-  const collectionsToCheck = ["ADMIN"];
-  const allUsers = [];
+  const collectionRef = collection(db, "ADMIN");
+  const querySnapshot = await getDocs(collectionRef);
 
-  for (const collectionName of collectionsToCheck) {
-    const collectionRef = collection(db, collectionName);
-    const querySnapshot = await getDocs(collectionRef);
-
-    querySnapshot.forEach((doc) => {
-      allUsers.push({
-        collectionName,
-        userId: doc.id,
-        userData: doc.data(),
-      });
-    });
+  const firstDoc = querySnapshot.docs[0];
+  if (firstDoc) {
+    const userData = firstDoc.data();
+    return {
+      id: firstDoc.id,
+      ...userData,
+    };
+  } else {
+    return null;
   }
-  console.log("User document found for fetchAdminUsers:", allUsers);
-  return allUsers;
 };
 
 export const fetchAllUsers = async () => {
@@ -85,7 +80,6 @@ export const fetchAllUsers = async () => {
       });
     });
   }
-  console.log("User document found for fetchAllUsers:", allUsers);
   return allUsers;
 };
 

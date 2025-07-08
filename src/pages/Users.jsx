@@ -161,19 +161,25 @@ const Users = () => {
               <div className="user-card__info_content">
                 <div className="user-card__text user-card__info">
                   <h3>{user.name}</h3>
-                  <h3
-                    className="user-card__role"
-                    style={{ cursor: "pointer" }}
-                    onClick={() =>
-                      setUpdateRole({
-                        userId: user.id,
-                        collection: user.collection,
-                        currentRole: user.role,
-                      })
-                    }
-                  >
-                    {user.role === "user" ? "Customer" : "Seller"}
-                  </h3>
+                  {role === "admin" ? (
+                    <h3
+                      className="user-card__role"
+                      style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        setUpdateRole({
+                          userId: user.id,
+                          collection: user.collection,
+                          currentRole: user.role,
+                        })
+                      }
+                    >
+                      {user.role === "user" ? "Customer" : "Seller"}
+                    </h3>
+                  ) : (
+                    <h3 className="user-card__role">
+                      {user.role === "user" ? "Customer" : "Seller"}
+                    </h3>
+                  )}
                 </div>
                 <div className="user-card_details_container"></div>
                 <div className="user-card_personal_details_container ">
@@ -199,29 +205,48 @@ const Users = () => {
                       </a>
                     </div>
                   )}
-                  <div className="user-card__status">
-                    <div
-                      onClick={() =>
-                        updateUserStatus(
-                          user.id,
-                          user.collection,
-                          user.UserType
-                        )
-                      }
-                      className={`user-card__status user-card__status-${
-                        user.UserType === true ? "Active" : "InActive"
-                      }`}
-                    >
-                      <span
-                        className="user-card__status-indicator"
-                        style={{
-                          backgroundColor:
-                            user.UserType === false ? "#ee3f24" : "green",
-                        }}
-                      ></span>
-                      {user.UserType === false ? "InActive" : "Active"}
+                  {role === "admin" ? (
+                    <div className="user-card__status">
+                      <div
+                        onClick={() =>
+                          updateUserStatus(
+                            user.id,
+                            user.collection,
+                            user.UserType
+                          )
+                        }
+                        className={`user-card__status user-card__status-${
+                          user.UserType === true ? "Active" : "InActive"
+                        }`}
+                      >
+                        <span
+                          className="user-card__status-indicator"
+                          style={{
+                            backgroundColor:
+                              user.UserType === false ? "#ee3f24" : "green",
+                          }}
+                        ></span>
+                        {user.UserType === false ? "InActive" : "Active"}
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    <div className="user-card__status">
+                      <div
+                        className={`user-card__status user-card__status-${
+                          user.UserType === true ? "Active" : "InActive"
+                        }`}
+                      >
+                        <span
+                          className="user-card__status-indicator"
+                          style={{
+                            backgroundColor:
+                              user.UserType === false ? "#ee3f24" : "green",
+                          }}
+                        ></span>
+                        {user.UserType === false ? "InActive" : "Active"}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

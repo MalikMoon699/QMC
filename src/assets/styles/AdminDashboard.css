@@ -32,8 +32,8 @@
   transition: all 0.3s ease-in-out;
 }
 
-.recent-sold-item:hover{
-    transform: translate(0px, -5px);
+.recent-sold-item:hover {
+  transform: translate(0px, -5px);
 }
 
 .recent-sold-image-container {
@@ -119,4 +119,49 @@
   background: transparent;
   border: none;
   cursor: pointer;
+}
+
+.shop-status {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+}
+
+.toggle-switch {
+  width: 50px;
+  height: 24px;
+  border-radius: 40px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch .toggle-knob {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  cursor: pointer;
+  top: 2px;
+  transition: left 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch.on {
+  background-color: #00c264;
+}
+
+.toggle-switch.on .toggle-knob {
+  left: 27px;
+}
+
+.toggle-switch.off {
+  background-color: #e53935;
+}
+
+.toggle-switch.off .toggle-knob {
+  left: 2px;
 }

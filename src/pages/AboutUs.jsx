@@ -10,16 +10,13 @@ import {
   Phone,
   MapPin,
   ShieldUser,
+  Clock,
+  Clock10,
 } from "lucide-react";
-import React, { useState, useCallback, useEffect } from "react";
+import moment from "moment";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import {
-  collection,
-  getDocs,
-  doc,
-  updateDoc,
-  setDoc,
-} from "firebase/firestore";
+import { doc, updateDoc, setDoc } from "firebase/firestore";
 import { db, storage } from "../utils/FirebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { demo5 } from "../utils/Demoimages";
@@ -31,6 +28,7 @@ import {
   generateCustomId,
 } from "../utils/Helpers";
 import { toast } from "react-toastify";
+import { fetchAdminUsers } from "../utils/Helpers";
 
 const AboutUs = () => {
   const { currentUser, role } = useAuth();
@@ -49,6 +47,11 @@ const AboutUs = () => {
   const [updateEmail, setUpdateEmail] = useState("");
   const [description, setDescription] = useState("");
   const [updatePhone, setUpdatePhone] = useState("");
+  const [updateimpNote, setUpdateImpNote] = useState("");
+  const [updateOpenTime, setUpdateOpenTime] = useState("");
+  const [updateEndTime, setUpdateEndTime] = useState("");
+  const [updateFriOpenTime, setUpdateFriOpenTime] = useState("");
+  const [updateFriEndTime, setUpdateFriEndTime] = useState("");
   const [updateLocation, setUpdateLocation] = useState("");
   const [updateId, setUpdateId] = useState("");
   const [imageFile, setImageFile] = useState(null);
@@ -66,7 +69,6 @@ const AboutUs = () => {
   };
 
   useEffect(() => {
-    const sellers = allUserDetail.filter((user) => user.role === "seller");
     const selectedCard = carouselRef.current?.children[currentIndex];
     if (selectedCard) {
       selectedCard.scrollIntoView({
@@ -78,8 +80,23 @@ const AboutUs = () => {
   }, [currentIndex, allUserDetail]);
 
   useEffect(() => {
-    getUserDetails();
-    getAllUserDetails();
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        await Promise.all([
+          getUserDetails(),
+          getAllUserDetails(),
+          getAdminDetails(),
+        ]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("Failed to load data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [currentUser]);
 
   const getAllUserDetails = async () => {
@@ -96,41 +113,10 @@ const AboutUs = () => {
     }
   };
 
-  const fetchAdmin = useCallback(async () => {
-    try {
-      const collections = ["ADMIN"];
-      let allAdmins = [];
-
-      for (const collectionName of collections) {
-        const collectionRef = collection(db, collectionName);
-        const querySnapshot = await getDocs(collectionRef);
-        allAdmins = [
-          ...allAdmins,
-          ...querySnapshot.docs.map((docSnap) => ({
-            id: docSnap.id,
-            ...docSnap.data(),
-            collection: collectionName,
-          })),
-        ];
-      }
-
-      const formattedAdmins = allAdmins.map((adminData) => ({
-        name: adminData.name || "Unnamed User",
-        profileImg: adminData.profileImg || demo5,
-        email: adminData.email || "N/A",
-        phoneNumber: adminData.phoneNumber || "N/A",
-        location: adminData.location || "N/A",
-        id: adminData.id,
-      }));
-
-      setAdminData(formattedAdmins);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      setAdminData([]);
-      setLoading(false);
-    }
-  }, []);
+  const getAdminDetails = async () => {
+    const adminDetails = await fetchAdminUsers();
+    setAdminData(adminDetails);
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -167,12 +153,17 @@ const AboutUs = () => {
         name: updateName,
         email: updateEmail,
         phoneNumber: updatePhone,
+        shopOpenTime: updateOpenTime,
+        shopEndTime: updateEndTime,
+        shopFriOpenTime: updateFriOpenTime,
+        shopFriEndTime: updateFriEndTime,
+        impNote: updateimpNote,
         location: updateLocation,
         profileImg: profileImgUrl,
       };
       const adminDocRef = doc(db, "ADMIN", updateId);
       await updateDoc(adminDocRef, updatedData);
-      await fetchAdmin();
+      await getAdminDetails();
       toast.success("Details updated successfully");
     } catch (error) {
       console.error("Error updating admin:", error);
@@ -234,10 +225,6 @@ const AboutUs = () => {
     }
   };
 
-  useEffect(() => {
-    fetchAdmin();
-  }, [fetchAdmin]);
-
   if (loading) {
     return (
       <div>
@@ -252,6 +239,11 @@ const AboutUs = () => {
     setUpdateName(admin.name || "");
     setUpdateEmail(admin.email || "");
     setUpdatePhone(admin.phoneNumber || "");
+    setUpdateImpNote(admin.impNote || "");
+    setUpdateOpenTime(admin.shopOpenTime || "");
+    setUpdateEndTime(admin.shopEndTime || "");
+    setUpdateFriOpenTime(admin.shopFriOpenTime || "");
+    setUpdateFriEndTime(admin.shopFriEndTime || "");
     setUpdateLocation(admin.location || "");
     setUpdate(true);
   };
@@ -262,6 +254,11 @@ const AboutUs = () => {
     setUpdateName("");
     setUpdateEmail("");
     setUpdatePhone("");
+    setUpdateImpNote("");
+    setUpdateOpenTime("");
+    setUpdateEndTime("");
+    setUpdateFriOpenTime("");
+    setUpdateFriEndTime("");
     setUpdateLocation("");
     setImageFile(null);
     setUpdate(false);
@@ -338,7 +335,7 @@ const AboutUs = () => {
               gap: "12px",
             }}
             className="action-btn"
-            onClick={() => handleUpdateOpen(adminData[0])}
+            onClick={() => handleUpdateOpen(adminData)}
           >
             <ArrowUpFromLine size={20} />
             Update
@@ -348,72 +345,95 @@ const AboutUs = () => {
       <div className="aboutUs-main-container">
         <div className="owner-details-container">
           <div className="about_header">
+            <h3>Important Note</h3>
+          </div>
+          <div className="important-note">
+            {adminData.impNote ||
+              " We are here to help you. Please fill The Form in top right corner,Choose your Option report OR feedBack to get in touch with us. Wewill get back to you as soon as possible."}
+          </div>
+        </div>
+        <div style={{ marginTop: "40px" }} className="owner-details-container">
+          <div className="about_header">
             <h3> Owner Details</h3>
           </div>
-          {adminData.length > 0 ? (
-            adminData.map((admin, index) => (
-              <div key={index} className="owner-details-innercontainer">
-                <div className="owner-details-first-child">
-                  <img src={admin.profileImg} alt={`${admin.name}'s profile`} />
-                </div>
-                <div className="owner-details-second-child">
-                  <div className="copy-item-constainer">
-                    <ShieldUser />
-                    <span
-                      className="copy-item"
-                      onClick={() =>
-                        copyClicked(admin.name, "Name copied successfully")
-                      }
-                    >
-                      {admin.name}
-                    </span>
-                  </div>
-
-                  <div className="copy-item-constainer">
-                    <Mail />
-                    <span
-                      className="copy-item"
-                      onClick={() =>
-                        copyClicked(admin.email, "Email copied successfully")
-                      }
-                    >
-                      {admin.email}
-                    </span>
-                  </div>
-                  <div className="copy-item-constainer">
-                    <Phone />
-                    <span
-                      className="copy-item"
-                      onClick={() =>
-                        copyClicked(
-                          admin.phoneNumber,
-                          "Phone Number copied successfully."
-                        )
-                      }
-                    >
-                      {admin.phoneNumber}
-                    </span>
-                  </div>
-                  <div className="copy-item-constainer">
-                    <MapPin size={30} />
-                    <span
-                      className="copy-item"
-                      onClick={() =>
-                        copyClicked(
-                          admin.location,
-                          "Location copied successfully."
-                        )
-                      }
-                    >
-                      {admin.location}
-                    </span>
-                  </div>
-                </div>
+          <div className="owner-details-innercontainer">
+            <div className="owner-details-first-child">
+              <img
+                src={adminData.profileImg}
+                alt={`${adminData.name}'s profile`}
+              />
+            </div>
+            <div className="owner-details-second-child">
+              <div className="copy-item-constainer">
+                <ShieldUser />
+                <span
+                  className="copy-item"
+                  onClick={() =>
+                    copyClicked(adminData.name, "Name copied successfully")
+                  }
+                >
+                  {adminData.name}
+                </span>
               </div>
-            ))
-          ) : (
-            <div>No admin data available</div>
-          )}
+
+              <div className="copy-item-constainer">
+                <Mail />
+                <span
+                  className="copy-item"
+                  onClick={() =>
+                    copyClicked(adminData.email, "Email copied successfully")
+                  }
+                >
+                  {adminData.email}
+                </span>
+              </div>
+              <div className="copy-item-constainer">
+                <Phone />
+                <span
+                  className="copy-item"
+                  onClick={() =>
+                    copyClicked(
+                      adminData.phoneNumber,
+                      "Phone Number copied successfully."
+                    )
+                  }
+                >
+                  {adminData.phoneNumber}
+                </span>
+              </div>
+              <div className="copy-item-constainer">
+                <Clock10 />
+                <span className="copy-item">
+                  Week:{" "}
+                  {moment(adminData.shopOpenTime, "HH:mm").format("hh:mm A")} to{" "}
+                  {moment(adminData.shopEndTime, "HH:mm").format("hh:mm A")}
+                </span>
+              </div>
+              <div className="copy-item-constainer">
+                <Clock />
+                <span className="copy-item">
+                  Fri:{" "}
+                  {moment(adminData.shopFriOpenTime, "HH:mm").format("hh:mm A")}{" "}
+                  to{" "}
+                  {moment(adminData.shopFriEndTime, "HH:mm").format("hh:mm A")}
+                </span>
+              </div>
+              <div className="copy-item-constainer">
+                <MapPin size={30} />
+                <span
+                  className="copy-item"
+                  onClick={() =>
+                    copyClicked(
+                      adminData.location,
+                      "Location copied successfully."
+                    )
+                  }
+                >
+                  {adminData.location}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="users-counts-container">
           <div className="about_header">
@@ -457,7 +477,7 @@ const AboutUs = () => {
                   .filter((user) => user.role === "seller")
                   .map((user, index) => (
                     <div
-                      key={user.id}
+                      key={user.id || index}
                       className={`user-card about_user-card ${
                         index === currentIndex ? "selected_about_user-card" : ""
                       }`}
@@ -836,6 +856,51 @@ const AboutUs = () => {
                     value={updatePhone}
                     onChange={(e) => setUpdatePhone(e.target.value)}
                   />
+                </div>
+                <div>
+                  <span>Important Note</span>
+                  <input
+                    type="text"
+                    className="edit-input"
+                    value={updateimpNote}
+                    onChange={(e) => setUpdateImpNote(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <span>Shop Timing</span>
+                  <div className="time-Update-Container">
+                    <input
+                      type="time"
+                      className="login-input"
+                      value={updateOpenTime}
+                      onChange={(e) => setUpdateOpenTime(e.target.value)}
+                    />
+                    to{" "}
+                    <input
+                      type="time"
+                      className="login-input"
+                      value={updateEndTime}
+                      onChange={(e) => setUpdateEndTime(e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <span>Shop Timing FriDay</span>
+                  <div className="time-Update-Container">
+                    <input
+                      type="time"
+                      className="login-input"
+                      value={updateFriOpenTime}
+                      onChange={(e) => setUpdateFriOpenTime(e.target.value)}
+                    />
+                    to{" "}
+                    <input
+                      type="time"
+                      className="login-input"
+                      value={updateFriEndTime}
+                      onChange={(e) => setUpdateFriEndTime(e.target.value)}
+                    />
+                  </div>
                 </div>
                 <div>
                   <span>Location</span>

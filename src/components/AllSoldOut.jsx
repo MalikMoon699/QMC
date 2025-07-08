@@ -160,22 +160,16 @@ const AllSoldOut = ({ soldOutData, onClose }) => {
                 <div className="mobile-card__info_content">
                   <div className="mobile-card__text mobile-card__info mobile-card_details_container">
                     <h3>{selectedItem.brandName}</h3>
-                    {(role === "admin" ||
-                      currentUser?.email === selectedItem.createdByEmail) && (
-                      <h3
-                        onClick={() => {
-                          setIsUpdateModal(true);
-                        }}
-                        style={{
-                          cursor: "pointer",
-                          padding: "3px 13px",
-                          fontSize: "12px",
-                        }}
-                        className="mobile-card__role"
-                      >
-                        Update
-                      </h3>
-                    )}
+                    <h3
+                      style={{
+                        cursor: "pointer",
+                        padding: "3px 13px",
+                        fontSize: "12px",
+                      }}
+                      className="mobile-card__role"
+                    >
+                      Sold Out
+                    </h3>
                   </div>
                   <div className="mobile-card_details_container">
                     <p className="mobile_card_details">

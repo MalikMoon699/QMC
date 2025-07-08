@@ -439,9 +439,6 @@ const Events = () => {
 
       {isUpdateModal && (
         <div
-          onClick={() => {
-            setIsUpdateModal(false);
-          }}
           className="modal-overlay"
         >
           <div style={{ minWidth: "350px" }} className="modal-content">
@@ -452,6 +449,14 @@ const Events = () => {
                 <p>Are You Sure to Update or Delete</p>
               </div>
               <div className="logout-btn-container">
+                <button
+                  className="logout-cencel-btn logout-delte-btn-same"
+                  onClick={() => {
+                    setIsUpdateModal(false);
+                  }}
+                >
+                  Cancel
+                </button>
                 <button
                   className="logout-cencel-btn logout-delte-btn-same"
                   onClick={handleDeleteEvent}
