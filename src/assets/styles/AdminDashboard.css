@@ -11,6 +11,7 @@
 
 .recent-sold-item-iner-container {
   padding: 10px;
+  min-height: 485px;
 }
 
 .recent-sold-content-detail {
@@ -176,5 +177,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  margin-top: 40px;
+  gap: 15px;
 }

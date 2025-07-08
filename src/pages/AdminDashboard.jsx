@@ -19,18 +19,22 @@ import {
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import { Bell, Flag, MessageCircle, User, UserCog } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const AdminDashboard = () => {
   const { currentUser, role } = useAuth();
   const [fetchType, setFetchType] = useState("Admin");
+    const navigate = useNavigate();
   const [soldOutData, setSoldOutData] = useState([]);
+  const [devicesData, setDevicesData] = useState([]);
+  const [accessoriesData, setAccessoriesData] = useState([]);
   const [switchData, setSwitchData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [soldOutItemsDetails, setSoldOutItemsDetails] = useState(false);
   const [switchLoading, setSwitchLoading] = useState(false);
   const [soldOutAllItems, setSoldOutAllItems] = useState(false);
   const [adminId, setAdminId] = useState(null);
-  const [usersCount, setUsersCount] = useState(null);
+  const [eventsCount, setEventsCount] = useState(null);
   const [devicesCount, setDevicesCount] = useState(null);
   const [accessoriesCount, setAccessoriesCount] = useState(null);
   const [soldOutCount, setSoldOutCount] = useState(null);
@@ -40,7 +44,7 @@ const AdminDashboard = () => {
     if (currentUser) {
       getData();
     }
-    fetchAllUsersLength();
+    fetchAllEventsLength();
     fetchAllDevicesLength();
     fetchAllAccessoriesLength();
   }, [fetchType, currentUser]);
@@ -61,10 +65,10 @@ const AdminDashboard = () => {
     }
   };
 
-  const fetchAllUsersLength = async () => {
+  const fetchAllEventsLength = async () => {
     setLoading(true);
-    const result = await fetchAllUsers();
-    setUsersCount(result.length);
+    const result = await fetchEvents();
+    setEventsCount(result.length);
     setLoading(false);
   };
 
@@ -77,8 +81,10 @@ const AdminDashboard = () => {
         (device) => device.userId === currentUser.uid
       );
       setDevicesCount(owndevices.length);
+      setDevicesData(owndevices);
       setLoading(false);
     } else {
+      setDevicesData(result);
       setDevicesCount(result.length);
       setLoading(false);
     }
@@ -93,9 +99,11 @@ const AdminDashboard = () => {
         (device) => device.userId === currentUser.uid
       );
       setAccessoriesCount(owndevices.length);
+      setAccessoriesData(owndevices);
       setLoading(false);
     } else {
       setAccessoriesCount(result.length);
+      setAccessoriesData(result);
       setLoading(false);
     }
   };
@@ -103,7 +111,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchCurrentUser(currentUser);
     getswitchData();
-    fetchEvents();
+    fetchAllUsers();
   }, []);
 
   const handleOpenDetailsModal = (item) => {
@@ -179,15 +187,15 @@ const AdminDashboard = () => {
       <div className="tabsWrapper">
         <div className="active-tab tab">
           <div className="counterContentWrapper">
-            <h3>Total Users</h3>
+            <h3>Events</h3>
             {loading ? (
               <div className="counterLoader">
                 <Loader className={"counterLoader"} loading={true} size={30} />
               </div>
             ) : (
               <div className="countWrapper">
-                <h3>{usersCount}</h3>
-                <span>Users</span>
+                <h3>{eventsCount}</h3>
+                <span>Events</span>
               </div>
             )}
           </div>
@@ -303,9 +311,9 @@ const AdminDashboard = () => {
           </div>
         </div>
         <div className="recent-solds-container">
-          <h3 className="recent-solds-title">Recent Accessories Added</h3>
+          <h3 className="recent-solds-title">Recent Smart Devices Added</h3>
           <div className="recent-sold-item-iner-container">
-            {soldOutData.slice(0, 5).map((item, index) => (
+            {devicesData.slice(0, 5).map((item, index) => (
               <div
                 onClick={() => handleOpenDetailsModal(item)}
                 className="recent-sold-item"
@@ -328,8 +336,8 @@ const AdminDashboard = () => {
                 </div>
                 <div className="recent-sold-info">
                   <p className="recent-sold-price">
-                    {item.deletedAt
-                      ? moment(item.deletedAt.toDate?.() || item.deletedAt)
+                    {item.createdAt
+                      ? moment(item.createdAt.toDate?.() || item.createdAt)
                           .fromNow()
                           .replace(/^./, (c) => c.toUpperCase())
                       : "Unknown Time"}
@@ -345,18 +353,18 @@ const AdminDashboard = () => {
           <div className="view-recent-solds_btn-container">
             <button
               onClick={() => {
-                setSoldOutAllItems(true);
+                navigate("/devices");
               }}
               className="view-recent-solds_btn"
             >
-              View All Recent Solds
+              View All Recent Added
             </button>
           </div>
         </div>
         <div className="recent-solds-container">
-          <h3 className="recent-solds-title">Recent Smart Devices Added</h3>
+          <h3 className="recent-solds-title">Recent Accessories Added</h3>
           <div className="recent-sold-item-iner-container">
-            {soldOutData.slice(0, 5).map((item, index) => (
+            {accessoriesData.slice(0, 5).map((item, index) => (
               <div
                 onClick={() => handleOpenDetailsModal(item)}
                 className="recent-sold-item"
@@ -379,8 +387,8 @@ const AdminDashboard = () => {
                 </div>
                 <div className="recent-sold-info">
                   <p className="recent-sold-price">
-                    {item.deletedAt
-                      ? moment(item.deletedAt.toDate?.() || item.deletedAt)
+                    {item.createdAt
+                      ? moment(item.createdAt.toDate?.() || item.createdAt)
                           .fromNow()
                           .replace(/^./, (c) => c.toUpperCase())
                       : "Unknown Time"}
@@ -396,11 +404,11 @@ const AdminDashboard = () => {
           <div className="view-recent-solds_btn-container">
             <button
               onClick={() => {
-                setSoldOutAllItems(true);
+                navigate("/accessories");
               }}
               className="view-recent-solds_btn"
             >
-              View All Recent Solds
+              View All Recent Added
             </button>
           </div>
         </div>

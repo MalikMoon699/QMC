@@ -314,7 +314,9 @@ const Events = () => {
                   >
                     <strong>Event By:</strong>
                     <span className="dashed-line"></span>
-                    {selectedCard.createdBy}
+                    {selectedCard?.createdByEmail === currentUser?.email
+                      ? "You"
+                      : selectedCard.createdBy}
                   </p>
                   <p
                     style={{ color: "#00c000" }}
@@ -396,7 +398,9 @@ const Events = () => {
                   >
                     <strong>Sell By:</strong>
                     <span className="dashed-line"></span>
-                    {selectedEventCard.createdBy}
+                    {selectedEventCard.createdByEmail === currentUser.email
+                      ? "You"
+                      : selectedEventCard.createdBy}
                   </p>
                   <p
                     style={{ color: "#00c000" }}
@@ -438,9 +442,7 @@ const Events = () => {
       )}
 
       {isUpdateModal && (
-        <div
-          className="modal-overlay"
-        >
+        <div className="modal-overlay">
           <div style={{ minWidth: "350px" }} className="modal-content">
             <div className="sidebar-modal">
               <div className="contentWrapper">
