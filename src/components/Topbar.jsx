@@ -5,7 +5,6 @@ import { useAuth } from "../context/AuthContext";
 import { db } from "../utils/FirebaseConfig";
 import TopBarModal from "./TopBarModal";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-// import Notifications from "./Notifications";
 import { useLocation } from "react-router-dom";
 import { Search } from "lucide-react";
 
@@ -22,7 +21,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
     error: "",
     userCustomId: null,
     userData: {
-      name: currentUser?.displayName || "Unknown User",
+      name: "",
       userEmail: "",
       phoneNumber: "",
       profileImg: "",
@@ -42,8 +41,8 @@ const TopBar = ({ searchTxt, setSearchText }) => {
     const setupListeners = () => {
       const collectionMap = {
         user: "USERS",
-        seller: "SELLERS",
         admin: "ADMIN",
+        seller: "USERS",
       };
       const collectionName = collectionMap[role.toLowerCase()];
       const userQuery = query(
@@ -54,18 +53,31 @@ const TopBar = ({ searchTxt, setSearchText }) => {
       unsubscribeRef.current.user = onSnapshot(
         userQuery,
         (querySnapshot) => {
+          console.log(
+            "Query results:",
+            querySnapshot.docs.map((d) => d.data())
+          );
+          if (!collectionName) {
+            console.error("No collection mapped for role:", role);
+            setState((prev) => ({
+              ...prev,
+              loading: false,
+              error: "Invalid user role",
+            }));
+            return;
+          }
           if (!querySnapshot.empty) {
             const userDoc = querySnapshot.docs[0];
             const data = userDoc.data();
             setState((prev) => ({
               ...prev,
               userData: {
-                name: data.name || currentUser.displayName || "Unknown User",
-                userEmail: data.userEmail || "",
+                name: data.name || "",
+                userEmail: data.email || "",
                 phoneNumber: data.phoneNumber || "",
                 profileImg: data.profileImg || "",
               },
-              userCustomId: data.customId || userDoc.id,
+              userCustomId: userDoc.id,
               loading: false,
             }));
           } else {
@@ -96,6 +108,8 @@ const TopBar = ({ searchTxt, setSearchText }) => {
       if (unsubscribeRef.current.user) unsubscribeRef.current.user();
     };
   }, [currentUser, role]);
+
+  console.log("state", state);
 
   return (
     <>
@@ -132,7 +146,6 @@ const TopBar = ({ searchTxt, setSearchText }) => {
             )}
           </div>
           <div className="topBarActionsWrapper">
-            {/* <Notifications /> */}
             <div
               onClick={() =>
                 setState((prev) => ({ ...prev, isOpen: !prev.isOpen }))
@@ -174,7 +187,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
       </div>
       <div className="topBarContainer">
         <div className="topBarInnerContainer">
-          <div className={location.pathname !== "/"  ? "searchWrapper" : ""}>
+          <div className={location.pathname !== "/" ? "searchWrapper" : ""}>
             {location.pathname !== "/" ? (
               <>
                 <input
@@ -193,7 +206,6 @@ const TopBar = ({ searchTxt, setSearchText }) => {
             )}
           </div>
           <div className="topBarActionsWrapper">
-            {/* <Notifications /> */}
             <div
               onClick={() =>
                 setState((prev) => ({ ...prev, isOpen: !prev.isOpen }))
@@ -229,7 +241,6 @@ const TopBar = ({ searchTxt, setSearchText }) => {
             if (unsubscribeRef.current.user) unsubscribeRef.current.user();
             const collectionMap = {
               user: "USERS",
-              sellers: "SELLERS",
               admin: "ADMIN",
             };
             const collectionName =

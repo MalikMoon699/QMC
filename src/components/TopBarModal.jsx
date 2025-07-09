@@ -32,6 +32,7 @@ const TopBarModal = ({ userData, onProfileUpdate, isOpen, setIsOpen }) => {
     fileInputRef.current.click();
   };
 
+  console.log(userData);
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -40,7 +41,7 @@ const TopBarModal = ({ userData, onProfileUpdate, isOpen, setIsOpen }) => {
   };
 
   const getUserDocId = async () => {
-    const collectionName = role === "user" ? "EMPLOYEES" : role.toUpperCase();
+    const collectionName = role === "user";
     const collectionRef = collection(db, collectionName);
     const q = query(collectionRef, where("uid", "==", currentUser.uid));
     const querySnapshot = await getDocs(q);
