@@ -339,13 +339,13 @@ const AdminDashboard = () => {
           displayArea={currentDisplay}
           onDisplayChange={setCurrentDisplay}
         />
-        {/* <MonthlyStatusChart
+        <MonthlyStatusChart
           eventsCount={eventsCount}
           devicesCount={devicesCount}
           accessoriesCount={accessoriesCount}
           soldOutCount={soldOutCount}
           loading={loading}
-        /> */}
+        />
       </div>
       <div className="dashboard-lists-container">
         <div className="recent-solds-container">

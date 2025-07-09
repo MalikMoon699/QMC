@@ -5,7 +5,7 @@ import Loader from "./Loader";
 const COLORS = ["#3EC833", "#EE3F24", "#0000000f", "#ec5d7d2b"];
 
 const CustomLabel = ({ viewBox, chartData }) => {
-  const { cx, cy } = viewBox;
+  const { cx = 150, cy = 150 } = viewBox || {};
   return (
     <g>
       <text
@@ -99,11 +99,8 @@ const MonthlyStatusChart = ({
   }, [eventsCount, devicesCount, accessoriesCount, soldOutCount]);
 
   return (
-    <div
-      style={{ maxHeight: "434px", overflow: "hidden" }}
-      className="leave-request"
-    >
-      <h2 className="leave-request-header">Inventory Status</h2>
+    <div className="leave-request">
+      <h2 className="leave-request-header">Monthly Status</h2>
       {loading ? (
         <div
           style={{
@@ -116,7 +113,7 @@ const MonthlyStatusChart = ({
           <Loader loading={true} />
         </div>
       ) : (
-        <div style={{ width: "100%", height: 420 }}>
+        <div className="monthly-chart-container" style={{ width: "100%", height: 420 }}>
           <ResponsiveContainer>
             <PieChart className="chart-circle">
               <Pie

@@ -80,12 +80,6 @@ const LineStatusChart = ({
   return (
     <div
       className="chart-container"
-      style={{
-        padding: "20px",
-        backgroundColor: "#fff",
-        borderRadius: "8px",
-        boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-      }}
     >
       <div className="chart-header" style={{ marginBottom: "20px" }}>
         <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>

@@ -174,13 +174,35 @@
 }
 
 .dashboard-lists-container{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   margin-top: 40px;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
+  gap: 10px;
+  width: 100%;
 }
 
 .dashboard-charts-container{
   margin-top: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+@media only screen and (max-width: 1300px) {
+  .dashboard-charts-container{
+    margin-top: 40px;
+    display: grid;
+    gap: 10px;
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 440px) {
+  .dashboard-charts-container{
+    margin-top: 40px;
+    display: grid;
+    gap: 10px;
+    width: 100%;
+  }
 }
