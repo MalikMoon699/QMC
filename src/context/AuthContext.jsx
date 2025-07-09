@@ -23,6 +23,7 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import Loader from "../components/Loader";
 import { generateCustomId } from "../utils/Helpers";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
 
@@ -120,7 +121,7 @@ export const AuthProvider = ({ children }) => {
         const { userData } = userInfo;
         if (userData.isActive === false) {
           await signOut(auth);
-          throw new Error("Your account is inactive.");
+          toast.error("Your account is inactive.");
         }
         setCurrentUser(user);
         setRole(userData.role);

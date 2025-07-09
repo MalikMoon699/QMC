@@ -81,28 +81,43 @@ const AboutUs = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        await Promise.all([
-          getUserDetails(),
-          getAllUserDetails(),
-          getAdminDetails(),
+        const [userDetails, allUsers, adminDetails] = await Promise.all([
+          getUserDetails().catch((err) => {
+            console.error("Error fetching user details:", err);
+            return null;
+          }),
+          getAllUserDetails().catch((err) => {
+            console.error("Error fetching all users:", err);
+            return [];
+          }),
+          getAdminDetails().catch((err) => {
+            console.error("Error fetching admin details:", err);
+            return null;
+          }),
         ]);
+        if (userDetails) setCurrentUserDetails(userDetails.userData || {});
+        if (allUsers) setAllUserDetails(allUsers);
+        if (adminDetails) setAdminData(adminDetails);
       } catch (error) {
-        console.error("Error fetching data:", error);
-        toast.error("Failed to load data");
+        console.error("Unexpected error:", error);
+        toast.error("Failed to load some data");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    if (currentUser) {
+      fetchData();
+    } else {
+      setLoading(false);
+    }
   }, [currentUser]);
 
   const getAllUserDetails = async () => {
     const fetchUsers = await fetchAllUsers();
-    const allUsers = fetchUsers.map((user) => user.userData);
-    setAllUserDetails(allUsers);
+    setAllUserDetails(fetchUsers);
   };
 
   const getUserDetails = async () => {

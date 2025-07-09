@@ -73,13 +73,16 @@ export const fetchAllUsers = async () => {
     const querySnapshot = await getDocs(collectionRef);
 
     querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
       allUsers.push({
-        collectionName,
-        userId: doc.id,
-        userData: doc.data(),
+        id: doc.id,
+        collection: collectionName,
+        ...data,
       });
     });
   }
+
   return allUsers;
 };
 
