@@ -53,10 +53,6 @@ const TopBar = ({ searchTxt, setSearchText }) => {
       unsubscribeRef.current.user = onSnapshot(
         userQuery,
         (querySnapshot) => {
-          console.log(
-            "Query results:",
-            querySnapshot.docs.map((d) => d.data())
-          );
           if (!collectionName) {
             console.error("No collection mapped for role:", role);
             setState((prev) => ({
@@ -109,7 +105,6 @@ const TopBar = ({ searchTxt, setSearchText }) => {
     };
   }, [currentUser, role]);
 
-  console.log("state", state);
 
   return (
     <>

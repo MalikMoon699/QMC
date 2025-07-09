@@ -31,8 +31,7 @@ const TopBarModal = ({ userData, onProfileUpdate, isOpen, setIsOpen }) => {
   const handleImageClick = () => {
     fileInputRef.current.click();
   };
-
-  console.log(userData);
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
