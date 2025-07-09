@@ -3,7 +3,8 @@ import { demo1, demo2, demo3, demo4 } from "../utils/Demoimages";
 import moment from "moment";
 import Slider from "../components/Slider";
 
-const AllSoldOut = ({ soldOutData, onClose }) => {
+
+const AllSoldOut = ({ soldOutData, onClose,fetchType, currentUser}) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [soldOutItemsDetails, setSoldOutItemsDetails] = useState(false);
 
@@ -26,7 +27,7 @@ const AllSoldOut = ({ soldOutData, onClose }) => {
           </button>
           <h3 className="modal-title">All Your Sold Out</h3>
         </div>
-        <div className="recent-sold-item-iner-container">
+        <div className="recent-sold-item-modal recent-sold-item-iner-container">
           {soldOutData.map((item, index) => (
             <div
               onClick={() => handleOpenDetailsModal(item)}
@@ -38,9 +39,19 @@ const AllSoldOut = ({ soldOutData, onClose }) => {
                   <img src={(item.images && item.images[0]) || demo1} />
                 </div>
                 <div>
-                  <p className="recent-sold-type">
-                    {item.type === "accessory" ? "Accessories" : "SmartDevices"}
-                  </p>
+                  {fetchType === "Admin" ? (
+                    <p className="recent-sold-type">
+                      {item.type === "accessory"
+                        ? "Accessories"
+                        : "SmartDevices"}
+                    </p>
+                  ) : (
+                    <p className="recent-sold-type">
+                      {item.createdByEmail === currentUser?.email
+                        ? "You"
+                        : item.createdBy}
+                    </p>
+                  )}
                   <p className="recent-sold-name">
                     {item.deviceModel || "Unnamed Device"}
                   </p>

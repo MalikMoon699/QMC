@@ -362,11 +362,19 @@ const AdminDashboard = () => {
                     <img src={(item.images && item.images[0]) || demo1} />
                   </div>
                   <div>
-                    <p className="recent-sold-type">
-                      {item.type === "accessory"
-                        ? "Accessories"
-                        : "SmartDevices"}
-                    </p>
+                    {fetchType === "Admin" ? (
+                      <p className="recent-sold-type">
+                        {item.type === "accessory"
+                          ? "Accessories"
+                          : "SmartDevices"}
+                      </p>
+                    ) : (
+                      <p className="recent-sold-type">
+                        {item.createdByEmail === currentUser?.email
+                          ? "You"
+                          : item.createdBy}
+                      </p>
+                    )}
                     <p className="recent-sold-name">
                       {item.deviceModel || "Unnamed Device"}
                     </p>
@@ -413,11 +421,19 @@ const AdminDashboard = () => {
                     <img src={(item.images && item.images[0]) || demo1} />
                   </div>
                   <div>
-                    <p className="recent-sold-type">
-                      {item.type === "accessory"
-                        ? "Accessories"
-                        : "SmartDevices"}
-                    </p>
+                    {fetchType === "Admin" ? (
+                      <p className="recent-sold-type">
+                        {item.type === "accessory"
+                          ? "Accessories"
+                          : "SmartDevices"}
+                      </p>
+                    ) : (
+                      <p className="recent-sold-type">
+                        {item.createdByEmail === currentUser?.email
+                          ? "You"
+                          : item.createdBy}
+                      </p>
+                    )}
                     <p className="recent-sold-name">
                       {item.deviceModel || "Unnamed Device"}
                     </p>
@@ -464,11 +480,20 @@ const AdminDashboard = () => {
                     <img src={(item.images && item.images[0]) || demo1} />
                   </div>
                   <div>
-                    <p className="recent-sold-type">
-                      {item.type === "accessory"
-                        ? "Accessories"
-                        : "SmartDevices"}
-                    </p>
+                    {fetchType === "Admin" ? (
+                      <p className="recent-sold-type">
+                        {item.type === "accessory"
+                          ? "Accessories"
+                          : "SmartDevices"}
+                      </p>
+                    ) : (
+                      <p className="recent-sold-type">
+                        {item.createdByEmail === currentUser?.email
+                          ? "You"
+                          : item.createdBy}
+                      </p>
+                    )}
+
                     <p className="recent-sold-name">
                       {item.deviceModel || "Unnamed Device"}
                     </p>
@@ -531,7 +556,6 @@ const AdminDashboard = () => {
                       }}
                       className="mobile-card__role"
                     >
-                      {" "}
                       Sold Out
                     </h3>
                   </div>
@@ -685,7 +709,9 @@ const AdminDashboard = () => {
 
       {soldOutAllItems && (
         <AllSoldOut
+          currentUser={currentUser}
           soldOutData={soldOutData}
+          fetchType={fetchType}
           onClose={() => {
             setSoldOutAllItems(false);
           }}
