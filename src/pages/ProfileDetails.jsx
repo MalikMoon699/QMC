@@ -32,11 +32,9 @@ const ProfileDetails = () => {
   const fileInputRef = useRef(null);
   const { currentUser, role } = useAuth();
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
 
   useEffect(() => {
     if (currentUser) {
-      // Fetch user data from Firestore
       const fetchUserData = async () => {
         try {
           setLoading(true);
@@ -47,7 +45,7 @@ const ProfileDetails = () => {
 
           if (!querySnapshot.empty) {
             const userData = querySnapshot.docs[0].data();
-            setName(userData.name || ""); // Set name if it exists, otherwise empty
+            setName(userData.name || "");
             setPhoneNumber(userData.phoneNumber || "");
             setImageSrc(userData.profileImg || ProfileImage);
           }
@@ -107,7 +105,8 @@ const ProfileDetails = () => {
       setUploading(false);
       return;
     }
-    if (phoneNumber && phoneNumber.length < 11) {
+
+    if (!phoneNumber || phoneNumber.length < 11) {
       setError("Phone number must be at least 11 digits.");
       setUploading(false);
       return;

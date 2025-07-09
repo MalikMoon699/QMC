@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import "../assets/styles/AdminDashboard.css";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../utils/FirebaseConfig";
 import AllSoldOut from "../components/AllSoldOut";
 import { useAuth } from "../context/AuthContext";
 import { demo1, demo2, demo3, demo4 } from "../utils/Demoimages";
+import LineStatusChart from "../components/LineStatusChart";
+import MonthlyStatusChart from "../components/MonthlyStatusChart";
 import moment from "moment";
 import Slider from "../components/Slider";
 import {
@@ -22,6 +24,11 @@ import { Cable, Calendar1, RefreshCwOff, TabletSmartphone } from "lucide-react";
 import { useNavigate } from "react-router";
 
 const AdminDashboard = () => {
+  const [currentDisplay, setCurrentDisplay] = useState("Devices");
+  const [eventsCount, setEventsCount] = useState(0);
+  const [devicesCount, setDevicesCount] = useState(0);
+  const [accessoriesCount, setAccessoriesCount] = useState(0);
+  const [soldOutCount, setSoldOutCount] = useState(0);
   const { currentUser, role } = useAuth();
   const [fetchType, setFetchType] = useState("Admin");
   const navigate = useNavigate();
@@ -34,11 +41,66 @@ const AdminDashboard = () => {
   const [switchLoading, setSwitchLoading] = useState(false);
   const [soldOutAllItems, setSoldOutAllItems] = useState(false);
   const [adminId, setAdminId] = useState(null);
-  const [eventsCount, setEventsCount] = useState(null);
-  const [devicesCount, setDevicesCount] = useState(null);
-  const [accessoriesCount, setAccessoriesCount] = useState(null);
-  const [soldOutCount, setSoldOutCount] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const prepareChartData = () => {
+    const totalItems =
+      eventsCount + devicesCount + accessoriesCount + soldOutCount;
+    const eventsChartData = [
+      {
+        name: "Events",
+        count: eventsCount,
+        percentage:
+          totalItems > 0 ? Math.round((eventsCount / totalItems) * 100) : 0,
+      },
+    ];
+
+    const devicesChartData = [
+      {
+        name: "Devices",
+        count: devicesCount,
+        percentage:
+          totalItems > 0 ? Math.round((devicesCount / totalItems) * 100) : 0,
+      },
+    ];
+
+    const accessoriesChartData = [
+      {
+        name: "Accessories",
+        count: accessoriesCount,
+        percentage:
+          totalItems > 0
+            ? Math.round((accessoriesCount / totalItems) * 100)
+            : 0,
+      },
+    ];
+
+    const soldOutChartData = [
+      {
+        name: "Sold Out",
+        count: soldOutCount,
+        percentage:
+          totalItems > 0 ? Math.round((soldOutCount / totalItems) * 100) : 0,
+      },
+    ];
+
+    return {
+      eventsChartData,
+      devicesChartData,
+      accessoriesChartData,
+      soldOutChartData,
+    };
+  };
+
+  const {
+    eventsChartData,
+    devicesChartData,
+    accessoriesChartData,
+    soldOutChartData,
+  } = useMemo(
+    () => prepareChartData(),
+    [eventsCount, devicesCount, accessoriesCount, soldOutCount]
+  );
 
   useEffect(() => {
     if (currentUser) {
@@ -257,6 +319,23 @@ const AdminDashboard = () => {
             <RefreshCwOff color="#ea5173" />
           </div>
         </div>
+      </div>
+      <div className="dashboard-charts-container">
+        <LineStatusChart
+          eventsData={[]}
+          devicesData={devicesData}
+          accessoriesData={accessoriesData}
+          soldOutData={soldOutData}
+          displayArea={currentDisplay}
+          onDisplayChange={setCurrentDisplay}
+        />
+        {/* <MonthlyStatusChart
+          eventsCount={eventsCount}
+          devicesCount={devicesCount}
+          accessoriesCount={accessoriesCount}
+          soldOutCount={soldOutCount}
+          loading={loading}
+        /> */}
       </div>
       <div className="dashboard-lists-container">
         <div className="recent-solds-container">
