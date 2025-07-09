@@ -9,7 +9,6 @@ import { db } from "../utils/FirebaseConfig";
 import { collection, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
-import SellerApplication from "../components/SellerApplication";
 import AddEvents from "../components/AddEvents";
 
 const Events = () => {
@@ -32,8 +31,15 @@ const Events = () => {
         const devicesData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-        }));
-        setDevices(devicesData);
+        })); 
+        const sortedDevices = devicesData.sort((a, b) =>
+          a.createdAt && b.createdAt
+            ? a.createdAt.toDate() - b.createdAt.toDate()
+            : 0
+        );
+
+        setDevices(sortedDevices);
+        
         setLoading(false);
       },
       (error) => {
@@ -61,7 +67,7 @@ const Events = () => {
     }
     return filtered.sort((a, b) =>
       a.createdAt && b.createdAt
-        ? new Date(b.createdAt) - new Date(a.createdAt)
+        ? new Date(a.createdAt) - new Date(b.createdAt)
         : 0
     );
   }, [devices, searchTxt]);
