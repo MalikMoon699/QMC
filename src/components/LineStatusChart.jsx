@@ -63,9 +63,9 @@ const LineStatusChart = ({
 
   const getColorForType = (type) => {
     switch (type) {
-      case "Events":
-        return "#3EC833";
       case "Devices":
+        return "#3EC833";
+      case "Events":
         return "#EE3F24";
       case "Accessories":
         return "#ec5d7d";
@@ -99,7 +99,7 @@ const LineStatusChart = ({
             flexWrap: "wrap",
           }}
         >
-          {["Events", "Devices", "Accessories", "SoldOut"].map((type) => (
+          {["Devices", "Events", "Accessories", "SoldOut"].map((type) => (
             <div
               key={type}
               onClick={() => onDisplayChange(type)}

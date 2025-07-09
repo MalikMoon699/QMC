@@ -34,6 +34,7 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const [soldOutData, setSoldOutData] = useState([]);
   const [devicesData, setDevicesData] = useState([]);
+  const [eventsData, setEventsData] = useState([]);
   const [accessoriesData, setAccessoriesData] = useState([]);
   const [switchData, setSwitchData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -126,14 +127,23 @@ const AdminDashboard = () => {
       setAdminId(result.id);
     }
   };
-
   const fetchAllEventsLength = async () => {
     setLoading(true);
     const result = await fetchEvents();
-    setEventsCount(result.length);
-    setLoading(false);
-  };
 
+    if (fetchType === "Admin") {
+      const ownEvents = result.filter(
+        (device) => device.userId === currentUser.uid
+      );
+      setEventsCount(ownEvents.length);
+      setEventsData(ownEvents);
+      setLoading(false);
+    } else {
+      setEventsCount(result.length);
+      setEventsData(result);
+      setLoading(false);
+    }
+  };
   const fetchAllDevicesLength = async () => {
     setLoading(true);
     const result = await fetchSmartDevices();
@@ -322,7 +332,7 @@ const AdminDashboard = () => {
       </div>
       <div className="dashboard-charts-container">
         <LineStatusChart
-          eventsData={[]}
+          eventsData={eventsData}
           devicesData={devicesData}
           accessoriesData={accessoriesData}
           soldOutData={soldOutData}
