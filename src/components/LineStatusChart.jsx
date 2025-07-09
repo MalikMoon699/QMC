@@ -1,4 +1,6 @@
 import React, { useMemo } from "react";
+import { StyledEngineProvider } from "@mui/styled-engine"; // Add this
+import { CssBaseline } from "@mui/material"; // Add this
 import { LineChart } from "@mui/x-charts/LineChart";
 import moment from "moment";
 import "../assets/styles/Chart.css";
@@ -78,114 +80,116 @@ const LineStatusChart = ({
   const isAllZero = chartData[displayArea].every((item) => item.count === 0);
 
   return (
-    <div
-      className="chart-container"
-    >
-      <div className="chart-header" style={{ marginBottom: "20px" }}>
-        <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>
-          Inventory Status (This Week)
-        </h3>
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-            marginTop: "15px",
-            flexWrap: "wrap",
-          }}
-        >
-          {["Devices", "Events", "Accessories", "SoldOut"].map((type) => (
-            <div
-              key={type}
-              onClick={() => onDisplayChange(type)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                cursor: "pointer",
-                padding: "6px 12px",
-                borderRadius: "20px",
-                backgroundColor:
-                  displayArea === type ? "#f5f5f5" : "transparent",
-                border: `1px solid ${getColorForType(type)}`,
-              }}
-            >
-              <div
-                style={{
-                  width: "12px",
-                  height: "12px",
-                  borderRadius: "50%",
-                  backgroundColor: getColorForType(type),
-                }}
-              />
-              <span style={{ fontSize: "14px" }}>{type}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {isAllZero ? (
-        <div
-          style={{
-            height: "400px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <p style={{ color: "#666", fontSize: "16px" }}>
-            No {displayArea.toLowerCase()} added this week.
-          </p>
-        </div>
-      ) : (
-        <div style={{ height: "400px" }}>
-          <LineChart
-            xAxis={[
-              {
-                data: weekdays,
-                scaleType: "point",
-                tickLabelStyle: { fontSize: 12 },
-              },
-            ]}
-            yAxis={[
-              {
-                min: 0,
-                max: Math.max(
-                  5,
-                  ...chartData[displayArea].map((item) => item.count)
-                ),
-                valueFormatter: (value) => `${value}`,
-                tickLabelStyle: { fontSize: 12 },
-              },
-            ]}
-            series={[
-              {
-                data: chartData[displayArea].map((item) => item.count),
-                label: displayArea,
-                color: getColorForType(displayArea),
-                curve: "catmullRom",
-                area: true,
-                showMark: ({ index }) => index % 1 === 0,
-                valueFormatter: (value, { dataIndex }) => {
-                  const data = chartData[displayArea][dataIndex];
-                  return `${value} items (${data.percentage}%)`;
-                },
-              },
-            ]}
-            grid={{ vertical: true, horizontal: true }}
-            sx={{
-              ".MuiLineElement-root": { strokeWidth: 2 },
-              ".MuiMarkElement-root": {
-                scale: "1",
-                fill: "#fff",
-                strokeWidth: 2,
-                stroke: getColorForType(displayArea),
-              },
-              ".MuiAreaElement-root": { fillOpacity: 0.1 },
+    <StyledEngineProvider injectFirst>
+      {" "}
+      <CssBaseline />
+      <div className="chart-container">
+        <div className="chart-header" style={{ marginBottom: "20px" }}>
+          <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>
+            Inventory Status (This Week)
+          </h3>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              marginTop: "15px",
+              flexWrap: "wrap",
             }}
-          />
+          >
+            {["Devices", "Events", "Accessories", "SoldOut"].map((type) => (
+              <div
+                key={type}
+                onClick={() => onDisplayChange(type)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  cursor: "pointer",
+                  padding: "6px 12px",
+                  borderRadius: "20px",
+                  backgroundColor:
+                    displayArea === type ? "#f5f5f5" : "transparent",
+                  border: `1px solid ${getColorForType(type)}`,
+                }}
+              >
+                <div
+                  style={{
+                    width: "12px",
+                    height: "12px",
+                    borderRadius: "50%",
+                    backgroundColor: getColorForType(type),
+                  }}
+                />
+                <span style={{ fontSize: "14px" }}>{type}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      )}
-    </div>
+
+        {isAllZero ? (
+          <div
+            style={{
+              height: "400px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <p style={{ color: "#666", fontSize: "16px" }}>
+              No {displayArea.toLowerCase()} added this week.
+            </p>
+          </div>
+        ) : (
+          <div style={{ height: "400px" }}>
+            <LineChart
+              xAxis={[
+                {
+                  data: weekdays,
+                  scaleType: "point",
+                  tickLabelStyle: { fontSize: 12 },
+                },
+              ]}
+              yAxis={[
+                {
+                  min: 0,
+                  max: Math.max(
+                    5,
+                    ...chartData[displayArea].map((item) => item.count)
+                  ),
+                  valueFormatter: (value) => `${value}`,
+                  tickLabelStyle: { fontSize: 12 },
+                },
+              ]}
+              series={[
+                {
+                  data: chartData[displayArea].map((item) => item.count),
+                  label: displayArea,
+                  color: getColorForType(displayArea),
+                  curve: "catmullRom",
+                  area: true,
+                  showMark: ({ index }) => index % 1 === 0,
+                  valueFormatter: (value, { dataIndex }) => {
+                    const data = chartData[displayArea][dataIndex];
+                    return `${value} items (${data.percentage}%)`;
+                  },
+                },
+              ]}
+              grid={{ vertical: true, horizontal: true }}
+              sx={{
+                ".MuiLineElement-root": { strokeWidth: 2 },
+                ".MuiMarkElement-root": {
+                  scale: "1",
+                  fill: "#fff",
+                  strokeWidth: 2,
+                  stroke: getColorForType(displayArea),
+                },
+                ".MuiAreaElement-root": { fillOpacity: 0.1 },
+              }}
+            />
+          </div>
+        )}
+      </div>
+    </StyledEngineProvider>
   );
 };
 
