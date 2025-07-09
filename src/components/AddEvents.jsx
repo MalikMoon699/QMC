@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { auth, db } from "../utils/FirebaseConfig";
 import "../assets/styles/Events.css";
-import { Plus, Search, X } from "lucide-react";
+import { Search } from "lucide-react";
 import Loader from "./Loader";
 import { useAuth } from "../context/AuthContext";
 import {
@@ -9,6 +9,8 @@ import {
   setDoc,
   updateDoc,
   collection,
+  query,
+  where,
   onSnapshot,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
@@ -51,9 +53,17 @@ const AddEvents = ({ onClose, EventToUpdate }) => {
   }, [currentUser]);
 
   useEffect(() => {
+    if (!currentUser?.email) return;
+
     setLoading(true);
-    const unsubscribe = onSnapshot(
+
+    const q = query(
       collection(db, activeTab),
+      where("createdByEmail", "==", currentUser.email)
+    );
+
+    const unsubscribe = onSnapshot(
+      q,
       (querySnapshot) => {
         const devicesData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -68,8 +78,9 @@ const AddEvents = ({ onClose, EventToUpdate }) => {
         toast.error(`Failed to fetch ${activeTab.toLowerCase()}.`);
       }
     );
+
     return () => unsubscribe();
-  }, [activeTab]);
+  }, [activeTab, currentUser?.email]);
 
   const handleNextStep = (e) => {
     e.preventDefault();

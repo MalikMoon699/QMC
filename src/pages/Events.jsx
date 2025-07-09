@@ -93,14 +93,14 @@ const Events = () => {
       <div className="mobile-summary-header mobiles-summary-header">
         <div className="mobiles-status-title">Smart Devices</div>
         <div className="action-btn-container">
-          {role === "admin" && (
+          {role !== "user" && (
             <button
               onClick={() => setSellModalOpen(true)}
               style={{ backgroundColor: "#ef3f2c" }}
               className="action-btn"
             >
               <Plus size={20} />
-              Add Event Sale
+              start Event Sale
             </button>
           )}
         </div>
