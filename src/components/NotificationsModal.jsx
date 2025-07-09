@@ -1,10 +1,19 @@
 import React, { useState } from "react";
 import moment from "moment";
-import { ChevronDown, ChevronUp, EllipsisVertical } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { db } from "../utils/FirebaseConfig";
+import {
+  collection,
+  query,
+  where,
+  doc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
+import { toast } from "react-toastify";
 
-const NotificationsModal = ({ onClose, selectedNotifications }) => {
+const NotificationsModal = ({ onClose, selectedNotifications, role }) => {
   const [isAboutUser, setIsAboutUser] = useState(false);
-
 
   const calculateAge = (dobString) => {
     const dob = new Date(dobString);
@@ -19,7 +28,58 @@ const NotificationsModal = ({ onClose, selectedNotifications }) => {
 
     return age;
   };
-  
+
+  const handleApprove = async (selectedNotifications) => {
+    try {
+      const notificationRef = doc(
+        db,
+        "NOTIFICATIONS",
+        selectedNotifications.id
+      );
+      await updateDoc(notificationRef, {
+        status: "Approved",
+      });
+
+      const userQuery = query(
+        collection(db, "USERS"),
+        where("uid", "==", selectedNotifications.userId)
+      );
+      const userSnapshot = await getDocs(userQuery);
+
+      if (userSnapshot.empty) {
+        throw new Error("User not found.");
+      }
+
+      const userId = userSnapshot.docs[0].id;
+
+      const userRef = doc(db, "USERS", userId);
+      await updateDoc(userRef, {
+        role: "seller",
+      });
+      onClose();
+      toast.success("Application approved successfully!!");
+    } catch (error) {
+      console.error("Error approving notification:", error);
+    }
+  };
+
+  const handleReject = async (selectedNotifications) => {
+    try {
+      const notificationRef = doc(
+        db,
+        "NOTIFICATIONS",
+        selectedNotifications.id
+      );
+      await updateDoc(notificationRef, {
+        status: "Rejected",
+      });
+      onClose();
+      toast.success("Application Rejected successfully!!");
+    } catch (error) {
+      console.error("Error Rejecting notification:", error);
+    }
+  };
+
   return (
     <div className="modal-overlay">
       <div className="modal-card" style={{ maxWidth: "410px" }}>
@@ -56,7 +116,7 @@ const NotificationsModal = ({ onClose, selectedNotifications }) => {
           )}
           {selectedNotifications.userAge && (
             <div
-              style={{ alignItems: "start" }}
+              style={{ alignItems: "start", marginTop: "20px" }}
               className="report-user-container"
             >
               <p>
@@ -136,6 +196,25 @@ const NotificationsModal = ({ onClose, selectedNotifications }) => {
                 : "DD-MM-YYYY"}
             </p>
           </div>
+          {role === "admin" && selectedNotifications.status === "pending" && (
+            <div
+              className="report-user-container"
+              style={{ flexDirection: "row", gap: "10px" }}
+            >
+              <button
+                className="application-approve-btn"
+                onClick={() => handleReject(selectedNotifications)}
+              >
+                Reject
+              </button>
+              <button
+                className="application-approve-btn"
+                onClick={() => handleApprove(selectedNotifications)}
+              >
+                Approve
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

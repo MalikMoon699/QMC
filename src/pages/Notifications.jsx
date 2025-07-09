@@ -9,13 +9,10 @@ import {
   collection,
   query,
   where,
-  getDocs,
-  doc,
-  updateDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import Loader from "../components/Loader";
-import { Bell, Flag, MessageCircle, User, UserCog } from "lucide-react";
-import { toast } from "react-toastify";
+import { Bell, Flag, MessageCircle, UserCog } from "lucide-react";
 import NotificationsModal from "../components/NotificationsModal";
 
 const Notifications = () => {
@@ -28,74 +25,40 @@ const Notifications = () => {
   const [activeTab, setActiveTab] = useState("total");
 
   useEffect(() => {
-    const fetchNotifications = async () => {
-      if (!currentUser) {
-        setLoading(false);
-        return;
+    if (!currentUser) {
+      setLoading(false);
+      return;
+    }
+
+    let unsubscribe;
+
+    try {
+      let notificationsQuery;
+      if (role === "admin") {
+        notificationsQuery = query(collection(db, "NOTIFICATIONS"));
+      } else {
+        notificationsQuery = query(
+          collection(db, "NOTIFICATIONS"),
+          where("userId", "==", currentUser.uid)
+        );
       }
 
-      try {
-        let notificationsQuery;
-        if (role === "admin") {
-          notificationsQuery = query(collection(db, "NOTIFICATIONS"));
-        } else {
-          notificationsQuery = query(
-            collection(db, "NOTIFICATIONS"),
-            where("userId", "==", currentUser.uid)
-          );
-        }
-
-        const querySnapshot = await getDocs(notificationsQuery);
+      unsubscribe = onSnapshot(notificationsQuery, (querySnapshot) => {
         const notificationsData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
         setNotifications(notificationsData);
-      } catch (error) {
-        console.error("Error fetching notifications:", error);
-      } finally {
         setLoading(false);
-      }
-    };
-
-    fetchNotifications();
+      });
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+      setLoading(false);
+    }
+    return () => unsubscribe && unsubscribe();
   }, [currentUser, role]);
 
-  const handleApprove = async (notification) => {
-    try {
-      const notificationRef = doc(db, "NOTIFICATIONS", notification.id);
-      await updateDoc(notificationRef, {
-        status: "Approved",
-      });
 
-      const userQuery = query(
-        collection(db, "USERS"),
-        where("uid", "==", notification.userId)
-      );
-      const userSnapshot = await getDocs(userQuery);
-
-      if (userSnapshot.empty) {
-        throw new Error("User not found.");
-      }
-
-      const userId = userSnapshot.docs[0].id;
-
-      const userRef = doc(db, "USERS", userId);
-      await updateDoc(userRef, {
-        role: "seller",
-      });
-
-      setNotifications((prev) =>
-        prev.map((item) =>
-          item.id === notification.id ? { ...item, status: "Approved" } : item
-        )
-      );
-
-      toast.success("Application approved successfully!!");
-    } catch (error) {
-      console.error("Error approving notification:", error);
-    }
-  };
 
   const filteredNotifications = useMemo(() => {
     let filtered = notifications;
@@ -145,7 +108,7 @@ const Notifications = () => {
     setNotificationsModal(true);
     setSelectedNotifications(notification);
   };
-  
+
   const handleDetailModalClose = () => {
     setNotificationsModal(false);
     setSelectedNotifications([]);
@@ -287,30 +250,8 @@ const Notifications = () => {
                             .slice(1)
                         : "DD-MM-YYYY"}
                     </h4>
-                    {role === "admin" && notification.status !== "Approved" && (
-                      <button
-                        className="application-approve-btn"
-                        onClick={() => handleApprove(notification)}
-                      >
-                        Approve
-                      </button>
-                    )}
-                    {role !== "admin" && notification.status === "Approved" && (
-                      <button className="application-approve-btn">
-                        Approved
-                      </button>
-                    )}
-                    {role !== "admin" && notification.status !== "Approved" && (
-                      <button className="application-approved-btn application-approve-btn">
-                        {notification.status}
-                      </button>
-                    )}
 
-                    {role === "admin" && notification.status === "Approved" && (
-                      <button className="application-approved-btn application-approve-btn">
-                        {notification.status}
-                      </button>
-                    )}
+                    <h3>{notification.status}</h3>
                   </div>
                 </div>
               ) : (
@@ -354,6 +295,7 @@ const Notifications = () => {
       )}
       {notificationsModal && (
         <NotificationsModal
+        role={role}
           onClose={handleDetailModalClose}
           selectedNotifications={selectedNotifications}
         />

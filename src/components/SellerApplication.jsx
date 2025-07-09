@@ -22,7 +22,7 @@ const SellerApplication = ({ onClose }) => {
     if (!userAge) newErrors.userAge = "Date of birth is required";
     if (!idCardNumber.trim()) {
       newErrors.idCardNumber = "ID card number is required";
-    } else if (idCardNumber.length < 13) {
+    } else if (idCardNumber.length < 13 || idCardNumber.length > 13) {
       newErrors.idCardNumber = "ID card number must be at least 13 digits";
     }
     setErrors(newErrors);
