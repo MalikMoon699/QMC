@@ -18,16 +18,15 @@ const Users = () => {
   const [loading, setLoading] = useState(true);
   const [updateRole, setUpdateRole] = useState(null);
 
-
   useEffect(() => {
     getUsers();
   }, [currentUser, role]);
 
-
   const getUsers = async () => {
     try {
       const users = await fetchAllUsers();
-      setUsers(users);
+      const userByRole = role === "admin" ? users : users.role === "user";
+      setUsers(userByRole);
     } catch (error) {
       console.error("Error fetching users:", error);
     } finally {

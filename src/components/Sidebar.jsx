@@ -79,18 +79,20 @@ const Sidebar = () => {
               </div>
               <nav>
                 <ul>
-                  <li
-                    className={location.pathname === "/" ? "active" : ""}
-                    onClick={() => {
-                      toggleMenuClose();
-                      navigate("/");
-                    }}
-                  >
-                    <span className="sidebarIcon">
-                      <LayoutDashboard />
-                    </span>
-                    Dashboard
-                  </li>
+                  {role !== "user" && (
+                    <li
+                      className={location.pathname === "/" ? "active" : ""}
+                      onClick={() => {
+                        toggleMenuClose();
+                        navigate("/");
+                      }}
+                    >
+                      <span className="sidebarIcon">
+                        <LayoutDashboard />
+                      </span>
+                      Dashboard
+                    </li>
+                  )}
                   {role !== "user" && (
                     <li
                       className={location.pathname === "/users" ? "active" : ""}
@@ -222,15 +224,20 @@ const Sidebar = () => {
           </div>
           <nav>
             <ul>
-              <li
-                className={location.pathname === "/" ? "active" : ""}
-                onClick={() => navigate("/")}
-              >
-                <span className="sidebarIcon">
-                  <LayoutDashboard />
-                </span>
-                Dashboard
-              </li>
+              {role !== "user" && (
+                <li
+                  className={location.pathname === "/" ? "active" : ""}
+                  onClick={() => {
+                    toggleMenuClose();
+                    navigate("/");
+                  }}
+                >
+                  <span className="sidebarIcon">
+                    <LayoutDashboard />
+                  </span>
+                  Dashboard
+                </li>
+              )}
               {role !== "user" && (
                 <li
                   className={location.pathname === "/users" ? "active" : ""}

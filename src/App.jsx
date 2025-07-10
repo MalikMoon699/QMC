@@ -9,7 +9,6 @@ import PublicRoute from "./routes/PublicRoute";
 import Unauthorized from "./components/Unauthorized";
 import AppLayout from "./layout/AppLayout";
 import ProfileDetails from "./pages/ProfileDetails";
-import UsersDashboard from "./pages/UsersDashboard";
 import SellersDashboard from "./pages/SellersDashboard";
 import { useAuth } from "./context/AuthContext";
 import Mobiles from "./pages/Mobiles";
@@ -41,7 +40,7 @@ const App = () => {
       case "seller":
         return <SellersDashboard />;
       case "user":
-        return <UsersDashboard />;
+        return <Navigate to="/devices" replace />;
       default:
         return <Navigate to="/login" replace />;
     }
