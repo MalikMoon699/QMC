@@ -25,7 +25,15 @@ const Users = () => {
   const getUsers = async () => {
     try {
       const users = await fetchAllUsers();
-      const userByRole = role === "admin" ? users : users.role === "user";
+
+      let userByRole = [];
+
+      if (role === "admin") {
+        userByRole = users;
+      } else if (role === "seller") {
+        userByRole = users.filter((user) => user.role === "user");
+      }
+
       setUsers(userByRole);
     } catch (error) {
       console.error("Error fetching users:", error);
