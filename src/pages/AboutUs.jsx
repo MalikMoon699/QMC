@@ -16,7 +16,13 @@ import {
 import moment from "moment";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import { doc, updateDoc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  setDoc,
+  collection,
+  onSnapshot,
+} from "firebase/firestore";
 import { db, storage } from "../utils/FirebaseConfig";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { demo5 } from "../utils/Demoimages";
@@ -80,39 +86,41 @@ const AboutUs = () => {
   }, [currentIndex, allUserDetail]);
 
   useEffect(() => {
+    if (!currentUser) return;
+
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [userDetails, allUsers, adminDetails] = await Promise.all([
-          getUserDetails().catch((err) => {
-            console.error("Error fetching user details:", err);
-            return null;
-          }),
-          getAllUserDetails().catch((err) => {
-            console.error("Error fetching all users:", err);
-            return [];
-          }),
-          getAdminDetails().catch((err) => {
-            console.error("Error fetching admin details:", err);
-            return null;
-          }),
+        const [userDetails, allUsers] = await Promise.all([
+          fetchCurrentUser(currentUser),
+          fetchAllUsers(),
         ]);
+
         if (userDetails) setCurrentUserDetails(userDetails.userData || {});
         if (allUsers) setAllUserDetails(allUsers);
+
+        const adminDetails = await fetchAdminUsers();
         if (adminDetails) setAdminData(adminDetails);
       } catch (error) {
-        console.error("Unexpected error:", error);
-        toast.error("Failed to load some data");
+        console.error("Error loading data:", error);
+        toast.error("Failed to fetch data");
       } finally {
         setLoading(false);
       }
     };
 
-    if (currentUser) {
-      fetchData();
-    } else {
-      setLoading(false);
-    }
+    fetchData();
+
+    const unsubAdmin = onSnapshot(collection(db, "ADMIN"), async () => {
+      const adminDetails = await fetchAdminUsers();
+      if (adminDetails) {
+        setAdminData(adminDetails);
+      }
+    });
+
+    return () => {
+      unsubAdmin();
+    };
   }, [currentUser]);
 
   const getAllUserDetails = async () => {
