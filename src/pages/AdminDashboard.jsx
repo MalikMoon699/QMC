@@ -217,16 +217,10 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <div className="users-summary-header">
-        <div className="users-status-title shop-status">
-          Now Shop is
-          {role !== "admin" ? (
-            switchData === true ? (
-              " Open"
-            ) : (
-              " Closed"
-            )
-          ) : (
+      {role === "admin" && (
+        <div className="users-summary-header">
+          <div className="users-status-title shop-status">
+            Now Shop is
             <div
               onClick={handleUpdateSwitch}
               className={`toggle-switch ${switchData === true ? "on" : "off"}`}
@@ -241,9 +235,8 @@ const AdminDashboard = () => {
                 <div className="toggle-knob"></div>
               )}
             </div>
-          )}
-        </div>
-        {role === "admin" && (
+          </div>
+
           <div className="action-btn-container">
             <select
               value={fetchType}
@@ -254,8 +247,8 @@ const AdminDashboard = () => {
               <option value="All">All</option>
             </select>
           </div>
-        )}
-      </div>
+        </div>
+      )}
       <div className="tabsWrapper">
         <div className="active-tab tab">
           <div className="counterContentWrapper">

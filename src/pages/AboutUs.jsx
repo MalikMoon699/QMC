@@ -313,7 +313,15 @@ const AboutUs = () => {
   return (
     <div>
       <div className="mobile-summary-header mobiles-summary-header">
-        <div className="mobiles-status-title">About Us</div>
+        {role !== "admin" ? (
+          <div className="mobiles-status-title">
+            Now Shop is
+            {adminData.isSwitch ? " Open" : " Closed"}
+          </div>
+        ) : (
+          <div className="mobiles-status-title">About Us</div>
+        )}
+
         {role !== "admin" && (
           <div className="action-btn-container">
             <button
