@@ -1,9 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { StyledEngineProvider } from "@mui/styled-engine";
 import { CssBaseline } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
 import moment from "moment";
 import "../assets/styles/Chart.css";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 const LineStatusChart = ({
   eventsData,
@@ -13,6 +14,8 @@ const LineStatusChart = ({
   displayArea,
   onDisplayChange,
 }) => {
+  const [isType, setIsType] = useState(false);
+  const [selectedType, setSelectedType] = useState("Devices");
   const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const chartData = useMemo(() => {
     const createWeeklyData = (data) => {
@@ -85,32 +88,48 @@ const LineStatusChart = ({
       <div className="chart-container">
         <div className="chart-header">
           <h3>Inventory Status (This Week)</h3>
-          <div className="chart-options">
-            {["Devices", "Events", "Accessories", "SoldOut"].map((type) => (
-              <div key={type} onClick={() => onDisplayChange(type)}>
-                <div
-                  style={{
-                    backgroundColor: getColorForType(type),
-                  }}
-                />
-                <span>{type}</span>
+          <div className="chart-options filter-container">
+            <button
+              className="action-btn chart-options-btn filter-btn-container"
+              onClick={() => {
+                setIsType((prev) => !prev);
+              }}
+            >
+              {selectedType}
+              {isType ? <ChevronUp /> : <ChevronDown />}
+            </button>
+            {isType && (
+              <div className="chart-type-options">
+                {["Devices", "Events", "Accessories", "SoldOut"].map((type) => (
+                  <div
+                    key={type}
+                    style={{
+                      color:
+                        selectedType === type
+                          ? getColorForType(type)
+                          : "black",
+                      border: `1px solid
+                        ${
+                          selectedType === type
+                            ? getColorForType(type)
+                            : "rgb(245, 245, 245)"
+                        }`,
+                    }}
+                    onClick={() => {
+                      setSelectedType(type);
+                      onDisplayChange(type);
+                    }}
+                  >
+                    <div
+                      style={{
+                        backgroundColor: getColorForType(type),
+                      }}
+                    />
+                    <span>{type}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-        <div className="chart-header">
-          <h3>Inventory Status (This Week)</h3>
-          <div className="chart-options">
-            {["Devices", "Events", "Accessories", "SoldOut"].map((type) => (
-              <div key={type} onClick={() => onDisplayChange(type)}>
-                <div
-                  style={{
-                    backgroundColor: getColorForType(type),
-                  }}
-                />
-                <span>{type}</span>
-              </div>
-            ))}
+            )}
           </div>
         </div>
 

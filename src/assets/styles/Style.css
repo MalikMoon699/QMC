@@ -35,7 +35,7 @@ body {
   width: 280px;
   position: fixed;
   top: 0;
-  z-index: 1000;
+  z-index: 10000;
   color: #fff;
   background-color: #000;
   border-right: 1px solid #e3e3e3;
