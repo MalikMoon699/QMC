@@ -105,9 +105,7 @@ const LineStatusChart = ({
                     key={type}
                     style={{
                       color:
-                        selectedType === type
-                          ? getColorForType(type)
-                          : "black",
+                        selectedType === type ? getColorForType(type) : "black",
                       border: `1px solid
                         ${
                           selectedType === type
@@ -121,7 +119,9 @@ const LineStatusChart = ({
                     }}
                   >
                     <div
+                      className="chart-type-icon"
                       style={{
+                        opacity: selectedType === type ? "1" : "0.5",
                         backgroundColor: getColorForType(type),
                       }}
                     />

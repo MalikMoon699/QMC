@@ -14,7 +14,6 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 10px;
 }
 
-
 .chart-header {
   margin-bottom: 20px;
 }
@@ -63,7 +62,15 @@
   background-color: rgb(245, 245, 245);
 }
 
+.chart-type-icon {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+}
 
+.chart-type-options > div > span {
+  font-size: 13.5px;
+}
 /* -----------------Monthly Chart-------------------- */
 
 .leave-request-header {
@@ -120,19 +127,8 @@
 
 @media only screen and (max-width: 470px) {
   .chart-type-options {
-    width: fit-content;
-    display: flex;
-    align-items: center;
     gap: 6px;
-    position: absolute;
-    bottom: -63px;
-    background: white;
-    z-index: 1000;
     right: -22px;
-    padding: 10px;
-    border: 1px solid #e53935;
-    border-radius: 8px;
-    box-shadow: 0px 0px 12px #00000069;
   }
 }
 
@@ -141,8 +137,17 @@
     margin-bottom: 10px;
   }
 
-  .chart-header h3 {
+  .chart-header > h3 {
     font-size: 12px;
+  }
+
+  .chart-options-btn {
+    gap: 1px !important;
+    padding: 5px 8px !important;
+  }
+
+  .chart-options-btn svg {
+    height: 14px;
   }
 
   .chart-options {
@@ -150,5 +155,56 @@
     gap: 6px;
     margin-top: 5px;
     flex-wrap: wrap;
+  }
+
+  .chart-type-options {
+    bottom: -54px;
+    right: -15px;
+  }
+
+  .chart-type-options > div {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 3px 8px;
+    border-radius: 20px;
+    color: black;
+    background-color: rgb(245, 245, 245);
+  }
+
+  .chart-type-icon {
+    height: 8px;
+    width: 8px;
+  }
+
+  .chart-type-options > div > span {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .chart-type-options {
+    right: -24px;
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .chart-type-options > div {
+    gap: 4px;
+    padding: 2px 6px;
+  }
+}
+
+@media only screen and (max-width: 333px) {
+  .chart-type-options {
+    right: -24.5px;
+    bottom: -45px;  
+    padding: 5px;
+  }
+
+  .chart-type-options > div {
+    gap: 4px;
+    padding: 1.5px 5px;
   }
 }
