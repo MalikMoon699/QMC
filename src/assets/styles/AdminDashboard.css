@@ -194,6 +194,10 @@
 }
 
 @media only screen and (max-width: 1300px) {
+  .recent-solds-container {
+    max-width: 100%;
+  }
+
   .dashboard-charts-container {
     margin-top: 40px;
     display: grid;
@@ -212,5 +216,38 @@
 
   .recent-sold-item-modal {
     min-width: auto;
+  }
+}
+@media only screen and (max-width: 370px) {
+  .recent-solds-container {
+    max-width: 95vw;
+  }
+}
+@media only screen and (max-width: 360px) {
+  .users-status-title {
+    font-size: 18px !important;
+    margin: 10px !important;
+  }
+
+  .shop-status {
+    gap: 8px !important;
+  }
+
+  .toggle-switch {
+    width: 40px;
+    height: 17px;
+    border-radius: 40px;
+  }
+
+  .toggle-switch .toggle-knob {
+    width: 13px;
+    height: 13px;
+    top: 2px;
+  }
+
+  .switch-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

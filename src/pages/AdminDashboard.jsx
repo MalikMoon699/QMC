@@ -344,49 +344,53 @@ const AdminDashboard = () => {
         <div className="recent-solds-container">
           <h3 className="recent-solds-title">Recent Smart Devices Added</h3>
           <div className="recent-sold-item-iner-container">
-            {devicesData.slice(0, 5).map((item, index) => (
-              <div
-                onClick={() => handleOpenDetailsModal(item)}
-                className="recent-sold-item"
-                key={item.id || index}
-              >
-                <div className="recent-sold-content-detail">
-                  <div className="recent-sold-image-container">
-                    <img src={(item.images && item.images[0]) || demo1} />
+            {devicesData.length > 0 ? (
+              devicesData.slice(0, 5).map((item, index) => (
+                <div
+                  onClick={() => handleOpenDetailsModal(item)}
+                  className="recent-sold-item"
+                  key={item.id || index}
+                >
+                  <div className="recent-sold-content-detail">
+                    <div className="recent-sold-image-container">
+                      <img src={(item.images && item.images[0]) || demo1} />
+                    </div>
+                    <div>
+                      {fetchType === "Admin" ? (
+                        <p className="recent-sold-type">
+                          {item.type === "accessory"
+                            ? "Accessories"
+                            : "SmartDevices"}
+                        </p>
+                      ) : (
+                        <p className="recent-sold-type">
+                          {item.createdByEmail === currentUser?.email
+                            ? "You"
+                            : item.createdBy}
+                        </p>
+                      )}
+                      <p className="recent-sold-name">
+                        {item.deviceModel || "Unnamed Device"}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    {fetchType === "Admin" ? (
-                      <p className="recent-sold-type">
-                        {item.type === "accessory"
-                          ? "Accessories"
-                          : "SmartDevices"}
-                      </p>
-                    ) : (
-                      <p className="recent-sold-type">
-                        {item.createdByEmail === currentUser?.email
-                          ? "You"
-                          : item.createdBy}
-                      </p>
-                    )}
-                    <p className="recent-sold-name">
-                      {item.deviceModel || "Unnamed Device"}
+                  <div className="recent-sold-info">
+                    <p className="recent-sold-price">
+                      {item.createdAt
+                        ? moment(item.createdAt.toDate?.() || item.createdAt)
+                            .fromNow()
+                            .replace(/^./, (c) => c.toUpperCase())
+                        : "Unknown Time"}
                     </p>
+                    <span className="status completed">
+                      {item.price || "0.00"} PKR
+                    </span>
                   </div>
                 </div>
-                <div className="recent-sold-info">
-                  <p className="recent-sold-price">
-                    {item.createdAt
-                      ? moment(item.createdAt.toDate?.() || item.createdAt)
-                          .fromNow()
-                          .replace(/^./, (c) => c.toUpperCase())
-                      : "Unknown Time"}
-                  </p>
-                  <span className="status completed">
-                    {item.price || "0.00"} PKR
-                  </span>
-                </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="empty-message">No devices added yet.</p>
+            )}
           </div>
 
           <div className="view-recent-solds_btn-container">
@@ -403,49 +407,53 @@ const AdminDashboard = () => {
         <div className="recent-solds-container">
           <h3 className="recent-solds-title">Recent Accessories Added</h3>
           <div className="recent-sold-item-iner-container">
-            {accessoriesData.slice(0, 5).map((item, index) => (
-              <div
-                onClick={() => handleOpenDetailsModal(item)}
-                className="recent-sold-item"
-                key={item.id || index}
-              >
-                <div className="recent-sold-content-detail">
-                  <div className="recent-sold-image-container">
-                    <img src={(item.images && item.images[0]) || demo1} />
+            {accessoriesData.length > 0 ? (
+              accessoriesData.slice(0, 5).map((item, index) => (
+                <div
+                  onClick={() => handleOpenDetailsModal(item)}
+                  className="recent-sold-item"
+                  key={item.id || index}
+                >
+                  <div className="recent-sold-content-detail">
+                    <div className="recent-sold-image-container">
+                      <img src={(item.images && item.images[0]) || demo1} />
+                    </div>
+                    <div>
+                      {fetchType === "Admin" ? (
+                        <p className="recent-sold-type">
+                          {item.type === "accessory"
+                            ? "Accessories"
+                            : "SmartDevices"}
+                        </p>
+                      ) : (
+                        <p className="recent-sold-type">
+                          {item.createdByEmail === currentUser?.email
+                            ? "You"
+                            : item.createdBy}
+                        </p>
+                      )}
+                      <p className="recent-sold-name">
+                        {item.deviceModel || "Unnamed Device"}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    {fetchType === "Admin" ? (
-                      <p className="recent-sold-type">
-                        {item.type === "accessory"
-                          ? "Accessories"
-                          : "SmartDevices"}
-                      </p>
-                    ) : (
-                      <p className="recent-sold-type">
-                        {item.createdByEmail === currentUser?.email
-                          ? "You"
-                          : item.createdBy}
-                      </p>
-                    )}
-                    <p className="recent-sold-name">
-                      {item.deviceModel || "Unnamed Device"}
+                  <div className="recent-sold-info">
+                    <p className="recent-sold-price">
+                      {item.createdAt
+                        ? moment(item.createdAt.toDate?.() || item.createdAt)
+                            .fromNow()
+                            .replace(/^./, (c) => c.toUpperCase())
+                        : "Unknown Time"}
                     </p>
+                    <span className="status completed">
+                      {item.price || "0.00"} PKR
+                    </span>
                   </div>
                 </div>
-                <div className="recent-sold-info">
-                  <p className="recent-sold-price">
-                    {item.createdAt
-                      ? moment(item.createdAt.toDate?.() || item.createdAt)
-                          .fromNow()
-                          .replace(/^./, (c) => c.toUpperCase())
-                      : "Unknown Time"}
-                  </p>
-                  <span className="status completed">
-                    {item.price || "0.00"} PKR
-                  </span>
-                </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="empty-message">No Accessories added yet.</p>
+            )}
           </div>
 
           <div className="view-recent-solds_btn-container">
@@ -462,50 +470,54 @@ const AdminDashboard = () => {
         <div className="recent-solds-container">
           <h3 className="recent-solds-title">Recent Sold Out</h3>
           <div className="recent-sold-item-iner-container">
-            {soldOutData.slice(0, 5).map((item, index) => (
-              <div
-                onClick={() => handleOpenDetailsModal(item)}
-                className="recent-sold-item"
-                key={item.id || index}
-              >
-                <div className="recent-sold-content-detail">
-                  <div className="recent-sold-image-container">
-                    <img src={(item.images && item.images[0]) || demo1} />
-                  </div>
-                  <div>
-                    {fetchType === "Admin" ? (
-                      <p className="recent-sold-type">
-                        {item.type === "accessory"
-                          ? "Accessories"
-                          : "SmartDevices"}
-                      </p>
-                    ) : (
-                      <p className="recent-sold-type">
-                        {item.createdByEmail === currentUser?.email
-                          ? "You"
-                          : item.createdBy}
-                      </p>
-                    )}
+            {soldOutData.length > 0 ? (
+              soldOutData.slice(0, 5).map((item, index) => (
+                <div
+                  onClick={() => handleOpenDetailsModal(item)}
+                  className="recent-sold-item"
+                  key={item.id || index}
+                >
+                  <div className="recent-sold-content-detail">
+                    <div className="recent-sold-image-container">
+                      <img src={(item.images && item.images[0]) || demo1} />
+                    </div>
+                    <div>
+                      {fetchType === "Admin" ? (
+                        <p className="recent-sold-type">
+                          {item.type === "accessory"
+                            ? "Accessories"
+                            : "SmartDevices"}
+                        </p>
+                      ) : (
+                        <p className="recent-sold-type">
+                          {item.createdByEmail === currentUser?.email
+                            ? "You"
+                            : item.createdBy}
+                        </p>
+                      )}
 
-                    <p className="recent-sold-name">
-                      {item.deviceModel || "Unnamed Device"}
+                      <p className="recent-sold-name">
+                        {item.deviceModel || "Unnamed Device"}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="recent-sold-info">
+                    <p className="recent-sold-price">
+                      {item.deletedAt
+                        ? moment(item.deletedAt.toDate?.() || item.deletedAt)
+                            .fromNow()
+                            .replace(/^./, (c) => c.toUpperCase())
+                        : "Unknown Time"}
                     </p>
+                    <span className="status completed">
+                      {item.price || "0.00"} PKR
+                    </span>
                   </div>
                 </div>
-                <div className="recent-sold-info">
-                  <p className="recent-sold-price">
-                    {item.deletedAt
-                      ? moment(item.deletedAt.toDate?.() || item.deletedAt)
-                          .fromNow()
-                          .replace(/^./, (c) => c.toUpperCase())
-                      : "Unknown Time"}
-                  </p>
-                  <span className="status completed">
-                    {item.price || "0.00"} PKR
-                  </span>
-                </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="empty-message">No devices added yet.</p>
+            )}
           </div>
 
           <div className="view-recent-solds_btn-container">
