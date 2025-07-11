@@ -170,7 +170,6 @@ const LineStatusChart = ({
               series={[
                 {
                   data: chartData[displayArea].map((item) => item.count),
-                  label: displayArea,
                   color: getColorForType(displayArea),
                   curve: "catmullRom",
                   area: true,
