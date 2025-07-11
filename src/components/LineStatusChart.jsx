@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
-import { StyledEngineProvider } from "@mui/styled-engine"; // Add this
-import { CssBaseline } from "@mui/material"; // Add this
+import { StyledEngineProvider } from "@mui/styled-engine";
+import { CssBaseline } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
 import moment from "moment";
 import "../assets/styles/Chart.css";
@@ -81,46 +81,34 @@ const LineStatusChart = ({
 
   return (
     <StyledEngineProvider injectFirst>
-      {" "}
       <CssBaseline />
       <div className="chart-container">
-        <div className="chart-header" style={{ marginBottom: "20px" }}>
-          <h3 style={{ margin: 0, fontSize: "18px", fontWeight: "600" }}>
-            Inventory Status (This Week)
-          </h3>
-          <div
-            style={{
-              display: "flex",
-              gap: "10px",
-              marginTop: "15px",
-              flexWrap: "wrap",
-            }}
-          >
+        <div className="chart-header">
+          <h3>Inventory Status (This Week)</h3>
+          <div className="chart-options">
             {["Devices", "Events", "Accessories", "SoldOut"].map((type) => (
-              <div
-                key={type}
-                onClick={() => onDisplayChange(type)}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  cursor: "pointer",
-                  padding: "6px 12px",
-                  borderRadius: "20px",
-                  backgroundColor:
-                    displayArea === type ? "#f5f5f5" : "transparent",
-                  border: `1px solid ${getColorForType(type)}`,
-                }}
-              >
+              <div key={type} onClick={() => onDisplayChange(type)}>
                 <div
                   style={{
-                    width: "12px",
-                    height: "12px",
-                    borderRadius: "50%",
                     backgroundColor: getColorForType(type),
                   }}
                 />
-                <span style={{ fontSize: "14px" }}>{type}</span>
+                <span>{type}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="chart-header">
+          <h3>Inventory Status (This Week)</h3>
+          <div className="chart-options">
+            {["Devices", "Events", "Accessories", "SoldOut"].map((type) => (
+              <div key={type} onClick={() => onDisplayChange(type)}>
+                <div
+                  style={{
+                    backgroundColor: getColorForType(type),
+                  }}
+                />
+                <span>{type}</span>
               </div>
             ))}
           </div>
