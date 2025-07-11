@@ -330,6 +330,7 @@ const AdminDashboard = () => {
           accessoriesData={accessoriesData}
           soldOutData={soldOutData}
           displayArea={currentDisplay}
+          loading={loading}
           onDisplayChange={setCurrentDisplay}
         />
         <MonthlyStatusChart

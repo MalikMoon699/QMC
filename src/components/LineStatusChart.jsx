@@ -5,6 +5,7 @@ import { LineChart } from "@mui/x-charts/LineChart";
 import moment from "moment";
 import "../assets/styles/Chart.css";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import Loader from "./Loader";
 
 const LineStatusChart = ({
   eventsData,
@@ -13,6 +14,7 @@ const LineStatusChart = ({
   soldOutData,
   displayArea,
   onDisplayChange,
+  loading,
 }) => {
   const [isType, setIsType] = useState(false);
   const [selectedType, setSelectedType] = useState("Devices");
@@ -133,7 +135,9 @@ const LineStatusChart = ({
           </div>
         </div>
 
-        {isAllZero ? (
+        {loading ? (
+          <Loader loading={true} />
+        ) : isAllZero ? (
           <div
             style={{
               height: "400px",
