@@ -345,3 +345,74 @@
     display: block !important;
   }
 }
+
+/* ------------- Theme ---------------------- */
+
+:root {
+  --firstcolor: white;
+  --secondcolor: #eb3c2f;
+  --thirdcolor: black;
+}
+
+
+.theme-modal-container {
+  background-color: var(--firstcolor);
+}
+
+.theme-modal-header > .back-button {
+  background-color: var(--firstcolor);
+  color: var(--thirdcolor);
+}
+
+.theme-modal-header > .modal-title {
+  color: var(--firstcolor);
+}
+
+.theme-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.theme-modal-button {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 5px;
+  cursor: pointer;
+  padding: 7px;
+  border-radius: 10px;
+  border: none;
+  width: 100%;
+  background-color: white;
+}
+
+.custom-mode-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  cursor: pointer;
+}
+
+.custom-mode-button > div {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 5px;
+}
+
+.selected-theme-active {
+  background-color: #ea3c2f;
+  color: white;
+}
+
+.color-picker-container {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  gap: 8px;
+  margin-top: 10px;
+}

@@ -11,7 +11,8 @@ import {
 import { auth, db } from "../utils/FirebaseConfig";
 import { useAuth } from "../context/AuthContext";
 import "../assets/styles/Modal.css";
-import { Info, Pen } from "lucide-react";
+import { Info, Palette, Pen } from "lucide-react";
+import Theme from "./Theme";
 
 const ProfileImage =
   "https://png.pngtree.com/png-clipart/20200701/original/pngtree-single-person-character-in-vector-png-image_5359691.jpg";
@@ -21,6 +22,7 @@ const TopBarModal = ({ userData, onProfileUpdate, isOpen, setIsOpen }) => {
   const fileInputRef = useRef(null);
   const [infoModal, setInfoModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [isTheme, setIsTheme] = useState(false);
   const [editName, setEditName] = useState(userData?.name || "");
   const [editPhoneNumber, setEditPhoneNumber] = useState(
     userData?.phoneNumber || ""
@@ -31,7 +33,7 @@ const TopBarModal = ({ userData, onProfileUpdate, isOpen, setIsOpen }) => {
   const handleImageClick = () => {
     fileInputRef.current.click();
   };
-  
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -96,7 +98,7 @@ const TopBarModal = ({ userData, onProfileUpdate, isOpen, setIsOpen }) => {
           onClick={(e) => {
             e.stopPropagation();
           }}
-          style={{ display: infoModal || editModal ? "none" : "" }}
+          style={{ display: infoModal || editModal || isTheme ? "none" : "" }}
           className="sidebar-modal-container"
         >
           <div className="modal-header">
@@ -131,10 +133,20 @@ const TopBarModal = ({ userData, onProfileUpdate, isOpen, setIsOpen }) => {
               <div onClick={() => setEditModal(!editModal)}>
                 <Pen color="white" /> Profile Edit
               </div>
+              <div
+                onClick={() => {
+                  setIsTheme(true);
+                }}
+              >
+                <Palette />
+                Theme
+              </div>
             </div>
           </div>
         </div>
       )}
+
+      {isTheme && <Theme onclose={() => setIsTheme(false)} />}
       {infoModal && (
         <div
           onClick={(e) => {
@@ -204,7 +216,7 @@ const TopBarModal = ({ userData, onProfileUpdate, isOpen, setIsOpen }) => {
                 className="clickable-profile-img"
               />
               <span className="edit-icon">
-                <Pen color="red" size={20}/>
+                <Pen color="red" size={20} />
               </span>
             </div>
             <input
