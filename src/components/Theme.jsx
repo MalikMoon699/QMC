@@ -166,11 +166,11 @@ const Theme = () => {
         }}
       >
         {selectedTheme === "dark" ? (
-          <Moon size={18} color="var(--thirdcolor)" />
+          <Moon size={25} color="var(--thirdcolor)" />
         ) : selectedTheme === "customize" ? (
-          <SlidersHorizontal size={18} color="var(--thirdcolor)" />
+          <SlidersHorizontal size={25} color="var(--thirdcolor)" />
         ) : (
-          <Sun size={18} color="var(--thirdcolor)" />
+          <Sun size={25} color="var(--thirdcolor)" />
         )}
       </button>
 

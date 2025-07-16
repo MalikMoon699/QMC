@@ -139,6 +139,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
               </div>
             )}
           </div>
+          <Theme />
           <div className="topBarActionsWrapper">
             <div
               onClick={() =>
