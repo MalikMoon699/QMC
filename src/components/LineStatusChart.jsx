@@ -162,17 +162,17 @@ const LineStatusChart = ({
                   tickLabelStyle: { fontSize: 12 },
                 },
               ]}
-              yAxis={[
-                {
-                  min: 0,
-                  max: Math.max(
-                    5,
-                    ...chartData[displayArea].map((item) => item.count)
-                  ),
-                  valueFormatter: (value) => `${value}`,
-                  tickLabelStyle: { fontSize: 12 },
-                },
-              ]}
+              // yAxis={[
+              //   {
+              //     min: 0,
+              //     max: Math.max(
+              //       5,
+              //       ...chartData[displayArea].map((item) => item.count)
+              //     ),
+              //     valueFormatter: (value) => `${value}`,
+              //     tickLabelStyle: { fontSize: 12 },
+              //   },
+              // ]}
               series={[
                 {
                   data: chartData[displayArea].map((item) => item.count),
@@ -186,8 +186,9 @@ const LineStatusChart = ({
                   },
                 },
               ]}
-              grid={{ vertical: true, horizontal: true }}
+              grid={{vertical: true, horizontal: true,}}
               sx={{
+                backgroundColor: "var(--thirdcolor)",
                 ".MuiLineElement-root": { strokeWidth: 2 },
                 ".MuiMarkElement-root": {
                   scale: "1",
@@ -196,6 +197,21 @@ const LineStatusChart = ({
                   stroke: getColorForType(displayArea),
                 },
                 ".MuiAreaElement-root": { fillOpacity: 0.1 },
+                ".MuiChartsAxis-line, .MuiChartsAxis-tick": {
+                  stroke: getColorForType(displayArea),
+                },
+                ".MuiChartsGrid-line": {
+                  stroke: "var(--firstcolor)",
+                  strokeOpacity: 0.3,
+                },
+                ".MuiChartsAxis-tickLabel": {
+                  fill: "var(--firstcolor)",
+                  fontSize: 12,
+                },
+                ".MuiTooltip-tooltip": {
+                  backgroundColor: "var(--firstcolor)",
+                  color: "var(--thirdcolor)",
+                },
               }}
             />
           </div>
