@@ -83,7 +83,8 @@
   border: 1px solid var(--seventhcolor);
   font-size: 16px;
   outline: 0;
-  color: var(--thirdcolor);
+  background-color: white;
+  color: black;
   border-radius: 8px;
 }
 

@@ -230,8 +230,8 @@
   border: none;
   font-weight: 500;
   font-size: 16px;
-      background: var(--thirdcolor);
-    color: var(--firstcolor);
+  background: var(--thirdcolor);
+  color: var(--firstcolor);
 }
 
 .sidebar-modal {
@@ -239,7 +239,7 @@
 }
 
 .sidebar-modal-container {
-  background-color: var(--thirdcolor) ;
+  background-color: var(--thirdcolor);
   color: var(--firstcolor);
   border-radius: 13px;
   z-index: 9999;

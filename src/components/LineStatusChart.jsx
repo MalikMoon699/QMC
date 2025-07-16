@@ -107,7 +107,9 @@ const LineStatusChart = ({
                     key={type}
                     style={{
                       color:
-                        selectedType === type ? getColorForType(type) : "var(--firstcolor)",
+                        selectedType === type
+                          ? getColorForType(type)
+                          : "var(--firstcolor)",
                       border: `1px solid
                         ${
                           selectedType === type
@@ -189,7 +191,7 @@ const LineStatusChart = ({
                 ".MuiLineElement-root": { strokeWidth: 2 },
                 ".MuiMarkElement-root": {
                   scale: "1",
-                  fill: "#fff",
+                  fill: "var(--thirdcolor)",
                   strokeWidth: 2,
                   stroke: getColorForType(displayArea),
                 },
