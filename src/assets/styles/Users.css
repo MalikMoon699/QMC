@@ -17,6 +17,7 @@
   font-weight: 700;
   text-decoration: underline;
   margin: 16px 16px 20px;
+  color: var(--firstcolor);
 }
 
 .action-btn-container {
@@ -62,7 +63,7 @@
   background-color: var(--thirdcolor);
   font-family: "Poppins", sans-serif;
   transition: 0.3s all ease;
-  border: 1px solid var(--firstcolor);
+  border: 1px solid var(--secondcolor);
 }
 
 .user-card:hover {
@@ -95,6 +96,7 @@
   justify-content: space-between;
   gap: 10px;
   margin-bottom: 12px;
+  color: var(--firstcolor);
 }
 
 .user-card__text {

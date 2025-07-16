@@ -33,7 +33,7 @@ const CustomLabel = ({ viewBox, chartData }) => {
         textAnchor="middle"
         dominantBaseline="central"
         alignmentBaseline="middle"
-        fill="var(secondcolor)"
+        fill="var(--secondcolor)"
         fontSize="14"
         fontWeight="600"
       >
@@ -46,7 +46,7 @@ const CustomLabel = ({ viewBox, chartData }) => {
         textAnchor="middle"
         dominantBaseline="central"
         alignmentBaseline="middle"
-        fill="#000000"
+        fill="var(--firstcolor)"
         fontSize="14"
         fontWeight="600"
       >

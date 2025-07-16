@@ -69,6 +69,7 @@
   border: none;
   cursor: pointer;
   transition: background-color 0.2s;
+  color: var(--firstcolor);
 }
 
 .dropdown {
@@ -132,8 +133,19 @@
   display: block;
 }
 
-.accessories-card{
+.accessories-card {
   max-height: 410px;
   overflow: auto;
   scrollbar-width: none;
+}
+
+.field-input {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 3px 0px 0px 0px;
+  border: 1px solid var(--seventhcolor);
+  font-size: 16px;
+  outline: 0;
+  color: var(--thirdcolor);
+  border-radius: 8px;
 }

@@ -12,7 +12,7 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 43px;
-  background: #fff;
+  background: transparent;
   border: 1px solid var(--sixthcolor);
   border-radius: 8px;
   padding: 15px 20px;
@@ -33,6 +33,7 @@
   align-items: flex-start;
   flex-direction: column;
   height: -webkit-fill-available;
+  color: var(--firstcolor);
 }
 
 .counterLoader {
@@ -86,6 +87,7 @@
   overflow: hidden;
   font-size: 14px;
   font-weight: 500;
+  color: var(--firstcolor);
 }
 
 .notification-date-wrapper {
@@ -93,9 +95,11 @@
   flex-direction: column;
   justify-content: start;
   align-items: end;
+  gap: 5px;
   width: 25%;
   margin: 3px;
   font-size: 10px;
+  color: var(--firstcolor);
 }
 
 .notification-details-wrapper p,

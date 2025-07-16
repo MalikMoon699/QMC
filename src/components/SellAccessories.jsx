@@ -327,7 +327,7 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
                   {index !== 0 && (
                     <button
                       type="button"
-                      style={{ background: "white", margin: "0px 0px 0px 2px" }}
+                      style={{ background: "var(--thirdcolor)", margin: "0px 0px 0px 2px" }}
                       className="add-button"
                       onClick={removeField}
                     >

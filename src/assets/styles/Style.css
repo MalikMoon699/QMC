@@ -261,6 +261,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  color: var(--firstcolor);
 }
 
 .range-filter-btn-container {

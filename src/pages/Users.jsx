@@ -165,7 +165,7 @@ const Users = () => {
                   <div className="user-card_details_container"></div>
                   <div className="user-card_personal_details_container ">
                     <div className="user-card__contact">
-                      <Mail />
+                      <Mail color="var(--firstcolor" />
                       <a
                         href={`https://mail.google.com/mail/?view=cm&fs=1&to=${user.userEmail}`}
                         target="_blank"
@@ -176,7 +176,7 @@ const Users = () => {
                     </div>
                     {user.phoneNumber && (
                       <div className="user-card__contact">
-                        <Phone />
+                        <Phone color="var(--firstcolor" />
                         <a
                           href={`https://wa.me/${user.phoneNumber}`}
                           target="_blank"
