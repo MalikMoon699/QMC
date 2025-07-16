@@ -21,6 +21,8 @@ const Theme = ({ onclose }) => {
   const [fourthcolor, setFourthcolor] = useState("rgb(62, 200, 51)");
   const [fifthcolor, setFifthcolor] = useState("#ec5d7d12");
   const [sixthcolor, setsixthcolor] = useState("#ec5d7d");
+  const [seventhcolor, setseventhcolor] = useState("grey");
+  const [loadercolor, setloadercolor] = useState("#e53935");
   const [selectedTheme, setSelectedTheme] = useState("light");
 
   const getUserData = async () => {
@@ -37,6 +39,8 @@ const Theme = ({ onclose }) => {
       setFourthcolor(userTheme.fourthcolor || "rgb(62, 200, 51)");
       setFifthcolor(userTheme.fifthcolor || "#ec5d7d12");
       setsixthcolor(userTheme.sixthcolor || "#ec5d7d");
+      setseventhcolor(userTheme.seventhcolor || "grey");
+      setloadercolor(userTheme.loadercolor || "#e53935");
     }
 
     setCurrentUserDetails(userDoc);
@@ -61,6 +65,11 @@ const Theme = ({ onclose }) => {
       document.documentElement.style.setProperty("--fourthcolor", fourthcolor);
       document.documentElement.style.setProperty("--fifthcolor", fifthcolor);
       document.documentElement.style.setProperty("--sixthcolor", sixthcolor);
+      document.documentElement.style.setProperty(
+        "--seventhcolor",
+        seventhcolor
+      );
+      document.documentElement.style.setProperty("--loadercolor", loadercolor);
     }
   }, [
     firstcolor,
@@ -69,6 +78,8 @@ const Theme = ({ onclose }) => {
     fourthcolor,
     fifthcolor,
     sixthcolor,
+    seventhcolor,
+    loadercolor,
   ]);
 
   const handleThemeChange = async () => {
@@ -82,6 +93,8 @@ const Theme = ({ onclose }) => {
       fourthcolor,
       fifthcolor,
       sixthcolor,
+      seventhcolor,
+      loadercolor,
     };
 
     if (selectedTheme === "light") {
@@ -92,6 +105,8 @@ const Theme = ({ onclose }) => {
         fourthcolor: "rgb(62, 200, 51)",
         fifthcolor: "#ec5d7d12",
         sixthcolor: "#ec5d7d",
+        seventhcolor: "grey",
+        loadercolor: "#e53935",
       };
     } else if (selectedTheme === "dark") {
       colors = {
@@ -101,6 +116,8 @@ const Theme = ({ onclose }) => {
         fourthcolor: "rgb(62, 200, 51)",
         fifthcolor: "#ec5d7d12",
         sixthcolor: "#ec5d7d",
+        seventhcolor: "grey",
+        loadercolor: "#e53935",
       };
     }
 
@@ -139,7 +156,6 @@ const Theme = ({ onclose }) => {
         </button>
         <h3 className="modal-title">Edit Theme</h3>
       </div>
-
       <div className="theme-modal-content sidebar-modal">
         <button
           onClick={() => setSelectedTheme("light")}
@@ -240,6 +256,22 @@ const Theme = ({ onclose }) => {
                   type="color"
                   value={sixthcolor}
                   onChange={(e) => setsixthcolor(e.target.value)}
+                />{" "}
+              </div>
+              <div>
+                {seventhcolor} Color:
+                <input
+                  type="color"
+                  value={seventhcolor}
+                  onChange={(e) => setseventhcolor(e.target.value)}
+                />{" "}
+              </div>
+              <div>
+               Loader Color {loadercolor}:
+                <input
+                  type="color"
+                  value={loadercolor}
+                  onChange={(e) => setloadercolor(e.target.value)}
                 />{" "}
               </div>
             </div>

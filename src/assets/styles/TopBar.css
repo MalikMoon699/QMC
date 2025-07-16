@@ -6,7 +6,7 @@
   gap: 10px;
   padding-bottom: 10px;
   font-weight: 500;
-  border-bottom: 1px solid #e3e3e3;
+  border-bottom: 1px solid var(--thirdcolor);
 }
 
 .topBarTitle {
@@ -23,7 +23,7 @@
 .searchWrapper input {
   padding: 10px 16px 10px 40px;
   font-size: 16px;
-  border: 1px solid black;
+  border: 1px solid var(--firstcolor);
   outline: none;
   border-radius: 50px;
   width: 100%;
@@ -40,7 +40,7 @@
   outline: none;
   border: none;
   border-radius: 7px;
-  box-shadow: 0px 1px 2px 0px #1018280d;
+  box-shadow: 0px 1px 2px 0px var(--shadowcolor);
   font-family: "Poppins", sans-serif;
   padding: 8px 12px;
   cursor: pointer;
@@ -60,9 +60,8 @@
   transform: translateY(0%);
 }
 .deActiveSearchWrapper span {
-  border: 1px solid black;
+  border: 1px solid var(--firstcolor);
   padding: 12px 12px 7px 12px;
-  /* padding: 6px 8px 2px 5px; */
   border-radius: 50%;
 }
 
@@ -82,13 +81,13 @@
   height: 38px;
   cursor: pointer;
   padding: 10px;
-  background-color: #ee3f24;
+  background-color: var(--secondcolor);
   border-radius: 50%;
   cursor: pointer;
 }
 
 .profile-card {
-  background-color: #ea3c2f;
+  background-color: var(--secondcolor);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -107,14 +106,14 @@
 }
 
 .profile-name {
-  color: #ffffff;
+  color: var(--thirdcolor);
   font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
 }
 
 .arrow {
-  color: white;
+  color: var(--thirdcolor);
   font-size: 16px;
 }
 
@@ -129,7 +128,7 @@
 
 .profileContainer {
   position: relative;
-  background-color: whitesmoke;
+  background-color: var(--thirdcolor);
   border-radius: 6px;
 }
 
@@ -154,7 +153,8 @@
 
 .notificationButton:hover,
 .profileButton:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: var(--firstcolor);
+  opacity: 0.8;
   border-radius: 6px;
 }
 
@@ -163,8 +163,8 @@
   position: absolute;
   top: -3px;
   right: -2px;
-  background-color: #ef4444;
-  color: white;
+  background-color: var(--secondcolor);
+  color: var(--thirdcolor);
   border-radius: 50%;
   width: 16px;
   height: 16px;
@@ -179,9 +179,9 @@
   position: absolute;
   right: 0;
   top: calc(100% + 8px);
-  background-color: white;
+  background-color: var(--thirdcolor);
   border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px var(--shadowcolor);
   width: 320px;
   z-index: 100;
   overflow: hidden;
@@ -203,20 +203,20 @@
   font-family: "Poppins", sans-serif;
   padding: 16px;
   margin: 0;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--thirdcolor);
   font-size: 16px;
   font-weight: 600;
 }
 
 .notificationItem {
   padding: 12px 16px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--thirdcolor);
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .notificationItem:hover {
-  background-color: #f9fafb;
+  background-color: var(--thirdcolor);
 }
 
 .notificationContent p {
@@ -226,20 +226,7 @@
 
 .notificationTime {
   font-size: 12px;
-  color: #6b7280;
-}
-
-.viewAllNotifications {
-  padding: 12px 16px;
-  text-align: center;
-  color: #3b82f6;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.viewAllNotifications:hover {
-  background-color: #f9fafb;
+  color: var(--seventhcolor);
 }
 
 .profileDropdown {
@@ -270,7 +257,8 @@
 }
 
 .profileMenuItem:hover {
-  background-color: #f9fafb;
+  background-color: var(--thirdcolor);
+  opacity: 0.8;
 }
 
 .profileMenuItem .loaderWrapper {
@@ -283,7 +271,7 @@
   right: 10px;
   width: 4px;
   height: 4px;
-  background-color: white;
+  background-color: var(--firstcolor);
   border-radius: 50%;
 }
 
@@ -322,7 +310,7 @@
   width: 80%;
 }
 .topbar-name-wrapper {
-  color: #ff4d4d;
+  color: var(--secondcolor);
   font-size: 30px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -330,7 +318,7 @@
 }
 
 .topbar-name-wrapper span {
-  color: black;
+  color: var(--firstcolor);
   margin-right: 5px;
 }
 
@@ -349,9 +337,15 @@
 /* ------------- Theme ---------------------- */
 
 :root {
-  --firstcolor: white;
+  --firstcolor: black;
   --secondcolor: #eb3c2f;
-  --thirdcolor: black;
+  --thirdcolor: white;
+  --fourthcolor: rgb(62, 200, 51);
+  --fifthcolor: #ec5d7d12;
+  --sixthcolor: #ec5d7d;
+  --seventhcolor: grey;
+  --shadowcolor: #00000022;
+  --loadercolor: #eb3c2f;
 }
 
 .theme-modal-container {
@@ -383,7 +377,8 @@
   border-radius: 10px;
   border: none;
   width: 100%;
-  background-color: white;
+  color: var(--thirdcolor);
+  background-color: var(--firstcolor);
 }
 
 .custom-mode-button {
@@ -394,6 +389,7 @@
   background-color: transparent;
   width: 100%;
   cursor: pointer;
+  color: var(--thirdcolor);
 }
 
 .custom-mode-button > div {
@@ -404,8 +400,8 @@
 }
 
 .selected-theme-active {
-  background-color: #ea3c2f;
-  color: white;
+  background-color: var(--secondcolor);
+  color: var(--thirdcolor);
 }
 
 .color-picker-container {
@@ -423,7 +419,7 @@
   justify-content: space-between;
   gap: 8px;
   margin-top: 10px;
-  color: var(--firstcolor );
+  color: var(--firstcolor);
   background-color: var(--thirdcolor);
   padding: 5px 6px;
   border-radius: 8px;

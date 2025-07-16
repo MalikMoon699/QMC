@@ -334,7 +334,7 @@ const AboutUs = () => {
           <div className="action-btn-container">
             <button
               style={{
-                backgroundColor: "red",
+                backgroundColor: "var(--secondcolor)",
                 padding: "10px 20px",
                 gap: "12px",
               }}
@@ -346,7 +346,7 @@ const AboutUs = () => {
             </button>
             <button
               style={{
-                backgroundColor: "red",
+                backgroundColor: "var(--secondcolor)",
                 padding: "10px 20px",
                 gap: "12px",
               }}
@@ -361,7 +361,7 @@ const AboutUs = () => {
         {role === "admin" && (
           <button
             style={{
-              backgroundColor: "red",
+              backgroundColor: "var(--secondcolor)",
               padding: "10px 20px",
               gap: "12px",
             }}
@@ -849,7 +849,7 @@ const AboutUs = () => {
                   <img src={updateImg || demo5} alt="Profile preview" />
                   <span className="edit-icon">
                     <label style={{ cursor: "pointer" }}>
-                      <Pen size={20} color="red" />
+                      <Pen size={20} color="var(--secondcolor)" />
                     </label>
                     <input
                       type="file"

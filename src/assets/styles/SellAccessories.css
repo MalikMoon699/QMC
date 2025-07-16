@@ -1,9 +1,9 @@
 .container {
   max-width: 600px;
   margin: 0 auto;
-  background-color: white;
+  background-color: var(--thirdcolor);
   border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px var(--shadowcolor);
   padding: 20px;
 }
 
@@ -13,14 +13,14 @@
   align-items: center;
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--seventhcolor);
 }
 
 .header h2 {
   margin: 0;
   font-size: 18px;
   font-weight: 500;
-  color: #333;
+  color: var(--firstcolor);
 }
 
 .field-row {
@@ -37,13 +37,13 @@
 .field-row .dashed-column-line {
   flex-grow: 1;
   height: 50px;
-  border-left: 1px dashed gray;
+  border-left: 1px dashed var(--seventhcolor);
   margin: -18px 0px -32px 19px;
 }
 .field-row .dashed-row-line {
   flex-grow: 1;
   height: 48px;
-  border-bottom: 1px dashed grey;
+  border-bottom: 1px dashed var(--seventhcolor);
   margin: -16px 7px -43px 19px;
 }
 
@@ -59,23 +59,8 @@
 
 .field-label {
   font-size: 14px;
-  color: #6c757d;
+  color: var(--seventhcolor);
   margin-bottom: 5px;
-}
-
-.field-input {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-.field-input:focus {
-  outline: none;
-  border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .add-button {
@@ -96,9 +81,9 @@
   width: 100%;
   text-align: left;
   padding: 8px 12px;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--seventhcolor);
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--thirdcolor);
   cursor: pointer;
 }
 
@@ -113,14 +98,14 @@
   padding: 5px 0;
   margin: 2px 0 0;
   font-size: 14px;
-  color: #212529;
+  color: var(--firstcolor);
   text-align: left;
   list-style: none;
-  background-color: #fff;
+  background-color: var(--thirdcolor);
   background-clip: padding-box;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--firstcolor);
   border-radius: 4px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px var(--shadowcolor);
   width: 100%;
 }
 
@@ -130,7 +115,7 @@
   padding: 8px 16px;
   clear: both;
   font-weight: 400;
-  color: #212529;
+  color: var(--firstcolor);
   text-align: inherit;
   white-space: nowrap;
   background-color: transparent;
@@ -139,7 +124,8 @@
 }
 
 .dropdown-item:hover {
-  background-color: #f8f9fa;
+  background-color: var(--thirdcolor);
+  opacity: 0.95;
 }
 
 .show {

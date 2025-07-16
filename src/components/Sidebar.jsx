@@ -72,7 +72,7 @@ const Sidebar = () => {
                 <button className="sideBarCross">
                   <SquareX
                     size={20}
-                    color="#e53935"
+                    color="var(--secondcolor)"
                     onClick={toggleMenuClose}
                   />
                 </button>
@@ -191,7 +191,7 @@ const Sidebar = () => {
                 >
                   <div className="sidebar-modal">
                     <div className="contentWrapper">
-                      <TriangleAlert color="red" />
+                      <TriangleAlert color="var(--secondcolor)" />
                       <h3>Come Back Soon!!!</h3>
                       <p>Are you sure you want to logout</p>
                     </div>
@@ -322,7 +322,7 @@ const Sidebar = () => {
             >
               <div className="sidebar-modal">
                 <div className="contentWrapper">
-                  <TriangleAlert color="red" size={80} />
+                  <TriangleAlert color="var(--secondcolor)" size={80} />
                   <h3>Come Back Soon!!!</h3>
                   <p>Are you sure you want to logout</p>
                 </div>

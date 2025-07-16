@@ -310,7 +310,7 @@ const AddEvents = ({ onClose, EventToUpdate }) => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
-                  <Search color="black" className="icon" size={20} />
+                  <Search color="var(--firstcolor)" className="icon" size={20} />
                 </div>
               </div>
               <div className="devices-list">

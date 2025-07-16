@@ -146,7 +146,7 @@ const SellerApplication = ({ onClose }) => {
             {loading ? (
               <div
                 style={{
-                  backgroundColor: "#b7b6b5",
+                  backgroundColor: "var(--seventhcolor)",
                   maxHeight: "50px",
                   cursor: "not-allowed",
                 }}
@@ -171,7 +171,7 @@ const SellerApplication = ({ onClose }) => {
           <div className="modal-content">
             <div style={{ width: "400px" }} className="sidebar-modal">
               <div className="contentWrapper">
-                <CircleX color="red" size={50} />
+                <CircleX color="var(--secondcolor)" size={50} />
                 <h3>Your Request Submission Failed</h3>
                 <p>
                   You are not eligible to apply. Required age is 18 years or
@@ -199,7 +199,7 @@ const SellerApplication = ({ onClose }) => {
           <div className="modal-content">
             <div className="sidebar-modal">
               <div className="contentWrapper">
-                <CircleCheckBig color="green" size={50} />
+                <CircleCheckBig color="var(--fourthcolor)" size={50} />
                 <h3>Your Request Submitted Successfully</h3>
                 <p>We will contact you soon.</p>
               </div>

@@ -1,5 +1,5 @@
 .profile-container {
-  background-color: #fff6f3;
+  background-color: var(--thirdcolor);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,13 +16,11 @@
 }
 
 .profile-details-card {
-  border: 3px solid #ff6347;
+  border: 3px solid var(--secondcolor);
   border-radius: 20px;
   padding: 2rem;
-  background-color: white;
-  /* display: flex;
-  gap: 2rem; */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  background-color: var(--thirdcolor);
+  box-shadow: 0 10px 20px var(--shadowcolor);
 }
 
 .image-section {
@@ -36,7 +34,7 @@
   width: 100px;
   padding: 0px;
   border-radius: 50%;
-  box-shadow: 0 8px 16px rgb(0 0 0 / 18%);
+  box-shadow: 0 8px 16px var(--shadowcolor);
   object-fit: cover;
 }
 
@@ -59,7 +57,7 @@
   width: 15px;
   padding: 0px;
   border-radius: 0px;
-  box-shadow: 0px 0px 0px black;
+  box-shadow: 0px 0px 0px var(--shadowcolor);
 }
 
 .form-section {
@@ -82,7 +80,7 @@
 .form-group select {
   padding: 10px;
   width: 250px;
-  border: 1px solid #333;
+  border: 1px solid var(--seventhcolor);
   border-radius: 8px;
   font-size: 16px;
 }
@@ -91,8 +89,8 @@
 }
 
 .continue-btn {
-  background-color: #ff6347;
-  color: white;
+  background-color: var(--secondcolor);
+  color: var(--thirdcolor);
   border: none;
   padding: 12px 20px;
   border-radius: 10px;
@@ -102,7 +100,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 5px 10px rgba(255, 99, 71, 0.2);
+  box-shadow: 0 5px 10px var(--shadowcolor);
   transition: transform 0.2s ease;
 }
 
@@ -111,5 +109,5 @@
 }
 
 .select-placeholder {
-  color: gray;
+  color: var(--seventhcolor);
 }

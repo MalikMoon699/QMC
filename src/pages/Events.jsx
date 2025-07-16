@@ -102,7 +102,7 @@ const Events = () => {
           {role !== "user" && (
             <button
               onClick={() => setSellModalOpen(true)}
-              style={{ backgroundColor: "#ef3f2c" }}
+              style={{ backgroundColor: "var(--secondcolor)" }}
               className="action-btn"
             >
               <Plus size={20} />
@@ -130,7 +130,7 @@ const Events = () => {
                 </h1>
                 <button
                   className="action-btn"
-                  style={{ backgroundColor: "#ef3f2c" }}
+                  style={{ backgroundColor: "var(--secondcolor)" }}
                   onClick={() => {
                     setIsOpen(true);
                     setSelectedCard(device);
@@ -197,7 +197,7 @@ const Events = () => {
                             </p>
                           )}
                           <p
-                            style={{ color: "green" }}
+                            style={{ color: "var(--fourthcolor)" }}
                             className="mobile_card_details"
                           >
                             <strong>Off:</strong>
@@ -206,7 +206,7 @@ const Events = () => {
                             <span>%</span>
                           </p>
                           <p
-                            style={{ color: "red" }}
+                            style={{ color: "var(--secondcolor)" }}
                             className="mobile_card_details"
                           >
                             <strong>Price:</strong>
@@ -214,7 +214,7 @@ const Events = () => {
                             <span
                               style={{
                                 textDecoration: "line-through",
-                                color: "grey",
+                                color: "var(--seventhcolor)",
                                 fontSize: "10px",
                                 fontWeight: "300",
                               }}
@@ -315,7 +315,7 @@ const Events = () => {
                     {selectedCard.selectedEvents.length}
                   </p>
                   <p
-                    style={{ color: "#00a400" }}
+                    style={{ color: "var(--fourthcolor)" }}
                     className="mobile_card_details"
                   >
                     <strong>Event By:</strong>
@@ -325,7 +325,7 @@ const Events = () => {
                       : selectedCard.createdBy}
                   </p>
                   <p
-                    style={{ color: "#00c000" }}
+                    style={{ color: "var(--fourthcolor)" }}
                     className="mobile_card_details"
                   >
                     <strong>Mail:</strong>
@@ -333,7 +333,7 @@ const Events = () => {
                     {selectedCard.createdByEmail}
                   </p>
                   <p
-                    style={{ color: "#00c000" }}
+                    style={{ color: "var(--fourthcolor)" }}
                     className="mobile_card_details"
                   >
                     <strong>Number:</strong>
@@ -399,7 +399,7 @@ const Events = () => {
                       </p>
                     ))}
                   <p
-                    style={{ color: "#00a400" }}
+                    style={{ color: "var(--fourthcolor)" }}
                     className="mobile_card_details"
                   >
                     <strong>Sell By:</strong>
@@ -409,7 +409,7 @@ const Events = () => {
                       : selectedEventCard.createdBy}
                   </p>
                   <p
-                    style={{ color: "#00c000" }}
+                    style={{ color: "var(--fourthcolor)" }}
                     className="mobile_card_details"
                   >
                     <strong>Seller Mail:</strong>
@@ -417,14 +417,17 @@ const Events = () => {
                     {selectedEventCard.createdByEmail}
                   </p>
                   <p
-                    style={{ color: "#00c000" }}
+                    style={{ color: "var(--fourthcolor)" }}
                     className="mobile_card_details"
                   >
                     <strong>Seller Number:</strong>
                     <span className="dashed-line"></span>
                     {selectedEventCard.createdByPhoneNumber}
                   </p>
-                  <p style={{ color: "red" }} className="mobile_card_details">
+                  <p
+                    style={{ color: "var(--secondcolor)" }}
+                    className="mobile_card_details"
+                  >
                     <strong>Price:</strong>
                     <span className="dashed-line"></span>
                     {selectedEventCard.price} PKR
@@ -452,7 +455,7 @@ const Events = () => {
           <div style={{ minWidth: "350px" }} className="modal-content">
             <div className="sidebar-modal">
               <div className="contentWrapper">
-                <MessageCircleWarning color="red" size={50} />
+                <MessageCircleWarning color="var(--secondcolor)" size={50} />
                 <h3>Change Your Event!!!</h3>
                 <p>Are You Sure to Update or Delete</p>
               </div>

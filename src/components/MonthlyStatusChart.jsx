@@ -2,7 +2,12 @@ import React, { useMemo } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Label } from "recharts";
 import Loader from "./Loader";
 
-const COLORS = ["#3EC833", "#EE3F24", "#0000000f", "#ec5d7d2b"];
+const COLORS = [
+  "var(--fourthcolor)",
+  "var(--secondcolor)",
+  "var(--firstcolor)",
+  "var(--fifthcolor)",
+];
 
 const CustomLabel = ({ viewBox, chartData }) => {
   const { cx = 150, cy = 150 } = viewBox || {};
@@ -15,7 +20,7 @@ const CustomLabel = ({ viewBox, chartData }) => {
         textAnchor="middle"
         dominantBaseline="central"
         alignmentBaseline="middle"
-        fill="#3EC833"
+        fill="var(--fourthcolor)"
         fontSize="14"
         fontWeight="600"
       >
@@ -28,7 +33,7 @@ const CustomLabel = ({ viewBox, chartData }) => {
         textAnchor="middle"
         dominantBaseline="central"
         alignmentBaseline="middle"
-        fill="#EE3F24"
+        fill="var(secondcolor)"
         fontSize="14"
         fontWeight="600"
       >
@@ -54,7 +59,7 @@ const CustomLabel = ({ viewBox, chartData }) => {
         textAnchor="middle"
         dominantBaseline="central"
         alignmentBaseline="middle"
-        fill="#ec5d7d"
+        fill="var(--sixthcolor)"
         fontSize="14"
         fontWeight="600"
       >

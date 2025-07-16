@@ -71,15 +71,15 @@ const LineStatusChart = ({
   const getColorForType = (type) => {
     switch (type) {
       case "Devices":
-        return "#3EC833";
+        return "var(--fourthcolor)";
       case "Events":
-        return "#EE3F24";
+        return "var(--secondcolor)";
       case "Accessories":
-        return "#ec5d7d";
+        return "var(--sixthcolor)";
       case "SoldOut":
-        return "gray";
+        return "var(--seventhcolor)";
       default:
-        return "#3EC833";
+        return "var(--fourthcolor)";
     }
   };
   const isAllZero = chartData[displayArea].every((item) => item.count === 0);
@@ -107,12 +107,12 @@ const LineStatusChart = ({
                     key={type}
                     style={{
                       color:
-                        selectedType === type ? getColorForType(type) : "black",
+                        selectedType === type ? getColorForType(type) : "var(--firstcolor)",
                       border: `1px solid
                         ${
                           selectedType === type
                             ? getColorForType(type)
-                            : "rgb(245, 245, 245)"
+                            : "#01010114"
                         }`,
                     }}
                     onClick={() => {
@@ -146,7 +146,7 @@ const LineStatusChart = ({
               justifyContent: "center",
             }}
           >
-            <p style={{ color: "#666", fontSize: "16px" }}>
+            <p style={{ color: "var(--firstcolor)", fontSize: "16px" }}>
               No {displayArea.toLowerCase()} added this week.
             </p>
           </div>

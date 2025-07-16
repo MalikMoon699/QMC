@@ -140,7 +140,7 @@ const Accessories = () => {
           {role !== "user" && (
             <button
               onClick={() => setSellModalOpen(true)}
-              style={{ backgroundColor: "#ef3f2c" }}
+              style={{ backgroundColor: "var(--secondcolor)" }}
               className="action-btn filter-btn-container"
             >
               <Plus size={20} /> Sell Your Product
@@ -150,7 +150,7 @@ const Accessories = () => {
             <button
               onClick={() => setIsSellerApplicationOpen(true)}
               className="action-btn filter-btn-container"
-              style={{ backgroundColor: "#ef3f2c" }}
+              style={{ backgroundColor: "var(--secondcolor)" }}
             >
               <Store size={15} />
               Apply for Seller
@@ -237,7 +237,10 @@ const Accessories = () => {
                         {selectedDevice.body}
                       </p>
                     ))}
-                  <p style={{ color: "red" }} className="mobile_card_details">
+                  <p
+                    style={{ color: "var(--secondcolor)" }}
+                    className="mobile_card_details"
+                  >
                     <strong>Price:</strong>
                     <span className="dashed-line"></span>
                     {device.price} PKR
@@ -321,7 +324,7 @@ const Accessories = () => {
                       </p>
                     ))}
                   <p
-                    style={{ color: "#00a400" }}
+                    style={{ color: "var(--fourthcolor)" }}
                     className="mobile_card_details"
                   >
                     <strong>Sell By:</strong>
@@ -331,7 +334,7 @@ const Accessories = () => {
                       : selectedCard.createdBy}
                   </p>
                   <p
-                    style={{ color: "#00c000" }}
+                    style={{ color: "var(--fourthcolor)" }}
                     className="mobile_card_details"
                   >
                     <strong>Seller Mail:</strong>
@@ -339,14 +342,17 @@ const Accessories = () => {
                     {selectedCard.createdByEmail}
                   </p>
                   <p
-                    style={{ color: "#00c000" }}
+                    style={{ color: "var(--fourthcolor)" }}
                     className="mobile_card_details"
                   >
                     <strong>Seller Number:</strong>
                     <span className="dashed-line"></span>
                     {selectedCard.createdByPhoneNumber}
                   </p>
-                  <p style={{ color: "red" }} className="mobile_card_details">
+                  <p
+                    style={{ color: "var(--secondcolor)" }}
+                    className="mobile_card_details"
+                  >
                     <strong>Price:</strong>
                     <span className="dashed-line"></span>
                     {selectedCard.price} PKR
@@ -374,7 +380,7 @@ const Accessories = () => {
           <div style={{ minWidth: "350px" }} className="modal-content">
             <div className="sidebar-modal">
               <div className="contentWrapper">
-                <MessageCircleWarning color="red" size={50} />
+                <MessageCircleWarning color="var(--secondcolor)" size={50} />
                 <h3>Change Your Product!!!</h3>
                 <p>Are You Sure to Update or Sold Out</p>
               </div>

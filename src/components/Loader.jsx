@@ -6,13 +6,16 @@ const Loader = ({
   loading,
   className = "loaderWrapper",
   size = "40",
-  color = "#e53935",
 }) => {
   tailChase.register();
   return (
     loading && (
       <div className={className}>
-        <l-tail-chase size={size} speed="1.75" color={color}></l-tail-chase>
+        <l-tail-chase
+          size={size}
+          speed="1.75"
+          color="var(--loadercolor)"
+        ></l-tail-chase>
       </div>
     )
   );

@@ -11,12 +11,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 10000;
 }
 
 .modal-content {
   position: relative;
-  background: #fff;
+  background: var(--firstcolor);
   border-radius: 10px;
   max-height: 90%;
   overflow: auto;
@@ -36,6 +36,7 @@
 
 .mobile-modal-card .mobile-card_details_container {
   padding: 8px 0px !important;
+  color: var(--firstcolor);
 }
 
 .mobile-modal-card .mobile_card_details {
@@ -43,6 +44,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  color: var(--firstcolor);
 }
 
 .mobile-modal-card .mobile-card__info {
@@ -66,7 +68,7 @@
   align-items: center;
   text-align: center;
   flex-direction: column;
-  color: #000;
+  color: var(--thirdcolor);
   padding-bottom: 8px;
 }
 
@@ -78,11 +80,11 @@
 }
 
 .logout-cencel-btn {
-  background-color: grey;
+  background-color: var(--seventhcolor);
 }
 
 .logout-delte-btn {
-  background-color: #ff0404;
+  background-color: var(--secondcolor);
 }
 
 .logout-delte-btn-same {
@@ -90,7 +92,7 @@
   border: 0px;
   border-radius: 4px;
   cursor: pointer;
-  color: #fff;
+  color: var(--thirdcolor);
 }
 
 /* ----------Black Modal----------------- */
@@ -108,18 +110,20 @@
   border-radius: 50%;
   cursor: pointer;
   object-fit: cover;
-  border: 1px solid red;
+  border: 1px solid var(--secondcolor);
 }
 
 .edit-icon {
   position: absolute;
   bottom: 10px;
   right: -10px;
+  color: var(--secondcolor);
 }
 
 .user-Name {
   text-align: center;
   padding: 10px 0px 0px 0px;
+  color: var(--firstcolor);
 }
 
 .user-Name h3 {
@@ -138,7 +142,8 @@
 
 .menu div {
   margin: 1rem 0;
-  border-top: 1px solid #444;
+  border-top: 1px solid var(--seventhcolor);
+  color: var(--firstcolor);
   padding-top: 1rem;
   cursor: pointer;
   display: flex;
@@ -157,7 +162,7 @@
 
 .modal-containeer div {
   margin-bottom: 0.7rem;
-  border-top: 1px solid #44444438;
+  border-top: 1px solid var(--firstcolor);
   padding-top: 1rem;
   overflow: auto;
   scrollbar-width: none;
@@ -167,7 +172,7 @@
   font-size: 16px;
 }
 .modal-containeer span {
-  color: #00000045;
+  color: var(--seventhcolor);
   font-size: 12px;
   font-weight: 500;
 }
@@ -187,14 +192,14 @@
   display: flex;
   align-items: center;
   padding: 16px;
-  background-color: #eb3c2f;
+  background-color: var(--secondcolor);
   border-radius: 10px 10px 0px 0px;
 }
 
 .back-button {
   border: none;
   cursor: pointer;
-  color: #eb3c2f;
+  color: var(--secondcolor);
   padding: 14px;
   display: flex;
   align-items: center;
@@ -203,18 +208,19 @@
   margin-right: -6.5%;
   width: 24px;
   height: 24px;
-  background-color: white;
+  background-color: var(--thirdcolor);
   border-radius: 5px;
   transition: 0.3s all ease;
 }
 
 .back-button:hover {
-  background: #ececec;
+  background: var(--thirdcolor);
+  opacity: 0.95;
 }
 
 .modal-title {
   flex: 1;
-  color: #ffffff;
+  color: var(--thirdcolor);
   text-align: center;
   font-weight: 500;
   font-size: 16px;
@@ -231,8 +237,8 @@
 }
 
 .sidebar-modal-container {
-  background-color: black;
-  color: white;
+  background-color: var(--thirdcolor) ;
+  color: var(--firstcolor);
   border-radius: 13px;
   z-index: 9999;
   width: 300px;
@@ -242,8 +248,8 @@
 }
 
 .modal-card {
-  background-color: white;
-  color: black;
+  background-color: var(--thirdcolor);
+  color: var(--firstcolor);
   border-radius: 10px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -253,11 +259,11 @@
 }
 
 .update-button {
-  background-color: #e53935;
+  background-color: var(--secondcolor);
   padding: 12px;
   border: none;
   border-radius: 25px;
-  color: white;
+  color: var(--thirdcolor);
   font-weight: bold;
   cursor: pointer;
 }

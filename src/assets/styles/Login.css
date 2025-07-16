@@ -6,8 +6,8 @@
 }
 
 .login-left {
-  background-color: #000000;
-  color: white;
+  background-color: var(--firstcolor);
+  color: var(--thirdcolor);
   flex: 1;
   padding: 4rem;
 }
@@ -19,7 +19,7 @@
 }
 
 .login-left h1 span {
-  color: #ff4d4d;
+  color: var(--secondcolor);
 }
 
 .brand-logo {
@@ -37,7 +37,7 @@
 }
 
 .brand-logo span {
-  color: #ff4d4d;
+  color: var(--secondcolor);
 }
 
 .login-illustration {
@@ -53,7 +53,7 @@
 }
 .login-right {
   flex: 1;
-  background-color: #ffffff;
+  background-color: var(--thirdcolor);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -73,17 +73,17 @@
 }
 
 .login-form h2 span {
-  color: #ff4d4d;
+  color: var(--secondcolor);
 }
 
 .login-input {
   width: 100%;
   padding: 0.75rem;
   margin: 4px 0px 1.2rem 0px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--seventhcolor);
   font-size: 16px;
   outline: 0;
-  color: black;
+  color: var(--firstcolor);
   border-radius: 8px;
 }
 
@@ -93,18 +93,18 @@
   justify-content: center;
   width: 100%;
   padding: 0.9rem;
-  background-color: #ff4d4d;
-  color: white;
+  background-color: var(--secondcolor);
+  color: var(--thirdcolor);
   font-size: 16px;
   font-weight: bold;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 6px 18px rgba(255, 77, 77, 0.35);
+  box-shadow: 0 6px 18px var(--shadowcolor);
 }
 
 .login-button:hover {
-  background-color: #e63b3b;
+  background-color: var(--secondcolor);
 }
 
 .login-text {
@@ -124,7 +124,7 @@
 }
 
 .toggle-account span {
-  color: #ff4d4d;
+  color: var(--secondcolor);
   cursor: pointer;
   margin-left: 6px;
 }
@@ -134,7 +134,7 @@
   align-items: center;
   justify-content: center;
   margin: 4px 0px 1.2rem 0px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--seventhcolor);
   outline: 0;
   border-radius: 8px;
 }
@@ -148,7 +148,7 @@
 }
 
 .password-toggle {
-  border-left: 1px solid #ddd;
+  border-left: 1px solid var(--seventhcolor);
   padding: 0.75rem;
   cursor: pointer;
   border-radius: 0px 8px 8px 0px;
@@ -163,14 +163,14 @@
   padding: 0px;
   margin: -14px 0px 11px 4px;
   font-size: 12px;
-  color: red;
+  color: var(--secondcolor);
 }
 
 .or-line-container {
-  background-color: red;
+  background-color: var(--secondcolor);
   height: 1px;
   margin: 35px 0px 23px 0px;
-  color: #f05454;
+  color: var(--secondcolor);
   padding: 0 10px;
   transform: translateY(-50%);
   width: 100%;
@@ -179,9 +179,9 @@
   position: absolute;
   right: 43%;
   top: 0;
-  color: #f05454;
+  color: var(--secondcolor);
   font-weight: 500;
-  background-color: #fff;
+  background-color: var(--thirdcolor);
   padding: 0 10px;
   transform: translateY(-50%);
 }
@@ -189,9 +189,9 @@
 .google-login-button {
   width: 100%;
   background: transparent;
-  border: 0.5px solid #00000052;
+  border: 0.5px solid var(--firstcolor);
   border-radius: 8px;
-  box-shadow: 0px 0px 5px #0000003b;
+  box-shadow: 0px 0px 5px var(--shadowcolor);
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
@@ -205,7 +205,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 20px;
-  color: black;
+  color: var(--firstcolor);
 }
 
 .login-with-google img {

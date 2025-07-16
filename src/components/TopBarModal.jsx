@@ -128,17 +128,17 @@ const TopBarModal = ({ userData, onProfileUpdate, isOpen, setIsOpen }) => {
                   setInfoModal(!infoModal);
                 }}
               >
-                <Info color="white" /> Info
+                <Info color="var(--firstcolor)" /> Info
               </div>
               <div onClick={() => setEditModal(!editModal)}>
-                <Pen color="white" /> Profile Edit
+                <Pen color="var(--firstcolor)" /> Profile Edit
               </div>
               <div
                 onClick={() => {
                   setIsTheme(true);
                 }}
               >
-                <Palette />
+                <Palette color="var(--firstcolor)" />
                 Theme
               </div>
             </div>
@@ -216,7 +216,7 @@ const TopBarModal = ({ userData, onProfileUpdate, isOpen, setIsOpen }) => {
                 className="clickable-profile-img"
               />
               <span className="edit-icon">
-                <Pen color="red" size={20} />
+                <Pen color="var(--secondcolor)" size={20} />
               </span>
             </div>
             <input

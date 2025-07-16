@@ -265,7 +265,7 @@ const AdminDashboard = () => {
             )}
           </div>
           <div className="counterIcon">
-            <Calendar1 color="#ea5173" />
+            <Calendar1 color="var(--sixthcolor)" />
           </div>
         </div>
         <div className="active-tab tab">
@@ -283,7 +283,7 @@ const AdminDashboard = () => {
             )}
           </div>
           <div className="counterIcon">
-            <TabletSmartphone color="#ea5173" />
+            <TabletSmartphone color="var(--sixthcolor)" />
           </div>
         </div>
         <div className="active-tab tab">
@@ -301,7 +301,7 @@ const AdminDashboard = () => {
             )}
           </div>
           <div className="counterIcon">
-            <Cable color="#ea5173" />
+            <Cable color="var(--sixthcolor)" />
           </div>
         </div>
         <div className="active-tab tab">
@@ -319,7 +319,7 @@ const AdminDashboard = () => {
             )}
           </div>
           <div className="counterIcon">
-            <RefreshCwOff color="#ea5173" />
+            <RefreshCwOff color="var(--sixthcolor)" />
           </div>
         </div>
       </div>
@@ -575,7 +575,7 @@ const AdminDashboard = () => {
                         </p>
                       ))}
                     <p
-                      style={{ color: "#00a400" }}
+                      style={{ color: "var(--fourthcolor)" }}
                       className="mobile_card_details"
                     >
                       <strong>Sell By:</strong>
@@ -585,7 +585,7 @@ const AdminDashboard = () => {
                         : selectedItem.createdBy}
                     </p>
                     <p
-                      style={{ color: "#00c000" }}
+                      style={{ color: "var(--fourthcolor)" }}
                       className="mobile_card_details"
                     >
                       <strong>Seller Mail:</strong>
@@ -593,14 +593,17 @@ const AdminDashboard = () => {
                       {selectedItem.createdByEmail}
                     </p>
                     <p
-                      style={{ color: "#00c000" }}
+                      style={{ color: "var(--fourthcolor)" }}
                       className="mobile_card_details"
                     >
                       <strong>Seller Number:</strong>
                       <span className="dashed-line"></span>
                       {selectedItem.createdByPhoneNumber}
                     </p>
-                    <p style={{ color: "red" }} className="mobile_card_details">
+                    <p
+                      style={{ color: "var(--secondcolor)" }}
+                      className="mobile_card_details"
+                    >
                       <strong>Price:</strong>
                       <span className="dashed-line"></span>
                       {selectedItem.price} PKR
@@ -666,7 +669,7 @@ const AdminDashboard = () => {
                       {selectedItem.memory}GB
                     </p>
                     <p
-                      style={{ color: "#00a400" }}
+                      style={{ color: "var(--fourthcolor)" }}
                       className="mobile_card_details"
                     >
                       <strong>Sell By:</strong>
@@ -674,7 +677,7 @@ const AdminDashboard = () => {
                       {selectedItem.createdBy}
                     </p>
                     <p
-                      style={{ color: "#00c000" }}
+                      style={{ color: "var(--fourthcolor)" }}
                       className="mobile_card_details"
                     >
                       <strong>Seller Mail:</strong>
@@ -682,14 +685,17 @@ const AdminDashboard = () => {
                       {selectedItem.createdByEmail}
                     </p>
                     <p
-                      style={{ color: "#00c000" }}
+                      style={{ color: "var(--fourthcolor)" }}
                       className="mobile_card_details"
                     >
                       <strong>Seller Number:</strong>
                       <span className="dashed-line"></span>
                       {selectedItem.createdByPhoneNumber}
                     </p>
-                    <p style={{ color: "red" }} className="mobile_card_details">
+                    <p
+                      style={{ color: "var(--secondcolor)" }}
+                      className="mobile_card_details"
+                    >
                       <strong>Price:</strong>
                       <span className="dashed-line"></span>
                       {selectedItem.price} PKR

@@ -13,7 +13,7 @@
   align-items: flex-start;
   gap: 43px;
   background: #fff;
-  border: 1px solid #ec5d7d;
+  border: 1px solid var(--sixthcolor);
   border-radius: 8px;
   padding: 15px 20px;
   height: 140px;
@@ -24,7 +24,7 @@
 
 .active-tab {
   background-color: #ec5d7d12;
-  border-color: #ec5d7d;
+  border-color: var(--sixthcolor);
 }
 
 .counterContentWrapper {
@@ -56,11 +56,11 @@
 .notification {
   display: flex;
   justify-content: space-between;
-  border: 1px solid #ec5d7d;
+  border: 1px solid var(--sixthcolor);
   border-radius: 10px;
   padding: 8px;
   margin-top: 15px;
-  box-shadow: 0px 0px 10px #0000001c;
+  box-shadow: 0px 0px 10px var(--shadowcolor);
   width: 100%;
   cursor: pointer;
 }
@@ -71,7 +71,7 @@
   border-radius: 10px;
   border: none;
   object-fit: cover;
-  border: 1px solid #ec5d7d;
+  border: 1px solid var(--sixthcolor);
 }
 
 .notification-content {
@@ -106,9 +106,9 @@ h3 {
 }
 
 .application-approve-btn {
-  background-color: #fef4f6;
-  border: 1px solid rgb(230 30 83);
-  color: black;
+  background-color: var(--thirdcolor);
+  border: 1px solid var(--secondcolor);
+  color: var(--firstcolor);
   width: 50%;
   padding: 5px;
   border-radius: 8px;
@@ -118,7 +118,7 @@ h3 {
 
 .application-approve-btn:hover{
   transform: translate(0px,-2.5px);
-  box-shadow: 0 0 10px rgba(230, 30, 83, 0.262);
+  box-shadow: 0 0 10px var(--shadowcolor);
 }
 
 .sender_Details_Container {
@@ -133,7 +133,7 @@ h3 {
   height: 70px;
   border-radius: 10%;
   object-fit: cover;
-  border: 1px solid #ec5d7d;
+  border: 1px solid var(--sixthcolor);
 }
 
 .sender_Details {
@@ -263,7 +263,7 @@ h3 {
     border-radius: 10px;
     border: none;
     object-fit: cover;
-    border: 1px solid #ec5d7d;
+    border: 1px solid var(--sixthcolor);
   }
 
   .notification-content {
@@ -323,7 +323,7 @@ h3 {
     border-radius: 10px;
     border: none;
     object-fit: cover;
-    border: 1px solid #ec5d7d;
+    border: 1px solid var(--sixthcolor);
   }
   .notification-content {
     gap: 4px;

@@ -115,7 +115,7 @@ const AllSoldOut = ({ soldOutData, onClose,fetchType, currentUser}) => {
                         </p>
                       ))}
                     <p
-                      style={{ color: "#00a400" }}
+                      style={{ color: "var(--fourthcolor)" }}
                       className="mobile_card_details"
                     >
                       <strong>Sell By:</strong>
@@ -125,7 +125,7 @@ const AllSoldOut = ({ soldOutData, onClose,fetchType, currentUser}) => {
                         : selectedItem.createdBy}
                     </p>
                     <p
-                      style={{ color: "#00c000" }}
+                      style={{ color: "var(--fourthcolor)" }}
                       className="mobile_card_details"
                     >
                       <strong>Seller Mail:</strong>
@@ -133,14 +133,17 @@ const AllSoldOut = ({ soldOutData, onClose,fetchType, currentUser}) => {
                       {selectedItem.createdByEmail}
                     </p>
                     <p
-                      style={{ color: "#00c000" }}
+                      style={{ color: "var(--fourthcolor)" }}
                       className="mobile_card_details"
                     >
                       <strong>Seller Number:</strong>
                       <span className="dashed-line"></span>
                       {selectedItem.createdByPhoneNumber}
                     </p>
-                    <p style={{ color: "red" }} className="mobile_card_details">
+                    <p
+                      style={{ color: "var(--secondcolor)" }}
+                      className="mobile_card_details"
+                    >
                       <strong>Price:</strong>
                       <span className="dashed-line"></span>
                       {selectedItem.price} PKR
@@ -207,7 +210,7 @@ const AllSoldOut = ({ soldOutData, onClose,fetchType, currentUser}) => {
                       {selectedItem.memory}GB
                     </p>
                     <p
-                      style={{ color: "#00a400" }}
+                      style={{ color: "var(--fourthcolor)" }}
                       className="mobile_card_details"
                     >
                       <strong>Sell By:</strong>
@@ -215,7 +218,7 @@ const AllSoldOut = ({ soldOutData, onClose,fetchType, currentUser}) => {
                       {selectedItem.createdBy}
                     </p>
                     <p
-                      style={{ color: "#00c000" }}
+                      style={{ color: "var(--fourthcolor)" }}
                       className="mobile_card_details"
                     >
                       <strong>Seller Mail:</strong>
@@ -223,14 +226,17 @@ const AllSoldOut = ({ soldOutData, onClose,fetchType, currentUser}) => {
                       {selectedItem.createdByEmail}
                     </p>
                     <p
-                      style={{ color: "#00c000" }}
+                      style={{ color: "var(--fourthcolor)" }}
                       className="mobile_card_details"
                     >
                       <strong>Seller Number:</strong>
                       <span className="dashed-line"></span>
                       {selectedItem.createdByPhoneNumber}
                     </p>
-                    <p style={{ color: "red" }} className="mobile_card_details">
+                    <p
+                      style={{ color: "var(--secondcolor)" }}
+                      className="mobile_card_details"
+                    >
                       <strong>Price:</strong>
                       <span className="dashed-line"></span>
                       {selectedItem.price} PKR

@@ -3,8 +3,8 @@
   width: 100%;
   max-height: 230px;
   overflow: hidden;
-  border-bottom: 1px solid #ff0000;
-  background-color: #f0f0f0;
+  border-bottom: 1px solid var(--secondcolor);
+  background-color: var(--firstcolor);
 }
 
 .slider {
@@ -25,7 +25,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background:#ec5d7d12;
+  background:var(--fifthcolor);
 }
 
 .slide img {
@@ -41,8 +41,8 @@
   top: 50%;
   transition: all 0.3s ease-in-out;
   transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+  background-color: var(--firstcolor);
+  color: var(--thirdcolor);
   border: none;
   padding: 4px 11px;
   cursor: pointer;
@@ -71,7 +71,7 @@
   transform: translateX(-50%);
   display: flex;
   gap: 6px;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: var(--firstcolor);
   backdrop-filter: blur(10px);
   padding: 10px 15px;
   border-radius: 50px;
@@ -80,14 +80,14 @@
 .dot {
   width: 10px;
   height: 10px;
-  background-color: #bbb;
+  background-color: var(--seventhcolor);
   border-radius: 50%;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .dot.active {
-  background-color: #ff0000;
+  background-color: var(--secondcolor);
 }
 
 

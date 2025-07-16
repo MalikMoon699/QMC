@@ -130,7 +130,7 @@ const Notifications = () => {
             )}
           </div>
           <div className="counterIcon">
-            <Bell color="#ea5173" />
+            <Bell color="var(--sixthcolor)" />
           </div>
         </div>
         <div
@@ -153,7 +153,7 @@ const Notifications = () => {
             )}
           </div>
           <div className="counterIcon">
-            <UserCog color="#ea5173" />
+            <UserCog color="var(--sixthcolor)" />
           </div>
         </div>
         <div
@@ -176,7 +176,7 @@ const Notifications = () => {
             )}
           </div>
           <div className="counterIcon">
-            <MessageCircle color="#ea5173" />
+            <MessageCircle color="var(--sixthcolor)" />
           </div>
         </div>
         <div
@@ -199,7 +199,7 @@ const Notifications = () => {
             )}
           </div>
           <div className="counterIcon">
-            <Flag color="#ea5173" />
+            <Flag color="var(--sixthcolor)" />
           </div>
         </div>
       </div>

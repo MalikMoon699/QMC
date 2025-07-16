@@ -36,9 +36,9 @@ body {
   position: fixed;
   top: 0;
   z-index: 10000;
-  color: #fff;
-  background-color: #000;
-  border-right: 1px solid #e3e3e3;
+  color: var(--thirdcolor);
+  background-color: var(--firstcolor);
+  border-right: 1px solid var(--seventhcolor);
   min-height: 100vh;
   height: 100%;
   overflow-y: auto;
@@ -65,7 +65,7 @@ body {
 }
 
 .sidebar-brand-logo span {
-  color: #ff4d4d;
+  color: var(--secondcolor);
 }
 
 .sidebarIcon {
@@ -84,7 +84,7 @@ body {
 }
 
 .sidebar h2 span {
-  color: red;
+  color: var(--secondcolor);
 }
 
 .sidebar ul {
@@ -105,7 +105,7 @@ body {
 }
 
 .sidebar .active {
-  background-color: #e53935;
+  background-color: var(--secondcolor);
 }
 
 .profile-info {
@@ -116,14 +116,14 @@ body {
 }
 
 .create-account {
-  background-color: #2ad831;
+  background-color: var(--fourthcolor);
   width: 100%;
 }
 
 .logOut {
   font-size: 16px;
   font-weight: 600;
-  background-color: #e53935;
+  background-color: var(--secondcolor);
   height: 48px;
   margin-bottom: 10px;
   border-radius: 12px;
@@ -148,7 +148,7 @@ body {
 .error-message {
   text-align: center;
   padding: 10px;
-  color: red;
+  color: var(--secondcolor);
 }
 
 .empty-message {
@@ -188,7 +188,7 @@ body {
   font-weight: 600;
 }
 .logo-container span {
-  color: #e53935;
+  color: var(--secondcolor);
 }
 
 .hamburger-btn {
@@ -199,7 +199,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: black;
+  color: var(--firstcolor);
 }
 
 .mobile-sidebar {
@@ -225,18 +225,18 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(239, 63, 44);
+  background-color: var(--secondcolor);
 }
 
 .range-filter-input {
   width: 50%;
   padding: 7px;
   border-radius: 5px;
-  border: 1px solid #e53935;
+  border: 1px solid var(--secondcolor);
   outline: none;
   font-size: 14px;
-  color: #e53935;
-  background-color: white;
+  color: var(--secondcolor);
+  background-color: var(--thirdcolor);
 }
 
 .range-filter-container {
@@ -246,14 +246,14 @@ body {
   gap: 8px;
   position: absolute;
   bottom: -62px;
-  background: white;
+  background: var(--thirdcolor);
   z-index: 1000;
   right: -2px;
   padding: 10px;
-  border: 1px solid #e53935;
+  border: 1px solid var(--secondcolor);
   width: 400px;
   border-radius: 8px;
-  box-shadow: 0px 0px 10px black;
+  box-shadow: 0px 0px 10px var(--shadowcolor);
 }
 
 .range-filter-input-container {
@@ -269,11 +269,11 @@ body {
 }
 
 .filter-apply-btn {
-  background-color: rgb(239, 63, 44);
+  background-color: var(--secondcolor);
   border: none;
   padding: 7px 15px;
   border-radius: 5px;
-  color: white;
+  color: var(--thirdcolor);
   font-size: 14px;
   cursor: pointer;
 }

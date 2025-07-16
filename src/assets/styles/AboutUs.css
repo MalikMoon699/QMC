@@ -6,8 +6,8 @@
   border: 1px solid rgb(230 30 83);
   border-radius: 8px;
   padding: 10px 20px;
-  background-color: #fef4f6;
-  box-shadow: 0 0 10px #0000001a;
+  background-color: var(--thirdcolor);
+  box-shadow: 0 0 10px var(--shadowcolor);
   margin-bottom: 15px;
 }
 
@@ -19,7 +19,7 @@
   justify-content: space-between;
   width: 100%;
   cursor: pointer;
-  color: black !important;
+  color: var(--firstcolor) !important;
 }
 
 .report-textarea {
@@ -48,14 +48,11 @@
   gap: 20px;
   overflow: hidden;
   width: 100%;
-  /* border: 1px solid red;
-  border-radius: 8px;
-  box-shadow: 0px 0px 15px #ff000033; */
 }
 
 .owner-details-first-child {
   width: 30%;
-  border-right: 1px solid red;
+  border-right: 1px solid var(--secondcolor);
 }
 
 .owner-details-first-child img {
@@ -95,9 +92,9 @@
 }
 
 .users-counts-container {
-  border: 1px solid red;
+  border: 1px solid var(--secondcolor);
   border-radius: 8px;
-  box-shadow: 0px 0px 15px #ff000033;
+  box-shadow: 0px 0px 15px var(--shadowcolor);
   margin-top: 40px;
 }
 
@@ -119,7 +116,7 @@
   justify-content: center;
   flex-direction: column;
   font-size: 20px;
-  border: 1px solid red;
+  border: 1px solid var(--secondcolor);
   border-radius: 8px;
   transition: all 0.3s ease-in-out;
   width: 180px;
@@ -128,7 +125,7 @@
 
 .users-counts:hover {
   transform: translate(0px, -10px);
-  box-shadow: 0px 0px 15px #ff000033;
+  box-shadow: 0px 0px 15px var(--shadowcolor);
 }
 
 .users-counts h3 {
@@ -137,9 +134,9 @@
 
 .sellers-outerContainer {
   margin-top: 40px;
-  border: 1px solid red;
+  border: 1px solid var(--secondcolor);
   border-radius: 8px;
-  box-shadow: 0px 0px 15px #ff000033;
+  box-shadow: 0px 0px 15px var(--fifthcolor);
 }
 
 .sellers-container {
@@ -179,7 +176,7 @@
   height: 400px;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 10px  var(--shadowcolor);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   scroll-snap-align: center;
 }
@@ -196,7 +193,7 @@
 .selected_about_user-card {
   transform: scale(1.08);
   z-index: 10;
-  box-shadow: 0px 0px 20px rgba(255, 0, 0, 0.3);
+  box-shadow: 0px 0px 20px var(--shadowcolor);
 }
 
 .about_user-card__info {
@@ -212,7 +209,7 @@
 .about_user-card__info_img {
   position: relative;
   overflow: hidden;
-  border-bottom: 0.5px solid #e9496c;
+  border-bottom: 0.5px solid var(--secondcolor);
 }
 
 .about_user-card__info_img img {
@@ -249,7 +246,7 @@
   padding: 20px;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 10px var(--shadowcolor);
 }
 
 .about_prev-btn {
@@ -263,8 +260,8 @@
 .about_prev-btn,
 .about_next-btn {
   position: absolute;
-  background-color: #ff0000;
-  color: #fff;
+  background-color: var(--secondcolor);
+  color: var(--thirdcolor);
   border: none;
   border-radius: 50%;
   width: 40px;
@@ -280,12 +277,12 @@
 
 .about_prev-btn:hover,
 .about_next-btn:hover {
-  background-color: #cc0000;
+  background-color: var(--secondcolor);
 }
 
 .about_prev-btn:disabled,
 .about_next-btn:disabled {
-  background-color: #ccc;
+  background-color: var(--seventhcolor);
   cursor: not-allowed;
 }
 
@@ -303,15 +300,15 @@
 }
 
 .owner-details-container {
-  border: 1px solid red;
+  border: 1px solid var(--secondcolor);
   border-radius: 8px;
-  box-shadow: 0px 0px 15px #ff000033;
+  box-shadow: 0px 0px 15px var(--shadowcolor);
 }
 
 .about_header {
-  color: #ee3f24;
-  background-color: #ee3f242b;
-  border-bottom: 1px solid #ee3f24;
+  color: var(--secondcolor);
+  background-color: var(--fifthcolor);
+  border-bottom: 1px solid var(--secondcolor);
   border-radius: 8px 8px 0px 0px;
   padding: 15px 0px;
   font-size: 20px;
@@ -351,7 +348,8 @@
   .owner-details-first-child {
     width: 100%;
     border-right: none;
-    border-bottom: 1px solid red;
+    border-bottom: 1px solid var(--secondcolor);
+    ;
   }
   .owner-details-second-child {
     width: 100%;
@@ -431,7 +429,7 @@
   .report-user-list .device-item img {
     height: 50px;
     width: 50px;
-    border: 2px solid #eb3c2f;
+    border: 2px solid var(--secondcolor);
     border-radius: 10px;
     object-fit: cover;
     margin: 0px 6px;

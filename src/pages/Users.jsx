@@ -241,7 +241,7 @@ const Users = () => {
           <div className="modal-content" style={{ width: "400px" }}>
             <div className="sidebar-modal">
               <div className="contentWrapper">
-                <AlertTriangle color="red" size={80} />
+                <AlertTriangle color="var(--secondcolor)" size={80} />
                 <h3>Update User Role</h3>
                 <p>{`Are you sure you want to update the role of this user from ${
                   updateRole.currentRole === "user" ? "Customer" : "Seller"

@@ -12,7 +12,7 @@
 }
 
 .event-sale-tab .tab {
-  box-shadow: 0px 0px 15px #0000002b;
+  box-shadow: 0px 0px 15px var(--shadowcolor);
   cursor: pointer;
   padding: 7px;
   height: 40px !important;
@@ -23,13 +23,13 @@
 }
 
 .event-sale-tab .tab-active {
-  background-color: #eb3c2f;
-  color: white;
+  background-color: var(--secondcolor);
+  color: var(--thirdcolor);
 }
 
 .event-sale-tab .tab:hover {
   transform: translate(0px, -3px);
-  background-color: #eb3c2fe6;
+  background-color: var(--secondcolor);
 }
 
 .add-event-search-container {
@@ -48,11 +48,11 @@
   border-radius: 8px;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  background-color: white;
+  box-shadow: 0 2px 10px var(--shadowcolor);
+  background-color: var(--thirdcolor);
   font-family: "Poppins", sans-serif;
   transition: 0.3s all ease;
-  border: 1px solid #e9496c;
+  border: 1px solid var(--secondcolor);
   height: fit-content;
 }
 
@@ -71,16 +71,16 @@
   align-items: center;
   justify-content: space-between;
   cursor: default !important;
-  color: #f05454;
+  color: var(--secondcolor);
   padding: 10px 20px;
   gap: 10px;
-  border-bottom: 1px solid #e41e53;
+  border-bottom: 1px solid var(--secondcolor);
   width: 100%;
 }
 
 input[type="checkbox"]:checked {
-  border-color: #eb3c2f;
-  background-color: #eb3c2f;
+  border-color: var(--secondcolor);
+  background-color: var(--secondcolor);
 }
 
 input[type="checkbox"] {
@@ -89,9 +89,9 @@ input[type="checkbox"] {
   appearance: none;
   width: 20px;
   height: 20px;
-  border: 2px solid #eb3c2f;
+  border: 2px solid var(--secondcolor);
   border-radius: 4px;
-  background-color: #fff;
+  background-color: var(--thirdcolor);
   cursor: pointer;
   position: relative;
   transition: all 0.2s ease-in-out;
@@ -99,7 +99,7 @@ input[type="checkbox"] {
 
 input[type="checkbox"]:checked:after {
   content: "✓";
-  color: #fff;
+  color: var(--thirdcolor);
   font-size: 10px;
   position: absolute;
   top: 50%;
@@ -110,9 +110,9 @@ input[type="checkbox"]:checked:after {
 .device-item {
   display: flex;
   align-items: center;
-  border: 0.5px solid #00000036;
+  border: 0.5px solid var(--firstcolor);
   border-radius: 10px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.161);
+  box-shadow: 0px 0px 20px var(--shadowcolor);
   margin: 10px 0px;
   padding: 10px 10px;
 }
@@ -120,7 +120,7 @@ input[type="checkbox"]:checked:after {
 .device-item img {
   height: 60px;
   width: 60px;
-  border: 2px solid #eb3c2f;
+  border: 2px solid var(--secondcolor);
   border-radius: 10px;
   object-fit: cover;
   margin: 0px 10px;
@@ -128,7 +128,7 @@ input[type="checkbox"]:checked:after {
 
 .device-item p {
   padding: 2px 10px;
-  background-color: rgb(246, 229, 229);
+  background-color: var(--thirdcolor);
   border-radius: 50px;
   font-size: 12px;
   width: fit-content;
