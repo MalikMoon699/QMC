@@ -27,6 +27,7 @@ body {
   padding: 20px 30px;
   overflow-x: hidden;
   scrollbar-width: none;
+  background-color: var(--thirdcolor);
 }
 
 /* --------sidebar----------- */
@@ -36,8 +37,8 @@ body {
   position: fixed;
   top: 0;
   z-index: 10000;
-  color: var(--thirdcolor);
-  background-color: var(--firstcolor);
+  color: var(--firstcolor);
+  background-color: var(--thirdcolor);
   border-right: 1px solid var(--seventhcolor);
   min-height: 100vh;
   height: 100%;

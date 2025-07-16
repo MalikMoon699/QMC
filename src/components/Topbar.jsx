@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../assets/styles/TopBar.css";
-import SearchIcon from "../assets/images/icons/Search.png";
 import { useAuth } from "../context/AuthContext";
 import { db } from "../utils/FirebaseConfig";
 import TopBarModal from "./TopBarModal";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { useLocation } from "react-router-dom";
 import { Search } from "lucide-react";
+import Theme from "./Theme";
 
 const ProfileImage =
   "https://png.pngtree.com/png-clipart/20200701/original/pngtree-single-person-character-in-vector-png-image_5359691.jpg";
@@ -105,7 +105,6 @@ const TopBar = ({ searchTxt, setSearchText }) => {
     };
   }, [currentUser, role]);
 
-
   return (
     <>
       <div className="topBarContainer mobiletopBarContainer">
@@ -201,6 +200,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
             )}
           </div>
           <div className="topBarActionsWrapper">
+            <Theme />
             <div
               onClick={() =>
                 setState((prev) => ({ ...prev, isOpen: !prev.isOpen }))
@@ -228,7 +228,6 @@ const TopBar = ({ searchTxt, setSearchText }) => {
           </div>
         </div>
       </div>
-
       {state.isOpen && (
         <TopBarModal
           userData={state.userData}

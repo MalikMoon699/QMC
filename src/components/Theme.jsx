@@ -12,8 +12,9 @@ import { fetchCurrentUser } from "../utils/Helpers";
 import { db } from "../utils/FirebaseConfig";
 import { toast } from "react-toastify";
 
-const Theme = ({ onclose }) => {
+const Theme = () => {
   const { currentUser } = useAuth();
+  const [isTheme, setIsTheme] = useState(false);
   const [currentUserDetails, setCurrentUserDetails] = useState(null);
   const [firstcolor, setFirstcolor] = useState("black");
   const [secondcolor, setSecondcolor] = useState("#e53935");
@@ -124,7 +125,7 @@ const Theme = ({ onclose }) => {
         sixthcolor: "#ec5d7d",
         seventhcolor: "grey",
         loadercolor: "#e53935",
-        shadowcolor: "#00000022",
+        shadowcolor: "#ffffff61",
       };
     }
 
@@ -152,168 +153,193 @@ const Theme = ({ onclose }) => {
     }
   };
 
+  const onclose = () => {
+    setIsTheme(false);
+  };
+
   return (
-    <div
-      onClick={(e) => e.stopPropagation()}
-      className="sidebar-modal-container theme-modal-container"
-    >
-      <div className="modal-header theme-modal-header">
-        <button className="back-button" onClick={onclose}>
-          ❮
-        </button>
-        <h3 className="modal-title">Edit Theme</h3>
-      </div>
-      <div className="theme-modal-content sidebar-modal">
-        <button
-          onClick={() => setSelectedTheme("light")}
-          className={`light-mode-button theme-modal-button ${
-            selectedTheme === "light" ? "selected-theme-active" : ""
-          }`}
-        >
-          <span className="light-mode-label">
-            <Sun size={12} />
-          </span>
-          Light Mode
-        </button>
+    <>
+      <button
+        className="theme-button"
+        onClick={() => {
+          setIsTheme(true);
+        }}
+      >
+        {selectedTheme === "dark" ? (
+          <Moon size={18} color="var(--thirdcolor)" />
+        ) : selectedTheme === "customize" ? (
+          <SlidersHorizontal size={18} color="var(--thirdcolor)" />
+        ) : (
+          <Sun size={18} color="var(--thirdcolor)" />
+        )}
+      </button>
 
-        <button
-          onClick={() => setSelectedTheme("dark")}
-          className={`dark-mode-button theme-modal-button ${
-            selectedTheme === "dark" ? "selected-theme-active" : ""
-          }`}
-        >
-          <span className="light-mode-label">
-            <Moon size={12} />
-          </span>
-          Dark Mode
-        </button>
-
-        <div
-          style={{ flexDirection: "column", cursor: "default" }}
-          className={`theme-modal-button ${
-            selectedTheme === "customize" ? "selected-theme-active" : ""
-          }`}
-        >
-          <button
-            onClick={() => setSelectedTheme("customize")}
-            className={`custom-mode-button ${
-              selectedTheme === "customize" ? "selected-theme-active" : ""
-            }`}
+      {isTheme && (
+        <div className="modal-overlay">
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="sidebar-modal-container theme-modal-container"
           >
-            <div>
-              <span className="light-mode-label">
-                <SlidersHorizontal size={12} />
-              </span>
-              Custom Mode
+            <div className="modal-header theme-modal-header">
+              <button className="back-button" onClick={onclose}>
+                ❮
+              </button>
+              <h3 className="modal-title">Edit Theme</h3>
             </div>
-            <span style={{ marginBottom: "-5px" }}>
-              {selectedTheme === "customize" ? (
-                <ChevronDown size={15} />
-              ) : (
-                <ChevronUp size={15} />
-              )}
-            </span>
-          </button>
+            <div className="theme-modal-content sidebar-modal">
+              <button
+                onClick={() => setSelectedTheme("light")}
+                className={`light-mode-button theme-modal-button ${
+                  selectedTheme === "light" ? "selected-theme-active" : ""
+                }`}
+              >
+                <span className="light-mode-label">
+                  <Sun size={12} />
+                </span>
+                Light Mode
+              </button>
 
-          {selectedTheme === "customize" && (
-            <div className="color-picker-container">
-              <div>
-                {firstcolor} Color:
-                <input
-                  type="color"
-                  value={firstcolor}
-                  onChange={(e) => setFirstcolor(e.target.value)}
-                />
+              <button
+                onClick={() => setSelectedTheme("dark")}
+                className={`dark-mode-button theme-modal-button ${
+                  selectedTheme === "dark" ? "selected-theme-active" : ""
+                }`}
+              >
+                <span className="light-mode-label">
+                  <Moon size={12} />
+                </span>
+                Dark Mode
+              </button>
+
+              <div
+                style={{ flexDirection: "column", cursor: "default" }}
+                className={`theme-modal-button ${
+                  selectedTheme === "customize" ? "selected-theme-active" : ""
+                }`}
+              >
+                <button
+                  onClick={() => setSelectedTheme("customize")}
+                  className={`custom-mode-button ${
+                    selectedTheme === "customize" ? "selected-theme-active" : ""
+                  }`}
+                >
+                  <div>
+                    <span className="light-mode-label">
+                      <SlidersHorizontal size={12} />
+                    </span>
+                    Custom Mode
+                  </div>
+                  <span style={{ marginBottom: "-5px" }}>
+                    {selectedTheme === "customize" ? (
+                      <ChevronDown size={15} />
+                    ) : (
+                      <ChevronUp size={15} />
+                    )}
+                  </span>
+                </button>
+
+                {selectedTheme === "customize" && (
+                  <div className="color-picker-container">
+                    <div>
+                      {firstcolor} Color:
+                      <input
+                        type="color"
+                        value={firstcolor}
+                        onChange={(e) => setFirstcolor(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      {secondcolor} Color:
+                      <input
+                        type="color"
+                        value={secondcolor}
+                        onChange={(e) => setSecondcolor(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      {thirdcolor} Color:
+                      <input
+                        type="color"
+                        value={thirdcolor}
+                        onChange={(e) => setThirdcolor(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      {fourthcolor} Color:
+                      <input
+                        type="color"
+                        value={fourthcolor}
+                        onChange={(e) => setFourthcolor(e.target.value)}
+                      />{" "}
+                    </div>
+                    <div>
+                      {fifthcolor} Color:
+                      <input
+                        type="color"
+                        value={fifthcolor}
+                        onChange={(e) => setFifthcolor(e.target.value)}
+                      />{" "}
+                    </div>
+                    <div>
+                      {sixthcolor} Color:
+                      <input
+                        type="color"
+                        value={sixthcolor}
+                        onChange={(e) => setsixthcolor(e.target.value)}
+                      />{" "}
+                    </div>
+                    <div>
+                      {seventhcolor} Color:
+                      <input
+                        type="color"
+                        value={seventhcolor}
+                        onChange={(e) => setseventhcolor(e.target.value)}
+                      />{" "}
+                    </div>
+                    <div>
+                      Loader Color {loadercolor}:
+                      <input
+                        type="color"
+                        value={loadercolor}
+                        onChange={(e) => setloadercolor(e.target.value)}
+                      />{" "}
+                    </div>
+                    <div>
+                      shadow Color {shadowcolor}:
+                      <input
+                        type="color"
+                        value={shadowcolor}
+                        onChange={(e) => setshadowcolor(e.target.value)}
+                      />{" "}
+                    </div>
+                  </div>
+                )}
               </div>
-              <div>
-                {secondcolor} Color:
-                <input
-                  type="color"
-                  value={secondcolor}
-                  onChange={(e) => setSecondcolor(e.target.value)}
-                />
-              </div>
-              <div>
-                {thirdcolor} Color:
-                <input
-                  type="color"
-                  value={thirdcolor}
-                  onChange={(e) => setThirdcolor(e.target.value)}
-                />
-              </div>
-              <div>
-                {fourthcolor} Color:
-                <input
-                  type="color"
-                  value={fourthcolor}
-                  onChange={(e) => setFourthcolor(e.target.value)}
-                />{" "}
-              </div>
-              <div>
-                {fifthcolor} Color:
-                <input
-                  type="color"
-                  value={fifthcolor}
-                  onChange={(e) => setFifthcolor(e.target.value)}
-                />{" "}
-              </div>
-              <div>
-                {sixthcolor} Color:
-                <input
-                  type="color"
-                  value={sixthcolor}
-                  onChange={(e) => setsixthcolor(e.target.value)}
-                />{" "}
-              </div>
-              <div>
-                {seventhcolor} Color:
-                <input
-                  type="color"
-                  value={seventhcolor}
-                  onChange={(e) => setseventhcolor(e.target.value)}
-                />{" "}
-              </div>
-              <div>
-                Loader Color {loadercolor}:
-                <input
-                  type="color"
-                  value={loadercolor}
-                  onChange={(e) => setloadercolor(e.target.value)}
-                />{" "}
-              </div>
-              <div>
-                shadow Color {shadowcolor}:
-                <input
-                  type="color"
-                  value={shadowcolor}
-                  onChange={(e) => setshadowcolor(e.target.value)}
-                />{" "}
+
+              <div className="logout-btn-container">
+                <button
+                  onClick={() => {
+                    setSelectedTheme("light");
+                    setFirstcolor("white");
+                    setSecondcolor("#eb3c2f");
+                    setThirdcolor("black");
+                  }}
+                  className="logout-cencel-btn logout-delte-btn-same"
+                >
+                  Reset
+                </button>
+                <button
+                  onClick={handleThemeChange}
+                  className="logout-delte-btn logout-delte-btn-same"
+                >
+                  Save
+                </button>
               </div>
             </div>
-          )}
+          </div>
         </div>
-
-        <div className="logout-btn-container">
-          <button
-            onClick={() => {
-              setSelectedTheme("light");
-              setFirstcolor("white");
-              setSecondcolor("#eb3c2f");
-              setThirdcolor("black");
-            }}
-            className="logout-cencel-btn logout-delte-btn-same"
-          >
-            Reset
-          </button>
-          <button
-            onClick={handleThemeChange}
-            className="logout-delte-btn logout-delte-btn-same"
-          >
-            Save
-          </button>
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
