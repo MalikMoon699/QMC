@@ -23,6 +23,7 @@ const Theme = ({ onclose }) => {
   const [sixthcolor, setsixthcolor] = useState("#ec5d7d");
   const [seventhcolor, setseventhcolor] = useState("grey");
   const [loadercolor, setloadercolor] = useState("#e53935");
+  const [shadowcolor, setshadowcolor] = useState("#00000022");
   const [selectedTheme, setSelectedTheme] = useState("light");
 
   const getUserData = async () => {
@@ -40,6 +41,7 @@ const Theme = ({ onclose }) => {
       setFifthcolor(userTheme.fifthcolor || "#ec5d7d12");
       setsixthcolor(userTheme.sixthcolor || "#ec5d7d");
       setseventhcolor(userTheme.seventhcolor || "grey");
+      setshadowcolor(userTheme.shadowcolor || "#00000022");
       setloadercolor(userTheme.loadercolor || "#e53935");
     }
 
@@ -70,6 +72,7 @@ const Theme = ({ onclose }) => {
         seventhcolor
       );
       document.documentElement.style.setProperty("--loadercolor", loadercolor);
+      document.documentElement.style.setProperty("--shadowcolor", shadowcolor);
     }
   }, [
     firstcolor,
@@ -80,6 +83,7 @@ const Theme = ({ onclose }) => {
     sixthcolor,
     seventhcolor,
     loadercolor,
+    shadowcolor,
   ]);
 
   const handleThemeChange = async () => {
@@ -95,6 +99,7 @@ const Theme = ({ onclose }) => {
       sixthcolor,
       seventhcolor,
       loadercolor,
+      shadowcolor,
     };
 
     if (selectedTheme === "light") {
@@ -107,6 +112,7 @@ const Theme = ({ onclose }) => {
         sixthcolor: "#ec5d7d",
         seventhcolor: "grey",
         loadercolor: "#e53935",
+        shadowcolor: "#00000022",
       };
     } else if (selectedTheme === "dark") {
       colors = {
@@ -118,6 +124,7 @@ const Theme = ({ onclose }) => {
         sixthcolor: "#ec5d7d",
         seventhcolor: "grey",
         loadercolor: "#e53935",
+        shadowcolor: "#00000022",
       };
     }
 
@@ -267,11 +274,19 @@ const Theme = ({ onclose }) => {
                 />{" "}
               </div>
               <div>
-               Loader Color {loadercolor}:
+                Loader Color {loadercolor}:
                 <input
                   type="color"
                   value={loadercolor}
                   onChange={(e) => setloadercolor(e.target.value)}
+                />{" "}
+              </div>
+              <div>
+                shadow Color {shadowcolor}:
+                <input
+                  type="color"
+                  value={shadowcolor}
+                  onChange={(e) => setshadowcolor(e.target.value)}
                 />{" "}
               </div>
             </div>
