@@ -110,11 +110,6 @@
   padding: 20px;
 }
 
-.view-recent-solds_btn-container:hover {
-  background-color: var(--secondcolor);
-  opacity: 0.95;
-}
-
 .view-recent-solds_btn {
   font-size: 14px;
   color: var(--secondcolor);

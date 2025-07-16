@@ -249,7 +249,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       )}
-      <div className="tabsWrapper">
+      <div style={{ marginTop: "20px" }} className="tabsWrapper">
         <div className="active-tab tab">
           <div className="counterContentWrapper">
             <h3>Events</h3>

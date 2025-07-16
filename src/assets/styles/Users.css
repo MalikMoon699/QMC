@@ -114,6 +114,7 @@
   justify-content: space-between;
   flex-direction: column;
   height: 100px;
+  color: var(--firstcolor);
 }
 
 .user-card__role {
