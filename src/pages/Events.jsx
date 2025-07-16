@@ -31,7 +31,7 @@ const Events = () => {
         const devicesData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-        })); 
+        }));
         const sortedDevices = devicesData.sort((a, b) =>
           a.createdAt && b.createdAt
             ? a.createdAt.toDate() - b.createdAt.toDate()
@@ -39,7 +39,7 @@ const Events = () => {
         );
 
         setDevices(sortedDevices);
-        
+
         setLoading(false);
       },
       (error) => {

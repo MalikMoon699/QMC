@@ -4,7 +4,7 @@ import "../assets/styles/Mobile.css";
 import { useAuth } from "../context/AuthContext";
 import { demo1, demo2, demo3, demo4 } from "../utils/Demoimages";
 import Slider from "../components/Slider";
-import { Funnel,MessageCircleWarning, Plus, Store } from "lucide-react";
+import { Funnel, MessageCircleWarning, Plus, Store } from "lucide-react";
 import SellAccessories from "../components/SellAccessories";
 import { db } from "../utils/FirebaseConfig";
 import {
@@ -21,7 +21,7 @@ import SellerApplication from "../components/SellerApplication";
 const Accessories = () => {
   const { currentUser, role } = useAuth();
   const { searchTxt } = useOutletContext();
-    const [isFilter,setIsFilter]=useState(false)
+  const [isFilter, setIsFilter] = useState(false);
   const [startPriceInput, setStartPriceInput] = useState("");
   const [endPriceInput, setEndPriceInput] = useState("");
   const [activeStartPrice, setActiveStartPrice] = useState("");
@@ -115,7 +115,6 @@ const Accessories = () => {
     }
   };
 
-
   const handleUpdateClick = () => {
     setSellModalOpen(true);
   };
@@ -127,7 +126,6 @@ const Accessories = () => {
     setActiveEndPrice("");
     setIsFilter(false);
   };
-
 
   const handleApplyFilter = () => {
     setActiveStartPrice(startPriceInput);

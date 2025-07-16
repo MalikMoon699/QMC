@@ -15,10 +15,12 @@ import { toast } from "react-toastify";
 const Theme = ({ onclose }) => {
   const { currentUser } = useAuth();
   const [currentUserDetails, setCurrentUserDetails] = useState(null);
-  const [firstcolor, setFirstcolor] = useState("white");
-  const [secondcolor, setSecondcolor] = useState("#eb3c2f");
-  const [thirdcolor, setThirdcolor] = useState("black");
-  const [loadercolor, setLoadercolor] = useState("#e53935");
+  const [firstcolor, setFirstcolor] = useState("black");
+  const [secondcolor, setSecondcolor] = useState("#e53935");
+  const [thirdcolor, setThirdcolor] = useState("white");
+  const [fourthcolor, setFourthcolor] = useState("rgb(62, 200, 51)");
+  const [fifthcolor, setFifthcolor] = useState("#ec5d7d12");
+  const [sixthcolor, setsixthcolor] = useState("#ec5d7d");
   const [selectedTheme, setSelectedTheme] = useState("light");
 
   const getUserData = async () => {
@@ -29,9 +31,12 @@ const Theme = ({ onclose }) => {
 
     if (userTheme) {
       setSelectedTheme(userTheme.selectedTheme || "light");
-      setFirstcolor(userTheme.firstcolor || "white");
-      setSecondcolor(userTheme.secondcolor || "#eb3c2f");
-      setThirdcolor(userTheme.thirdcolor || "black");
+      setFirstcolor(userTheme.firstcolor || "black");
+      setSecondcolor(userTheme.secondcolor || "#e53935");
+      setThirdcolor(userTheme.thirdcolor || "white");
+      setFourthcolor(userTheme.fourthcolor || "rgb(62, 200, 51)");
+      setFifthcolor(userTheme.fifthcolor || "#ec5d7d12");
+      setsixthcolor(userTheme.sixthcolor || "#ec5d7d");
     }
 
     setCurrentUserDetails(userDoc);
@@ -42,32 +47,60 @@ const Theme = ({ onclose }) => {
   }, []);
 
   useEffect(() => {
-    if (firstcolor && secondcolor && thirdcolor) {
+    if (
+      firstcolor &&
+      secondcolor &&
+      thirdcolor &&
+      fourthcolor &&
+      fifthcolor &&
+      sixthcolor
+    ) {
       document.documentElement.style.setProperty("--firstcolor", firstcolor);
       document.documentElement.style.setProperty("--secondcolor", secondcolor);
       document.documentElement.style.setProperty("--thirdcolor", thirdcolor);
+      document.documentElement.style.setProperty("--fourthcolor", fourthcolor);
+      document.documentElement.style.setProperty("--fifthcolor", fifthcolor);
+      document.documentElement.style.setProperty("--sixthcolor", sixthcolor);
     }
-  }, [firstcolor, secondcolor, thirdcolor]);
+  }, [
+    firstcolor,
+    secondcolor,
+    thirdcolor,
+    fourthcolor,
+    fifthcolor,
+    sixthcolor,
+  ]);
 
   const handleThemeChange = async () => {
     if (!currentUserDetails?.collectionName || !currentUserDetails?.userId)
       return;
 
-    let colors = { firstcolor, secondcolor, thirdcolor };
+    let colors = {
+      firstcolor,
+      secondcolor,
+      thirdcolor,
+      fourthcolor,
+      fifthcolor,
+      sixthcolor,
+    };
 
     if (selectedTheme === "light") {
+      colors = {
+        firstcolor: "black",
+        secondcolor: "#e53935",
+        thirdcolor: "white",
+        fourthcolor: "rgb(62, 200, 51)",
+        fifthcolor: "#ec5d7d12",
+        sixthcolor: "#ec5d7d",
+      };
+    } else if (selectedTheme === "dark") {
       colors = {
         firstcolor: "white",
         secondcolor: "#eb3c2f",
         thirdcolor: "black",
-        loadercolor: "#e53935",
-      };
-    } else if (selectedTheme === "dark") {
-      colors = {
-        firstcolor: "black",
-        secondcolor: "#eb3c2f",
-        thirdcolor: "white",
-        loadercolor: "#e53935",
+        fourthcolor: "rgb(62, 200, 51)",
+        fifthcolor: "#ec5d7d12",
+        sixthcolor: "#ec5d7d",
       };
     }
 
@@ -150,7 +183,7 @@ const Theme = ({ onclose }) => {
               </span>
               Custom Mode
             </div>
-            <span>
+            <span style={{ marginBottom: "-5px" }}>
               {selectedTheme === "customize" ? (
                 <ChevronDown size={15} />
               ) : (
@@ -161,31 +194,58 @@ const Theme = ({ onclose }) => {
 
           {selectedTheme === "customize" && (
             <div className="color-picker-container">
-              <input
-                type="color"
-                value={firstcolor}
-                onChange={(e) => setFirstcolor(e.target.value)}
-              />
-              <input
-                type="color"
-                value={secondcolor}
-                onChange={(e) => setSecondcolor(e.target.value)}
-              />
-              <input
-                type="color"
-                value={thirdcolor}
-                onChange={(e) => setThirdcolor(e.target.value)}
-              />
-              <input
-                type="color"
-                value={loadercolor}
-                onChange={(e) => setLoadercolor(e.target.value)}
-              />
+              <div>
+                {firstcolor} Color:
+                <input
+                  type="color"
+                  value={firstcolor}
+                  onChange={(e) => setFirstcolor(e.target.value)}
+                />
+              </div>
+              <div>
+                {secondcolor} Color:
+                <input
+                  type="color"
+                  value={secondcolor}
+                  onChange={(e) => setSecondcolor(e.target.value)}
+                />
+              </div>
+              <div>
+                {thirdcolor} Color:
+                <input
+                  type="color"
+                  value={thirdcolor}
+                  onChange={(e) => setThirdcolor(e.target.value)}
+                />
+              </div>
+              <div>
+                {fourthcolor} Color:
+                <input
+                  type="color"
+                  value={fourthcolor}
+                  onChange={(e) => setFourthcolor(e.target.value)}
+                />{" "}
+              </div>
+              <div>
+                {fifthcolor} Color:
+                <input
+                  type="color"
+                  value={fifthcolor}
+                  onChange={(e) => setFifthcolor(e.target.value)}
+                />{" "}
+              </div>
+              <div>
+                {sixthcolor} Color:
+                <input
+                  type="color"
+                  value={sixthcolor}
+                  onChange={(e) => setsixthcolor(e.target.value)}
+                />{" "}
+              </div>
             </div>
           )}
         </div>
 
-        {/* Buttons */}
         <div className="logout-btn-container">
           <button
             onClick={() => {

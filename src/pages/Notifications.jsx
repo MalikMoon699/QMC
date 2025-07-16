@@ -5,12 +5,7 @@ import "../assets/styles/Notifications.css";
 import { useOutletContext } from "react-router-dom";
 import { demo5 } from "../utils/Demoimages";
 import moment from "moment";
-import {
-  collection,
-  query,
-  where,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 import Loader from "../components/Loader";
 import { Bell, Flag, MessageCircle, UserCog } from "lucide-react";
 import NotificationsModal from "../components/NotificationsModal";
@@ -57,8 +52,6 @@ const Notifications = () => {
     }
     return () => unsubscribe && unsubscribe();
   }, [currentUser, role]);
-
-
 
   const filteredNotifications = useMemo(() => {
     let filtered = notifications;
@@ -295,7 +288,7 @@ const Notifications = () => {
       )}
       {notificationsModal && (
         <NotificationsModal
-        role={role}
+          role={role}
           onClose={handleDetailModalClose}
           selectedNotifications={selectedNotifications}
         />

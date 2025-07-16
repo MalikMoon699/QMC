@@ -113,7 +113,10 @@ const MonthlyStatusChart = ({
           <Loader loading={true} />
         </div>
       ) : (
-        <div className="monthly-chart-container" style={{ width: "100%", height: 420 }}>
+        <div
+          className="monthly-chart-container"
+          style={{ width: "100%", height: 420 }}
+        >
           <ResponsiveContainer>
             <PieChart className="chart-circle">
               <Pie

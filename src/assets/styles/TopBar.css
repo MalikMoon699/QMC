@@ -354,18 +354,17 @@
   --thirdcolor: black;
 }
 
-
 .theme-modal-container {
-  background-color: var(--firstcolor);
+  background-color: var(--thirdcolor);
 }
 
 .theme-modal-header > .back-button {
-  background-color: var(--firstcolor);
-  color: var(--thirdcolor);
+  background-color: var(--thirdcolor);
+  color: var(--firstcolor);
 }
 
 .theme-modal-header > .modal-title {
-  color: var(--firstcolor);
+  color: var(--thirdcolor);
 }
 
 .theme-modal-content {
@@ -411,8 +410,21 @@
 
 .color-picker-container {
   display: flex;
-  align-items: center;
+  width: 100%;
   justify-self: center;
+  flex-direction: column;
   gap: 8px;
   margin-top: 10px;
+}
+
+.color-picker-container > div {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+  color: var(--firstcolor );
+  background-color: var(--thirdcolor);
+  padding: 5px 6px;
+  border-radius: 8px;
 }

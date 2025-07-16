@@ -4,12 +4,7 @@ import "../assets/styles/Mobile.css";
 import { useAuth } from "../context/AuthContext";
 import { demo1, demo2, demo3, demo4 } from "../utils/Demoimages";
 import Slider from "../components/Slider";
-import {
-  Funnel,
-  MessageCircleWarning,
-  Plus,
-  Store,
-} from "lucide-react";
+import { Funnel, MessageCircleWarning, Plus, Store } from "lucide-react";
 import SellProducts from "../components/SellProducts";
 import { db } from "../utils/FirebaseConfig";
 import {
@@ -26,7 +21,7 @@ import SellerApplication from "../components/SellerApplication";
 const Mobiles = () => {
   const { currentUser, role } = useAuth();
   const { searchTxt } = useOutletContext();
-  const [isFilter,setIsFilter]=useState(false)
+  const [isFilter, setIsFilter] = useState(false);
   const [startPriceInput, setStartPriceInput] = useState("");
   const [endPriceInput, setEndPriceInput] = useState("");
   const [activeStartPrice, setActiveStartPrice] = useState("");
@@ -120,19 +115,19 @@ const Mobiles = () => {
       toast.error("Failed to mark product as sold out.");
     }
   };
-  
+
   const handleOpenUpdateModal = () => {
     setIsUpdateModal(false);
     setSellModalOpen(true);
   };
 
-  const handleClearFilter=()=>{
+  const handleClearFilter = () => {
     setStartPriceInput("");
     setEndPriceInput("");
     setActiveStartPrice("");
     setActiveEndPrice("");
     setIsFilter(false);
-  }
+  };
 
   const handleApplyFilter = () => {
     setActiveStartPrice(startPriceInput);
