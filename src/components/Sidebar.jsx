@@ -58,7 +58,7 @@ const Sidebar = () => {
             M<span>CQ</span>
           </div>
           <button className="hamburger-btn" onClick={toggleMenuOpen}>
-            <Menu />
+            <Menu  color="black"/>
           </button>
         </div>
         {isOpen && (
