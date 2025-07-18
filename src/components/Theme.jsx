@@ -241,7 +241,7 @@ const Theme = () => {
                 {selectedTheme === "customize" && (
                   <div className="color-picker-container">
                     <div>
-                      {firstcolor} Color:
+                      Text Color:
                       <input
                         type="color"
                         value={firstcolor}
@@ -249,7 +249,7 @@ const Theme = () => {
                       />
                     </div>
                     <div>
-                      {secondcolor} Color:
+                      Primary Color:
                       <input
                         type="color"
                         value={secondcolor}
@@ -257,7 +257,7 @@ const Theme = () => {
                       />
                     </div>
                     <div>
-                      {thirdcolor} Color:
+                      Background Color:
                       <input
                         type="color"
                         value={thirdcolor}
@@ -265,7 +265,7 @@ const Theme = () => {
                       />
                     </div>
                     <div>
-                      {fourthcolor} Color:
+                      Success Color:
                       <input
                         type="color"
                         value={fourthcolor}
@@ -273,7 +273,7 @@ const Theme = () => {
                       />{" "}
                     </div>
                     <div>
-                      {fifthcolor} Color:
+                      Secondary BG:
                       <input
                         type="color"
                         value={fifthcolor}
@@ -281,7 +281,7 @@ const Theme = () => {
                       />{" "}
                     </div>
                     <div>
-                      {sixthcolor} Color:
+                      Accent Color:
                       <input
                         type="color"
                         value={sixthcolor}
@@ -289,7 +289,7 @@ const Theme = () => {
                       />{" "}
                     </div>
                     <div>
-                      {seventhcolor} Color:
+                      Disabled Color:
                       <input
                         type="color"
                         value={seventhcolor}
@@ -297,7 +297,7 @@ const Theme = () => {
                       />{" "}
                     </div>
                     <div>
-                      Loader Color {loadercolor}:
+                      Loader Color:
                       <input
                         type="color"
                         value={loadercolor}
@@ -305,7 +305,7 @@ const Theme = () => {
                       />{" "}
                     </div>
                     <div>
-                      shadow Color {shadowcolor}:
+                      Shadow Color:
                       <input
                         type="color"
                         value={shadowcolor}
@@ -320,9 +320,15 @@ const Theme = () => {
                 <button
                   onClick={() => {
                     setSelectedTheme("light");
-                    setFirstcolor("white");
-                    setSecondcolor("#eb3c2f");
-                    setThirdcolor("black");
+                    setFirstcolor("black");
+                    setSecondcolor("#e53935");
+                    setThirdcolor("white");
+                    setFourthcolor("rgb(62, 200, 51)");
+                    setFifthcolor("#ec5d7d12");
+                    setsixthcolor("#ec5d7d");
+                    setseventhcolor("grey");
+                    setloadercolor("#e53935");
+                    setshadowcolor("#00000022");
                   }}
                   className="logout-cencel-btn logout-delte-btn-same"
                 >

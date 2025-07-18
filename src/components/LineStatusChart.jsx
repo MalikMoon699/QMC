@@ -19,6 +19,7 @@ const LineStatusChart = ({
   const [isType, setIsType] = useState(false);
   const [selectedType, setSelectedType] = useState("Devices");
   const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
   const chartData = useMemo(() => {
     const createWeeklyData = (data) => {
       const weeklyCounts = Array(7).fill(0);
@@ -82,26 +83,95 @@ const LineStatusChart = ({
         return "var(--fourthcolor)";
     }
   };
+
   const isAllZero = chartData[displayArea].every((item) => item.count === 0);
+
+  // Dynamic chart styles based on theme
+  const chartSx = useMemo(
+    () => ({
+      "--ChartsLegend-itemWidth": "100px",
+      "--ChartsLegend-itemMarkSize": "6px",
+      backgroundColor: "var(--thirdcolor)",
+      borderRadius: "4px",
+      border: "1px solid var(--firstcolor)",
+      ".MuiLineElement-root": {
+        strokeWidth: 3,
+        stroke: getColorForType(displayArea),
+      },
+      ".MuiAreaElement-root": {
+        fill: getColorForType(displayArea),
+        fillOpacity: 0.2,
+        stroke: "none",
+      },
+      ".MuiChartsAxis-line": {
+        stroke: "var(--firstcolor)",
+        strokeWidth: 1, 
+      },
+      ".MuiChartsAxis-tick": {
+        stroke: "var(--firstcolor)",
+        strokeWidth: 1,
+      },
+      ".MuiChartsAxis-tickLabel": {
+        fill: "var(--firstcolor)",
+        fontSize: 12,
+        fontWeight: 500,
+      },
+      ".MuiChartsGrid-line": {
+        stroke: "var(--firstcolor)",
+        strokeOpacity: 0.2,
+        strokeDasharray: "3 3",
+      },
+      ".MuiTooltip-tooltip": {
+        backgroundColor: "var(--thirdcolor)",
+        color: "var(--firstcolor)",
+        border: "1px solid var(--firstcolor)",
+        borderRadius: "4px",
+        boxShadow: "0 2px 4px var(--shadowcolor)",
+      },
+      ".MuiChartsAxis-bottom .MuiChartsAxis-tickLabel": {
+        transform: "translateY(5px)",
+      },
+      ".MuiChartsAxis-left .MuiChartsAxis-tickLabel": {
+        transform: "translateX(-5px)",
+      },
+    }),
+    [displayArea]
+  );
 
   return (
     <StyledEngineProvider injectFirst>
       <CssBaseline />
       <div className="chart-container">
         <div className="chart-header">
-          <h3>Inventory Status (This Week)</h3>
+          <h3 style={{ color: "var(--firstcolor)" }}>
+            Inventory Status (This Week)
+          </h3>
           <div className="chart-options filter-container">
             <button
               className="action-btn chart-options-btn filter-btn-container"
               onClick={() => {
                 setIsType((prev) => !prev);
               }}
+              style={{
+                color: "var(--firstcolor)",
+                border: "1px solid var(--firstcolor)",
+              }}
             >
               {selectedType}
-              {isType ? <ChevronUp /> : <ChevronDown />}
+              {isType ? (
+                <ChevronUp color="var(--firstcolor)" />
+              ) : (
+                <ChevronDown color="var(--firstcolor)" />
+              )}
             </button>
             {isType && (
-              <div className="chart-type-options">
+              <div
+                className="chart-type-options"
+                style={{
+                  backgroundColor: "var(--thirdcolor)",
+                  border: "1px solid var(--firstcolor)",
+                }}
+              >
                 {["Devices", "Events", "Accessories", "SoldOut"].map((type) => (
                   <div
                     key={type}
@@ -110,16 +180,16 @@ const LineStatusChart = ({
                         selectedType === type
                           ? getColorForType(type)
                           : "var(--firstcolor)",
-                      border: `1px solid
-                        ${
-                          selectedType === type
-                            ? getColorForType(type)
-                            : "#01010114"
-                        }`,
+                      border: `1px solid ${
+                        selectedType === type
+                          ? getColorForType(type)
+                          : "var(--firstcolor)"
+                      }`,
                     }}
                     onClick={() => {
                       setSelectedType(type);
                       onDisplayChange(type);
+                      setIsType(false);
                     }}
                   >
                     <div
@@ -146,6 +216,9 @@ const LineStatusChart = ({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              backgroundColor: "var(--thirdcolor)",
+              borderRadius: "4px",
+              border: "1px solid var(--firstcolor)",
             }}
           >
             <p style={{ color: "var(--firstcolor)", fontSize: "16px" }}>
@@ -153,64 +226,51 @@ const LineStatusChart = ({
             </p>
           </div>
         ) : (
-          <div style={{ height: "400px" }}>
+          <div
+            style={{
+              height: "400px",
+            }}
+          >
             <LineChart
               xAxis={[
                 {
                   data: weekdays,
                   scaleType: "point",
-                  tickLabelStyle: { fontSize: 12 },
+                  tickLabelStyle: {
+                    fontSize: 12,
+                    fill: "var(--firstcolor)",
+                  },
                 },
               ]}
-              // yAxis={[
-              //   {
-              //     min: 0,
-              //     max: Math.max(
-              //       5,
-              //       ...chartData[displayArea].map((item) => item.count)
-              //     ),
-              //     valueFormatter: (value) => `${value}`,
-              //     tickLabelStyle: { fontSize: 12 },
-              //   },
-              // ]}
+              yAxis={[
+                {
+                  tickLabelStyle: {
+                    fontSize: 12,
+                    fill: "var(--firstcolor)",
+                  },
+                },
+              ]}
               series={[
                 {
                   data: chartData[displayArea].map((item) => item.count),
                   color: getColorForType(displayArea),
                   curve: "catmullRom",
                   area: true,
-                  showMark: ({ index }) => index % 1 === 0,
+                  showMark: true,
                   valueFormatter: (value, { dataIndex }) => {
                     const data = chartData[displayArea][dataIndex];
                     return `${value} items (${data.percentage}%)`;
                   },
                 },
               ]}
-              grid={{vertical: true, horizontal: true,}}
-              sx={{
-                backgroundColor: "var(--thirdcolor)",
-                ".MuiLineElement-root": { strokeWidth: 2 },
-                ".MuiMarkElement-root": {
-                  scale: "1",
-                  fill: "var(--thirdcolor)",
-                  strokeWidth: 2,
-                  stroke: getColorForType(displayArea),
-                },
-                ".MuiAreaElement-root": { fillOpacity: 0.1 },
-                ".MuiChartsAxis-line, .MuiChartsAxis-tick": {
-                  stroke: getColorForType(displayArea),
-                },
-                ".MuiChartsGrid-line": {
-                  stroke: "var(--firstcolor)",
-                  strokeOpacity: 0.3,
-                },
-                ".MuiChartsAxis-tickLabel": {
-                  fill: "var(--firstcolor)",
-                  fontSize: 12,
-                },
-                ".MuiTooltip-tooltip": {
-                  backgroundColor: "var(--firstcolor)",
-                  color: "var(--thirdcolor)",
+              grid={{ vertical: true, horizontal: true }}
+              sx={chartSx}
+              slotProps={{
+                legend: {
+                  labelStyle: {
+                    fontSize: 12,
+                    fill: "var(--firstcolor)",
+                  },
                 },
               }}
             />
