@@ -474,7 +474,7 @@ const AboutUs = () => {
               target="_blank"
               href="https://www.facebook.com"
             >
-              <Facebook size={30} />
+               <Facebook size={30} />
               <span>Facebook</span>
             </a>
             <a
