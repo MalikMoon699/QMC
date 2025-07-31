@@ -104,7 +104,6 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-
   gap: 20px;
   overflow: hidden;
   flex-wrap: wrap;
@@ -112,11 +111,23 @@
   padding: 40px;
 }
 
+.social-platforms-container > .users-counts {
+  transform: rotate3d(53, 19, 33, -65deg);
+  cursor: pointer;
+}
+
+.social-platforms-container > .users-counts:hover {
+  transform: rotate3d(53, 19, 33, -65deg) translate3d(0px, 0px, -14px);
+  box-shadow: -7px 10px 0px var(--firstcolor);
+}
+
 .users-counts {
   display: flex;
   align-items: center;
+  color: var(--firstcolor);
   justify-content: center;
   flex-direction: column;
+  text-decoration: none;
   font-size: 20px;
   border: 1px solid var(--secondcolor);
   border-radius: 8px;
@@ -178,7 +189,7 @@
   height: 400px;
   background: var(--thirdcolor);
   border-radius: 8px;
-  box-shadow: 0px 0px 10px  var(--shadowcolor);
+  box-shadow: 0px 0px 10px var(--shadowcolor);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   scroll-snap-align: center;
 }
@@ -352,7 +363,6 @@
     width: 100%;
     border-right: none;
     border-bottom: 1px solid var(--secondcolor);
-    ;
   }
   .owner-details-second-child {
     width: 100%;

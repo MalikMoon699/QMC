@@ -12,6 +12,9 @@ import {
   ShieldUser,
   Clock,
   Clock10,
+  Instagram,
+  Facebook,
+  Twitter,
 } from "lucide-react";
 import moment from "moment";
 import React, { useState, useEffect } from "react";
@@ -122,19 +125,6 @@ const AboutUs = () => {
       unsubAdmin();
     };
   }, [currentUser]);
-
-  const getAllUserDetails = async () => {
-    const fetchUsers = await fetchAllUsers();
-    setAllUserDetails(fetchUsers);
-  };
-
-  const getUserDetails = async () => {
-    if (currentUser) {
-      const userDetails = await fetchCurrentUser(currentUser);
-      const currentUserDetail = userDetails.userData;
-      setCurrentUserDetails(currentUserDetail);
-    }
-  };
 
   const getAdminDetails = async () => {
     const adminDetails = await fetchAdminUsers();
@@ -464,6 +454,37 @@ const AboutUs = () => {
                 </span>
               </div>
             </div>
+          </div>
+        </div>
+        <div className="users-counts-container">
+          <div className="about_header">
+            <h3>Social Platfrom</h3>
+          </div>
+          <div className="users-counts-innercontainer social-platforms-container">
+            <a
+              className="users-counts"
+              target="_blank"
+              href="https://www.instagram.com"
+            >
+              <Instagram size={30} />
+              <span>Insta</span>
+            </a>
+            <a
+              className="users-counts"
+              target="_blank"
+              href="https://www.facebook.com"
+            >
+              <Facebook size={30} />
+              <span>Facebook</span>
+            </a>
+            <a
+              className="users-counts"
+              target="_blank"
+              href="https://www.twitter.com"
+            >
+              <Twitter />
+              <span>Twitter</span>
+            </a>
           </div>
         </div>
         <div className="users-counts-container">
