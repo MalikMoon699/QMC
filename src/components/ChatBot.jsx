@@ -62,35 +62,35 @@ const ChatBot = () => {
     setResponseLoading(true);
 
     try {
-        const payload = {
-          contents: [
-            {
-              parts: [
-                {
-                  text: `You are QMC AI assistant. Use the following information to answer the user's question:\n${Info}\n\nUser: ${input}`,
-                },
-              ],
-            },
-          ],
-        };
+      const payload = {
+        contents: [
+          {
+            parts: [
+              {
+                text: `You are QMC AI assistant. Use the following information to answer the user's question:\n${Info}\n\nUser: ${input}`,
+              },
+            ],
+          },
+        ],
+      };
 
-//       const payload = {
-//         contents: [
-//           {
-//             parts: [
-//               {
-//                 text: `You are a QMC AI assistant. ONLY provide information about Qila Mobile Center (QMC) products, services, store hours, location, or contact info. 
-// If the user asks something outside of QMC, DO NOT generate your own explanation. Instead, return: "Sorry, I couldn't understand that. How can I help you today? Do you have any questions about our products, store hours, location, or anything else related to QMC?"
+      //       const payload = {
+      //         contents: [
+      //           {
+      //             parts: [
+      //               {
+      //                 text: `You are a QMC AI assistant. ONLY provide information about Qila Mobile Center (QMC) products, services, store hours, location, or contact info.
+      // If the user asks something outside of QMC, DO NOT generate your own explanation. Instead, return: "Sorry, I couldn't understand that. How can I help you today? Do you have any questions about our products, store hours, location, or anything else related to QMC?"
 
-// Here is the QMC info for context:
-// ${Info}
+      // Here is the QMC info for context:
+      // ${Info}
 
-// User: ${input}`,
-//               },
-//             ],
-//           },
-//         ],
-//       };
+      // User: ${input}`,
+      //               },
+      //             ],
+      //           },
+      //         ],
+      //       };
 
       const response = await fetch(API_URL, {
         method: "POST",
@@ -159,8 +159,11 @@ const ChatBot = () => {
             </div>
             <div className="chatbot-header-extra"></div>
           </div>
-
           <div className="chatbot-messages" ref={messagesEndRef}>
+            <div className="chat-message bot-message">
+              <p>Hey there 👋</p>
+              <p>How can I help you today?</p>
+            </div>
             {chats.map((item, index) => (
               <div
                 key={index}

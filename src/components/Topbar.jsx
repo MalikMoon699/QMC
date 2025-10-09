@@ -111,7 +111,9 @@ const TopBar = ({ searchTxt, setSearchText }) => {
         <div className="topBarInnerContainer">
           <div
             className={`${
-              location.pathname !== "/" ? "searchWrapper" : "nameWrapp"
+              location.pathname === "/" || location.pathname === "/aboutUs"
+                ? "nameWrapp"
+                : "searchWrapper"
             } ${isSearch ? "" : "deActiveSearchWrapper"}`}
           >
             {location.pathname === "/" ? (
@@ -120,10 +122,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                 {state.userData.name || "N/A"}
               </div>
             ) : location.pathname === "/aboutUs" ? (
-              <div className="topbar-name-wrapper">
-                <span style={{ border: "none", padding: "0px" }}>Hi!</span>
-                {state.userData.name || "N/A"}
-              </div>
+              <div className="topbar-name-wrapper">About Us</div>
             ) : (
               <>
                 <input
@@ -152,7 +151,9 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                 setState((prev) => ({ ...prev, isOpen: !prev.isOpen }))
               }
               className={`profile-card ${
-                isSearch || location.pathname === "/"
+                isSearch ||
+                location.pathname === "/" ||
+                location.pathname === "/aboutUs"
                   ? "deActiveSearchprofile-card"
                   : ""
               }`}
@@ -165,7 +166,9 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                 />
                 <span
                   className={`${
-                    isSearch || location.pathname === "/"
+                    isSearch ||
+                    location.pathname === "/" ||
+                    location.pathname === "/aboutUs"
                       ? "deActiveSearchprofile-name"
                       : "profile-name"
                   }`}
@@ -175,7 +178,9 @@ const TopBar = ({ searchTxt, setSearchText }) => {
               </div>
               <span
                 className={`${
-                  isSearch || location.pathname === "/"
+                  isSearch ||
+                  location.pathname === "/" ||
+                  location.pathname === "/aboutUs"
                     ? "deActiveSearchDetailArrow"
                     : "topbarDetailArrow"
                 } arrow ${state.isOpen ? "rotated" : ""}`}
@@ -195,9 +200,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                 {state.userData.name || "N/A"}
               </div>
             ) : location.pathname === "/aboutUs" ? (
-              <div className="topbar-name-wrapper">
-                  About Us
-              </div>
+              <div className="topbar-name-wrapper">About Us</div>
             ) : (
               <>
                 <input
