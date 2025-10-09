@@ -114,7 +114,17 @@ const TopBar = ({ searchTxt, setSearchText }) => {
               location.pathname !== "/" ? "searchWrapper" : "nameWrapp"
             } ${isSearch ? "" : "deActiveSearchWrapper"}`}
           >
-            {location.pathname !== "/" ? (
+            {location.pathname === "/" ? (
+              <div className="topbar-name-wrapper">
+                <span style={{ border: "none", padding: "0px" }}>Hi!</span>
+                {state.userData.name || "N/A"}
+              </div>
+            ) : location.pathname === "/aboutUs" ? (
+              <div className="topbar-name-wrapper">
+                <span style={{ border: "none", padding: "0px" }}>Hi!</span>
+                {state.userData.name || "N/A"}
+              </div>
+            ) : (
               <>
                 <input
                   type="text"
@@ -133,11 +143,6 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                   />
                 </span>
               </>
-            ) : (
-              <div className="topbar-name-wrapper">
-                <span style={{ border: "none", padding: "0px" }}>Hi!</span>
-                {state.userData.name || "N/A"}
-              </div>
             )}
           </div>
           <Theme />
@@ -184,7 +189,16 @@ const TopBar = ({ searchTxt, setSearchText }) => {
       <div className="topBarContainer">
         <div className="topBarInnerContainer">
           <div className={location.pathname !== "/" ? "searchWrapper" : ""}>
-            {location.pathname !== "/" ? (
+            {location.pathname === "/" ? (
+              <div className="topbar-name-wrapper">
+                <span style={{ border: "none", padding: "0px" }}>Hi!</span>
+                {state.userData.name || "N/A"}
+              </div>
+            ) : location.pathname === "/aboutUs" ? (
+              <div className="topbar-name-wrapper">
+                  About Us
+              </div>
+            ) : (
               <>
                 <input
                   type="text"
@@ -192,13 +206,17 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                   value={searchTxt}
                   onChange={(event) => setSearchText(event.target.value)}
                 />
-                <Search className="icon" size={20} />
+                <span>
+                  <Search
+                    onClick={() => {
+                      setIsSearch((prev) => !prev);
+                    }}
+                    className="icon"
+                    size={20}
+                    color={isSearch ? "black" : "var(--firstcolor)"}
+                  />
+                </span>
               </>
-            ) : (
-              <div className="topbar-name-wrapper">
-                <span style={{ border: "none", padding: "0px" }}>Hi!</span>
-                {state.userData.name || "N/A"}
-              </div>
             )}
           </div>
           <div className="topBarActionsWrapper">
