@@ -139,6 +139,7 @@ input[type="checkbox"]:checked:after {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: var(--firstcolor);
 }
 
 @media only screen and (max-width: 425px) {

@@ -33,7 +33,6 @@ export const generateToken = async () => {
     const token = await getToken(messaging, {
       vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
     });
-    console.log("Token:", token);
     const customId = await generateCustomId("user_tokens"); 
     await setDoc(doc(db, "user_tokens", customId), {
       token: token,

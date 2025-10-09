@@ -38,6 +38,7 @@ import {
 } from "../utils/Helpers";
 import { toast } from "react-toastify";
 import { fetchAdminUsers } from "../utils/Helpers";
+import ChatBot from "../components/ChatBot";
 
 const AboutUs = () => {
   const { currentUser, role } = useAuth();
@@ -474,7 +475,7 @@ const AboutUs = () => {
               target="_blank"
               href="https://www.facebook.com"
             >
-               <Facebook size={30} />
+              <Facebook size={30} />
               <span>Facebook</span>
             </a>
             <a
@@ -598,6 +599,7 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
+      <ChatBot />
 
       {feedBack && (
         <div className="modal-overlay">
