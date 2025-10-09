@@ -5,6 +5,11 @@ export const Info = `
 Introduction:
 I'm your friendly QMC chatbot, here to assist you with anything you need related to our electronics store! Whether you're looking for information about our products, business hours, or tech guidance, I'm here to help.
 
+OwnerDetails: 
+- email: admin@gmail.com
+- name: Mujtaba Malik
+- phoneNumber: 03197166872
+
 FullForm: Qila Mobile Center (QMC).
 
 Details:

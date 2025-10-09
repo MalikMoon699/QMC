@@ -4,6 +4,8 @@ import "../assets/styles/ChatBot.css";
 import Loader from "./Loader";
 import { API_URL, Info } from "../utils/Constants";
 import { FormatResponse } from "./FormatResponse";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../utils/FirebaseConfig";
 
 const ChatBot = () => {
   const [isChatBot, setIsChatBot] = useState(false);
@@ -11,10 +13,12 @@ const ChatBot = () => {
   const [responseLoading, setResponseLoading] = useState(false);
   const [input, setInput] = useState("");
   const [chats, setChats] = useState([]);
+  const [products, setProducts] = useState([]);
 
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
 
+  // Scroll to bottom
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
@@ -25,6 +29,37 @@ const ChatBot = () => {
     scrollToBottom();
   }, [chats, isChatBot]);
 
+  // Fetch products dynamically from Firestore
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const categories = ["SMARTDEVICES", "ACCESSORIES"];
+        let allProducts = [];
+
+        for (const category of categories) {
+          const snapshot = await getDocs(collection(db, category));
+          const categoryProducts = snapshot.docs.map((doc) => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              name: `${data.brandName || ""} ${data.deviceModel || ""}`.trim(),
+              price: data.price || 0,
+              category,
+            };
+          });
+          allProducts = [...allProducts, ...categoryProducts];
+        }
+
+        setProducts(allProducts);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Close chatbot when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -35,15 +70,13 @@ const ChatBot = () => {
       }
     };
 
-    if (isChatBot) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
+    if (isChatBot) document.addEventListener("mousedown", handleClickOutside);
+    else document.removeEventListener("mousedown", handleClickOutside);
 
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isChatBot]);
 
+  // Handle sending messages
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -56,12 +89,94 @@ const ChatBot = () => {
     setChats((prev) => [...prev, userMessage]);
     setInput("");
     setSendLoading(true);
-    setTimeout(() => {
-      setSendLoading(false);
-    }, 300);
+    setTimeout(() => setSendLoading(false), 300);
     setResponseLoading(true);
 
     try {
+      const sellerRegex = /\b(show|view)\s*(me\s*)?(your\s*)?sellers?\b/i;
+      if (sellerRegex.test(input)) {
+        const snapshot = await getDocs(collection(db, "USERS"));
+        const sellers = snapshot.docs
+          .map((doc) => doc.data())
+          .filter((user) => user.role === "seller" && user.isActive);
+
+        const messageText = sellers.length
+          ? "Here are the active sellers:\n" +
+            sellers
+              .map(
+                (s, index) =>
+                  `${index + 1}. Name: ${s.name},\n\n   Email: ${
+                    s.email
+                  },\n\n   Phone: ${s.phoneNumber}`
+              )
+              .join("\n\n")
+          : "No active sellers found.";
+
+        setChats((prev) => [
+          ...prev,
+          { by: "bot", message: messageText, createdAt: new Date().toString() },
+        ]);
+        setResponseLoading(false);
+        return;
+      }
+
+      const priceRangeMatch = input.match(/(\d+)\s*to\s*(\d+)/i);
+      const maxPriceMatch = /best device|max price/i.test(input);
+
+      if (priceRangeMatch) {
+        const min = parseInt(priceRangeMatch[1]);
+        const max = parseInt(priceRangeMatch[2]);
+        const filtered = products.filter(
+          (p) =>
+            p.price >= min &&
+            p.price <= max
+        );
+
+        const messageText = filtered.length
+          ? `Here are devices in the range Rs ${min} to Rs ${max}:\n` +
+            filtered
+              .map((p, index) => `${index + 1}. ${p.name} - Rs ${p.price}`)
+              .join("\n")
+          : `Sorry, we don't have devices in the range Rs ${min} to Rs ${max}.`;
+
+        setChats((prev) => [
+          ...prev,
+          { by: "bot", message: messageText, createdAt: new Date().toString() },
+        ]);
+        setResponseLoading(false);
+        return;
+      }
+
+      if (maxPriceMatch) {
+        if (products.length === 0) {
+          setChats((prev) => [
+            ...prev,
+            {
+              by: "bot",
+              message: "No products available right now.",
+              createdAt: new Date().toString(),
+            },
+          ]);
+          setResponseLoading(false);
+          return;
+        }
+
+        const maxDevice = products.reduce((prev, curr) =>
+          curr.price > prev.price ? curr : prev
+        );
+
+        setChats((prev) => [
+          ...prev,
+          {
+            by: "bot",
+            message: `The most expensive device we have is ${maxDevice.name} at Rs ${maxDevice.price}.`,
+            createdAt: new Date().toString(),
+          },
+        ]);
+        setResponseLoading(false);
+        return;
+      }
+
       const payload = {
         contents: [
           {
@@ -73,24 +188,6 @@ const ChatBot = () => {
           },
         ],
       };
-
-      //       const payload = {
-      //         contents: [
-      //           {
-      //             parts: [
-      //               {
-      //                 text: `You are a QMC AI assistant. ONLY provide information about Qila Mobile Center (QMC) products, services, store hours, location, or contact info.
-      // If the user asks something outside of QMC, DO NOT generate your own explanation. Instead, return: "Sorry, I couldn't understand that. How can I help you today? Do you have any questions about our products, store hours, location, or anything else related to QMC?"
-
-      // Here is the QMC info for context:
-      // ${Info}
-
-      // User: ${input}`,
-      //               },
-      //             ],
-      //           },
-      //         ],
-      //       };
 
       const response = await fetch(API_URL, {
         method: "POST",
@@ -116,22 +213,21 @@ const ChatBot = () => {
           ? fallbackText
           : rawAiText;
 
-      const botMessage = {
-        by: "bot",
-        message: aiMessageText,
-        createdAt: new Date().toString(),
-      };
-
-      setChats((prev) => [...prev, botMessage]);
+      setChats((prev) => [
+        ...prev,
+        { by: "bot", message: aiMessageText, createdAt: new Date().toString() },
+      ]);
       setResponseLoading(false);
     } catch (error) {
-      console.error("AI API error:", error);
-      const errorMessage = {
-        by: "bot",
-        message: "Something went wrong. Please try again later.",
-        createdAt: new Date().toString(),
-      };
-      setChats((prev) => [...prev, errorMessage]);
+      console.error("Error:", error);
+      setChats((prev) => [
+        ...prev,
+        {
+          by: "bot",
+          message: "Something went wrong. Please try again later.",
+          createdAt: new Date().toString(),
+        },
+      ]);
       setResponseLoading(false);
     }
   };
@@ -159,11 +255,13 @@ const ChatBot = () => {
             </div>
             <div className="chatbot-header-extra"></div>
           </div>
+
           <div className="chatbot-messages" ref={messagesEndRef}>
             <div className="chat-message bot-message">
               <p>Hey there 👋</p>
               <p>How can I help you today?</p>
             </div>
+
             {chats.map((item, index) => (
               <div
                 key={index}
@@ -174,6 +272,7 @@ const ChatBot = () => {
                 {item.message && <FormatResponse text={item.message} />}
               </div>
             ))}
+
             {responseLoading && (
               <div className="chat-message bot-message">
                 <Loader size="30" className="" />
@@ -207,6 +306,7 @@ const ChatBot = () => {
           <span className="chat-bot-corner"></span>
         </div>
       )}
+
       <div className="chatbot-icon" onClick={() => setIsChatBot(!isChatBot)}>
         <Bot />
       </div>
