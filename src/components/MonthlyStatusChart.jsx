@@ -8,6 +8,7 @@ const COLORS = [
   "var(--firstcolor)",
   "var(--fifthcolor)",
   "var(--seventhcolor)",
+  "var(--sixthcolor)",
 ];
 
 const CustomLabel = ({ viewBox, chartData }) => {
