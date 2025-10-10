@@ -121,7 +121,7 @@ const Theme = () => {
         secondcolor: "#eb3c2f",
         thirdcolor: "black",
         fourthcolor: "rgb(62, 200, 51)",
-        fifthcolor: "#ec5d7d3d",
+        fifthcolor: "#ec5d7d12",
         sixthcolor: "#ec5d7d",
         seventhcolor: "grey",
         loadercolor: "#e53935",
