@@ -107,6 +107,7 @@ body {
 
 .sidebar .active {
   background-color: var(--secondcolor);
+  color: var(--thirdcolor) ;
 }
 
 .profile-info {

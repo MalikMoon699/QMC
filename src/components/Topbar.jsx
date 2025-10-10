@@ -138,7 +138,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                     }}
                     className="icon"
                     size={20}
-                    color={isSearch ? "black" : "var(--firstcolor)"}
+                    color="black"
                   />
                 </span>
               </>
@@ -216,7 +216,7 @@ const TopBar = ({ searchTxt, setSearchText }) => {
                     }}
                     className="icon"
                     size={20}
-                    color={isSearch ? "black" : "var(--firstcolor)"}
+                    color="black"
                   />
                 </span>
               </>
