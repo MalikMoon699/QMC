@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef, useEffect } from "react";
 import { StyledEngineProvider } from "@mui/styled-engine";
 import { CssBaseline } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
@@ -19,6 +19,25 @@ const LineStatusChart = ({
   const [isType, setIsType] = useState(false);
   const [selectedType, setSelectedType] = useState("Devices");
   const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsType(false);
+      }
+    };
+
+    if (isType) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isType]);
 
   const chartData = useMemo(() => {
     const createWeeklyData = (data) => {
@@ -104,7 +123,7 @@ const LineStatusChart = ({
       },
       ".MuiChartsAxis-line": {
         stroke: "var(--firstcolor)",
-        strokeWidth: 1, 
+        strokeWidth: 1,
       },
       ".MuiChartsAxis-tick": {
         stroke: "var(--firstcolor)",
@@ -166,6 +185,7 @@ const LineStatusChart = ({
             {isType && (
               <div
                 className="chart-type-options"
+                ref={dropdownRef}
                 style={{
                   backgroundColor: "var(--thirdcolor)",
                   border: "1px solid var(--firstcolor)",
@@ -208,22 +228,6 @@ const LineStatusChart = ({
 
         {loading ? (
           <Loader loading={true} />
-        ) : isAllZero ? (
-          <div
-            style={{
-              height: "400px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "var(--thirdcolor)",
-              borderRadius: "4px",
-              border: "1px solid var(--firstcolor)",
-            }}
-          >
-            <p style={{ color: "var(--firstcolor)", fontSize: "16px" }}>
-              No {displayArea.toLowerCase()} added this week.
-            </p>
-          </div>
         ) : (
           <div
             style={{
@@ -243,22 +247,26 @@ const LineStatusChart = ({
               ]}
               yAxis={[
                 {
+                  min: 0,
+                  max: 100,
+                  tickCount: 6,
                   tickLabelStyle: {
                     fontSize: 12,
                     fill: "var(--firstcolor)",
                   },
+                  valueFormatter: (value) => `${value}%`,
                 },
               ]}
               series={[
                 {
-                  data: chartData[displayArea].map((item) => item.count),
+                  data: chartData[displayArea].map((item) => item.percentage),
                   color: getColorForType(displayArea),
                   curve: "catmullRom",
                   area: true,
                   showMark: true,
                   valueFormatter: (value, { dataIndex }) => {
                     const data = chartData[displayArea][dataIndex];
-                    return `${value} items (${data.percentage}%)`;
+                    return `${data.count} items (${data.percentage}%)`;
                   },
                 },
               ]}
