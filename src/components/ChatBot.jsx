@@ -87,10 +87,13 @@ const ChatBot = () => {
               name: `${data.brandName || ""} ${data.deviceModel || ""}`.trim(),
               price: data.price || 0,
               category,
+             data,
             };
           });
           allProducts = [...allProducts, ...categoryProducts];
         }
+        console.log("allProducts--->", allProducts);
+        allProducts;
         setProducts(allProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -174,6 +177,26 @@ ${
         .join("\n")
     : "No devices available at the moment."
 }
+============================
+Products with details:
+${
+  products.length
+    ? products
+        .map(
+          (p, i) =>
+            `${i + 1}. ${p.name || "Unnamed Product"}
+   • Category: ${p.category}
+   • Price: Rs ${p.price.toLocaleString()}
+   • Brand: ${p.data.brandName || "N/A"}
+   • Model: ${p.data.deviceModel || "N/A"}
+   • Storage: ${p.data.storage || "N/A"}
+   • Condition: ${p.data.condition || "N/A"}
+   • Description: ${p.data.description || "No description available."}`
+        )
+        .slice(0, 20)
+        .join("\n\n")
+    : "No devices available at the moment."
+}
 
 ============================
 Sellers:
@@ -192,6 +215,8 @@ ${
 ============================
 `
     : "Loading QMC information...";
+
+  console.log("infoText--->", infoText);
 
   const handleSend = async () => {
     if (!input.trim()) return;
