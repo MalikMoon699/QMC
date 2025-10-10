@@ -86,7 +86,6 @@ const LineStatusChart = ({
 
   const isAllZero = chartData[displayArea].every((item) => item.count === 0);
 
-  // Dynamic chart styles based on theme
   const chartSx = useMemo(
     () => ({
       "--ChartsLegend-itemWidth": "100px",

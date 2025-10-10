@@ -12,24 +12,35 @@ const ChatBot = () => {
   const [sendLoading, setSendLoading] = useState(false);
   const [responseLoading, setResponseLoading] = useState(false);
   const [input, setInput] = useState("");
-  const [chats, setChats] = useState([]);
+  const [chats, setChats] = useState(() => {
+    const savedChats = sessionStorage.getItem("qmcChats");
+    return savedChats ? JSON.parse(savedChats) : [];
+  });
   const [products, setProducts] = useState([]);
 
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
 
-  // Scroll to bottom
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     }
   };
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+    e.target.style.height = "42px";
+    e.target.style.height = e.target.scrollHeight + "px";
+  };
+
+  useEffect(() => {
+    sessionStorage.setItem("qmcChats", JSON.stringify(chats));
+    scrollToBottom();
+  }, [chats]);
 
   useEffect(() => {
     scrollToBottom();
   }, [chats, isChatBot]);
 
-  // Fetch products dynamically from Firestore
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -59,7 +70,6 @@ const ChatBot = () => {
     fetchProducts();
   }, []);
 
-  // Close chatbot when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -76,7 +86,6 @@ const ChatBot = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isChatBot]);
 
-  // Handle sending messages
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -93,7 +102,7 @@ const ChatBot = () => {
     setResponseLoading(true);
 
     try {
-      const sellerRegex = /\b(show|view)\s*(me\s*)?(your\s*)?sellers?\b/i;
+      const sellerRegex = /\b sellers?\b/i;
       if (sellerRegex.test(input)) {
         const snapshot = await getDocs(collection(db, "USERS"));
         const sellers = snapshot.docs
@@ -101,7 +110,7 @@ const ChatBot = () => {
           .filter((user) => user.role === "seller" && user.isActive);
 
         const messageText = sellers.length
-          ? "Here are the active sellers:\n" +
+          ? `Here are ${sellers.length} best sellers:\n` +
             sellers
               .map(
                 (s, index) =>
@@ -122,14 +131,14 @@ const ChatBot = () => {
 
       const priceRangeMatch = input.match(/(\d+)\s*to\s*(\d+)/i);
       const maxPriceMatch = /best device|max price/i.test(input);
+      const minPriceMatch =
+        /lowest price|lowest device|cheap(est)? device/i.test(input);
 
       if (priceRangeMatch) {
         const min = parseInt(priceRangeMatch[1]);
         const max = parseInt(priceRangeMatch[2]);
         const filtered = products.filter(
-          (p) =>
-            p.price >= min &&
-            p.price <= max
+          (p) => p.price >= min && p.price <= max
         );
 
         const messageText = filtered.length
@@ -170,6 +179,35 @@ const ChatBot = () => {
           {
             by: "bot",
             message: `The most expensive device we have is ${maxDevice.name} at Rs ${maxDevice.price}.`,
+            createdAt: new Date().toString(),
+          },
+        ]);
+        setResponseLoading(false);
+        return;
+      }
+      if (minPriceMatch) {
+        if (products.length === 0) {
+          setChats((prev) => [
+            ...prev,
+            {
+              by: "bot",
+              message: "No products available right now.",
+              createdAt: new Date().toString(),
+            },
+          ]);
+          setResponseLoading(false);
+          return;
+        }
+
+        const minDevice = products.reduce((prev, curr) =>
+          curr.price < prev.price ? curr : prev
+        );
+
+        setChats((prev) => [
+          ...prev,
+          {
+            by: "bot",
+            message: `The lowest price device we have is ${minDevice.name} at Rs ${minDevice.price}.`,
             createdAt: new Date().toString(),
           },
         ]);
@@ -281,13 +319,21 @@ const ChatBot = () => {
           </div>
 
           <div className="chatbot-input-area">
+            {/*
             <input
               type="text"
-              placeholder="Type your message..."
+              placeholder="Type your question..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               className="chatbot-input"
+            /> */}
+            <textarea
+              placeholder="Type your question..."
+              value={input}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              className="chatbot-textarea"
             />
             <button onClick={handleSend} className="chatbot-send-btn">
               {sendLoading ? (

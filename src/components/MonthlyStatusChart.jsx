@@ -7,6 +7,7 @@ const COLORS = [
   "var(--secondcolor)",
   "var(--firstcolor)",
   "var(--fifthcolor)",
+  "var(--seventhcolor)",
 ];
 
 const CustomLabel = ({ viewBox, chartData }) => {
@@ -103,6 +104,24 @@ const MonthlyStatusChart = ({
     ];
   }, [eventsCount, devicesCount, accessoriesCount, soldOutCount]);
 
+  const nowempty = [
+    { name: "Events", value: 0, rawCount: 0 },
+    { name: "Smart Devices", value: 0, rawCount: 0 },
+    { name: "Accessories", value: 0, rawCount: 0 },
+    { name: "Sold Out", value: 0, rawCount: 0 },
+  ];
+
+  const atEmpty = [
+    { name: "Events", value: 0, rawCount: 0 },
+    { name: "Smart Devices", value: 0, rawCount: 0 },
+    { name: "Accessories", value: 0, rawCount: 0 },
+    { name: "Sold Out", value: 0, rawCount: 0 },
+    { name: "empty", value: 1, rawCount: 0 },
+  ];
+
+  const isChartEmpty = !chartData || chartData === 0 || chartData === nowempty;
+  const lineChartData = isChartEmpty ? atEmpty : chartData;
+
   return (
     <div className="leave-request">
       <h2 className="leave-request-header">Monthly Status</h2>
@@ -125,7 +144,7 @@ const MonthlyStatusChart = ({
           <ResponsiveContainer>
             <PieChart className="chart-circle">
               <Pie
-                data={chartData}
+                data={lineChartData}
                 dataKey="value"
                 cx={150}
                 cy={150}
@@ -133,21 +152,28 @@ const MonthlyStatusChart = ({
                 outerRadius={100}
                 startAngle={90}
                 endAngle={-270}
+                stroke="none"
+                isAnimationActive={false}
               >
-                {chartData.map((entry, index) => (
+                {lineChartData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
+                    fill={
+                      isChartEmpty
+                        ? "var(--seventhcolor)"
+                        : COLORS[index % COLORS.length]
+                    }
+                    // fill={COLORS[index % COLORS.length]}
                   />
                 ))}
                 <Label
                   content={
                     <CustomLabel
                       chartData={{
-                        events: chartData[0].value,
-                        devices: chartData[1].value,
-                        accessories: chartData[2].value,
-                        soldOut: chartData[3].value,
+                        events: lineChartData[0].value,
+                        devices: lineChartData[1].value,
+                        accessories: lineChartData[2].value,
+                        soldOut: lineChartData[3].value,
                       }}
                     />
                   }

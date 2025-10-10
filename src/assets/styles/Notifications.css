@@ -21,10 +21,21 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
 .active-tab {
-  background-color: #ec5d7d12;
+  position: relative;
   border-color: var(--sixthcolor);
+  color: inherit;
+  z-index: 0; 
+}
+
+.active-tab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--sixthcolor);
+  opacity: 0.1;
+  z-index: -1;
+  border-radius: inherit;
 }
 
 .counterContentWrapper {
