@@ -18,6 +18,7 @@ const ChatBot = () => {
   });
   const [products, setProducts] = useState([]);
   const [sellers, setSellers] = useState([]);
+  const [adminInfo, setAdminInfo] = useState(null);
 
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
@@ -28,11 +29,34 @@ const ChatBot = () => {
       messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     }
   };
+
   const handleInputChange = (e) => {
     setInput(e.target.value);
     e.target.style.height = "42px";
     e.target.style.height = e.target.scrollHeight + "px";
   };
+
+  const formatTime = (timeStr) => {
+    if (!timeStr) return "";
+    const [hour, minute] = timeStr.split(":").map(Number);
+    const period = hour >= 12 ? "PM" : "AM";
+    const formattedHour = hour % 12 || 12;
+    return `${formattedHour}:${minute.toString().padStart(2, "0")} ${period}`;
+  };
+
+  useEffect(() => {
+    const fetchAdminInfo = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, "ADMIN"));
+        if (!snapshot.empty) {
+          setAdminInfo(snapshot.docs[0].data());
+        }
+      } catch (error) {
+        console.error("Error fetching admin info:", error);
+      }
+    };
+    fetchAdminInfo();
+  }, []);
 
   useEffect(() => {
     const fetchSellers = async () => {
@@ -93,38 +117,52 @@ const ChatBot = () => {
         setIsChatBot(false);
       }
     };
-
     if (isChatBot) document.addEventListener("mousedown", handleClickOutside);
     else document.removeEventListener("mousedown", handleClickOutside);
 
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isChatBot]);
 
-  const infoText = `
+  const getShopStatusText = (isSwitch) => {
+    return isSwitch
+      ? "🟢 Qila Mobile Center is currently Open."
+      : "🔴 Qila Mobile Center is currently Closed.";
+  };
+
+  const infoText = adminInfo
+    ? `
 Introduction:
 I'm your friendly QMC chatbot, here to assist you with anything you need related to our electronics store! Whether you're looking for information about our products, business hours, or tech guidance, I'm here to help.
 
-OwnerDetails: 
-- email: admin@gmail.com
-- name: Mujtaba Malik
-- phoneNumber: 03197166872
+Owner Details:
+- Name: ${adminInfo.name}
+- Email: ${adminInfo.email}
+- Phone: ${adminInfo.phoneNumber}
 
-FullForm: Qila Mobile Center (QMC).
+Full Form: Qila Mobile Center (QMC)
 
 Details:
-Qila Mobile Center (QMC) is your ultimate destination for high-quality electronic devices. We specialize in offering a wide range of products, including mobile phones, laptops, computers, smart watches, and accessories such as cables, headphones, airbuds, and more. Our mission is to provide the latest technology and gadgets to meet all your digital needs.
+Qila Mobile Center (QMC) is your ultimate destination for high-quality electronic devices and accessories. 
 
-Located in the heart of Gujranwala, Tang Gali Sheikhan Wali, near China Street Market, close to Hafiz Garments, Qila Didar Singh, our store provides a friendly and professional environment for tech enthusiasts and everyday shoppers alike. We're open all week from 10:00 AM to 11:00 PM and on Friday from 04:00 PM to 12:00 AM.
+📍 Location: ${adminInfo.location}
+🕒 Regular Hours: ${formatTime(adminInfo.shopOpenTime)} to ${formatTime(
+        adminInfo.shopEndTime
+      )}
+🕌 Friday Hours: ${formatTime(adminInfo.shopFriOpenTime)} to ${formatTime(
+        adminInfo.shopFriEndTime
+      )}
+🏪 Current Status: ${getShopStatusText(adminInfo.isSwitch)}
+💬 Note: ${adminInfo.impNote || "We're always here to assist you!"}
 
-Stay connected with us through our social media channels for the latest updates, new arrivals, tech tips, and special promotions:
+Stay connected:
 - Facebook: https://facebook.com/qmc
 - Instagram: https://instagram.com/qmc
 - Twitter: https://twitter.com/qmc
 - LinkedIn: https://linkedin.com/company/qmc
 
-For inquiries, feel free to reach out via email at qmc@gmail.com or call us at +1 (555) 123-4567.
-
-Our website, https://qmc-teal.vercel.app, offers a seamless shopping experience for electronics, accessories, and more.
+Website: https://qmc-teal.vercel.app
+Email: qmc@gmail.com
+Phone: +1 (555) 123-4567
 
 ============================
 Products:
@@ -152,7 +190,8 @@ ${
     : "No active sellers found."
 }
 ============================
-`;
+`
+    : "Loading QMC information...";
 
   const handleSend = async () => {
     if (!input.trim()) return;
