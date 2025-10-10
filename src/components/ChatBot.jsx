@@ -2,7 +2,7 @@ import { Bot, ChevronLeft, SendHorizontal } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
 import "../assets/styles/ChatBot.css";
 import Loader from "./Loader";
-import { API_URL, Info } from "../utils/Constants";
+import { API_URL } from "../utils/Constants";
 import { FormatResponse } from "./FormatResponse";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../utils/FirebaseConfig";
@@ -17,9 +17,11 @@ const ChatBot = () => {
     return savedChats ? JSON.parse(savedChats) : [];
   });
   const [products, setProducts] = useState([]);
+  const [sellers, setSellers] = useState([]);
 
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
+  const textareaRef = useRef(null);
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
@@ -33,20 +35,25 @@ const ChatBot = () => {
   };
 
   useEffect(() => {
-    sessionStorage.setItem("qmcChats", JSON.stringify(chats));
-    scrollToBottom();
-  }, [chats]);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [chats, isChatBot]);
+    const fetchSellers = async () => {
+      try {
+        const snapshot = await getDocs(collection(db, "USERS"));
+        const sellerList = snapshot.docs
+          .map((doc) => doc.data())
+          .filter((user) => user.role === "seller" && user.isActive);
+        setSellers(sellerList);
+      } catch (error) {
+        console.error("Error fetching sellers:", error);
+      }
+    };
+    fetchSellers();
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const categories = ["SMARTDEVICES", "ACCESSORIES"];
         let allProducts = [];
-
         for (const category of categories) {
           const snapshot = await getDocs(collection(db, category));
           const categoryProducts = snapshot.docs.map((doc) => {
@@ -60,15 +67,22 @@ const ChatBot = () => {
           });
           allProducts = [...allProducts, ...categoryProducts];
         }
-
         setProducts(allProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
-
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem("qmcChats", JSON.stringify(chats));
+    scrollToBottom();
+  }, [chats]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chats, isChatBot]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -86,6 +100,60 @@ const ChatBot = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isChatBot]);
 
+  const infoText = `
+Introduction:
+I'm your friendly QMC chatbot, here to assist you with anything you need related to our electronics store! Whether you're looking for information about our products, business hours, or tech guidance, I'm here to help.
+
+OwnerDetails: 
+- email: admin@gmail.com
+- name: Mujtaba Malik
+- phoneNumber: 03197166872
+
+FullForm: Qila Mobile Center (QMC).
+
+Details:
+Qila Mobile Center (QMC) is your ultimate destination for high-quality electronic devices. We specialize in offering a wide range of products, including mobile phones, laptops, computers, smart watches, and accessories such as cables, headphones, airbuds, and more. Our mission is to provide the latest technology and gadgets to meet all your digital needs.
+
+Located in the heart of Gujranwala, Tang Gali Sheikhan Wali, near China Street Market, close to Hafiz Garments, Qila Didar Singh, our store provides a friendly and professional environment for tech enthusiasts and everyday shoppers alike. We're open all week from 10:00 AM to 11:00 PM and on Friday from 04:00 PM to 12:00 AM.
+
+Stay connected with us through our social media channels for the latest updates, new arrivals, tech tips, and special promotions:
+- Facebook: https://facebook.com/qmc
+- Instagram: https://instagram.com/qmc
+- Twitter: https://twitter.com/qmc
+- LinkedIn: https://linkedin.com/company/qmc
+
+For inquiries, feel free to reach out via email at qmc@gmail.com or call us at +1 (555) 123-4567.
+
+Our website, https://qmc-teal.vercel.app, offers a seamless shopping experience for electronics, accessories, and more.
+
+============================
+Products:
+${
+  products.length
+    ? products
+        .map((p, i) => `${i + 1}. ${p.name} — Rs ${p.price}`)
+        .slice(0, 20)
+        .join("\n")
+    : "No devices available at the moment."
+}
+
+============================
+Sellers:
+${
+  sellers.length
+    ? sellers
+        .map(
+          (s, i) =>
+            `${i + 1}. ${s.name || "N/A"} — ${s.email || "No email"} — ${
+              s.phoneNumber || "No phone"
+            }`
+        )
+        .join("\n")
+    : "No active sellers found."
+}
+============================
+`;
+
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -97,130 +165,45 @@ const ChatBot = () => {
 
     setChats((prev) => [...prev, userMessage]);
     setInput("");
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "42px";
+    }
     setSendLoading(true);
     setTimeout(() => setSendLoading(false), 300);
     setResponseLoading(true);
 
     try {
-      const sellerRegex = /\b sellers?\b/i;
-      if (sellerRegex.test(input)) {
-        const snapshot = await getDocs(collection(db, "USERS"));
-        const sellers = snapshot.docs
-          .map((doc) => doc.data())
-          .filter((user) => user.role === "seller" && user.isActive);
-
-        const messageText = sellers.length
-          ? `Here are ${sellers.length} best sellers:\n` +
-            sellers
-              .map(
-                (s, index) =>
-                  `${index + 1}. Name: ${s.name},\n\n   Email: ${
-                    s.email
-                  },\n\n   Phone: ${s.phoneNumber}`
-              )
-              .join("\n\n")
-          : "No active sellers found.";
-
-        setChats((prev) => [
-          ...prev,
-          { by: "bot", message: messageText, createdAt: new Date().toString() },
-        ]);
-        setResponseLoading(false);
-        return;
-      }
-
-      const priceRangeMatch = input.match(/(\d+)\s*to\s*(\d+)/i);
-      const maxPriceMatch = /best device|max price/i.test(input);
-      const minPriceMatch =
-        /lowest price|lowest device|cheap(est)? device/i.test(input);
-
-      if (priceRangeMatch) {
-        const min = parseInt(priceRangeMatch[1]);
-        const max = parseInt(priceRangeMatch[2]);
+      const rangeMatch = input.match(/(\d{2,})\D+(\d{2,})/);
+      if (rangeMatch) {
+        const min = Number(rangeMatch[1]);
+        const max = Number(rangeMatch[2]);
         const filtered = products.filter(
           (p) => p.price >= min && p.price <= max
         );
 
-        const messageText = filtered.length
-          ? `Here are devices in the range Rs ${min} to Rs ${max}:\n` +
-            filtered
-              .map((p, index) => `${index + 1}. ${p.name} - Rs ${p.price}`)
-              .join("\n")
-          : `Sorry, we don't have devices in the range Rs ${min} to Rs ${max}.`;
-
-        setChats((prev) => [
-          ...prev,
-          { by: "bot", message: messageText, createdAt: new Date().toString() },
-        ]);
-        setResponseLoading(false);
-        return;
-      }
-
-      if (maxPriceMatch) {
-        if (products.length === 0) {
-          setChats((prev) => [
-            ...prev,
-            {
-              by: "bot",
-              message: "No products available right now.",
-              createdAt: new Date().toString(),
-            },
-          ]);
-          setResponseLoading(false);
-          return;
-        }
-
-        const maxDevice = products.reduce((prev, curr) =>
-          curr.price > prev.price ? curr : prev
-        );
+        const aiMessageText = filtered.length
+          ? `Certainly! Here are the devices available at QMC within the price range of Rs ${min.toLocaleString()} to Rs ${max.toLocaleString()}:\n\n${filtered
+              .map((p, index) => `${index + 1}. ${p.name} — Rs ${p.price}`)
+              .join("\n\n")}`
+          : `Sorry, no devices were found in the price range of Rs ${min.toLocaleString()} to Rs ${max.toLocaleString()}.`;
 
         setChats((prev) => [
           ...prev,
           {
             by: "bot",
-            message: `The most expensive device we have is ${maxDevice.name} at Rs ${maxDevice.price}.`,
+            message: aiMessageText,
             createdAt: new Date().toString(),
           },
         ]);
         setResponseLoading(false);
         return;
       }
-      if (minPriceMatch) {
-        if (products.length === 0) {
-          setChats((prev) => [
-            ...prev,
-            {
-              by: "bot",
-              message: "No products available right now.",
-              createdAt: new Date().toString(),
-            },
-          ]);
-          setResponseLoading(false);
-          return;
-        }
-
-        const minDevice = products.reduce((prev, curr) =>
-          curr.price < prev.price ? curr : prev
-        );
-
-        setChats((prev) => [
-          ...prev,
-          {
-            by: "bot",
-            message: `The lowest price device we have is ${minDevice.name} at Rs ${minDevice.price}.`,
-            createdAt: new Date().toString(),
-          },
-        ]);
-        setResponseLoading(false);
-        return;
-      }
-
       const payload = {
         contents: [
           {
             parts: [
               {
-                text: `You are QMC AI assistant. Use the following information to answer the user's question:\n${Info}\n\nUser: ${input}`,
+                text: `You are QMC AI assistant. Use the following information to answer the user's question:\n${infoText}\n\nUser: ${input}`,
               },
             ],
           },
@@ -330,6 +313,7 @@ const ChatBot = () => {
             /> */}
             <textarea
               placeholder="Type your question..."
+              ref={textareaRef}
               value={input}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
