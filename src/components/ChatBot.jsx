@@ -87,12 +87,11 @@ const ChatBot = () => {
               name: `${data.brandName || ""} ${data.deviceModel || ""}`.trim(),
               price: data.price || 0,
               category,
-             data,
+              data,
             };
           });
           allProducts = [...allProducts, ...categoryProducts];
         }
-        console.log("allProducts--->", allProducts);
         allProducts;
         setProducts(allProducts);
       } catch (error) {
@@ -182,17 +181,37 @@ Products with details:
 ${
   products.length
     ? products
-        .map(
-          (p, i) =>
-            `${i + 1}. ${p.name || "Unnamed Product"}
-   • Category: ${p.category}
-   • Price: Rs ${p.price.toLocaleString()}
+        .map((p, i) => {
+          const commonDetails = `
+${i + 1}. ${p.name || "Unnamed Product"}
+   • Category: ${p.category || "N/A"}
    • Brand: ${p.data.brandName || "N/A"}
    • Model: ${p.data.deviceModel || "N/A"}
-   • Storage: ${p.data.storage || "N/A"}
-   • Condition: ${p.data.condition || "N/A"}
-   • Description: ${p.data.description || "No description available."}`
-        )
+   • Seller: ${p.data.createdBy || "N/A"}
+   • Seller Email: ${p.data.createdByEmail || "N/A"}
+   • Seller Phone: ${p.data.createdByPhoneNumber || "N/A"}`;
+
+          const categoryDetails =
+            p.category === "ACCESSORIES"
+              ? p.data.fields
+                  ?.map(
+                    (item, index) =>
+                      `   • ${item.fieldName || "N/A"}: ${item.body || "N/A"}`
+                  )
+                  .join("\n") || ""
+              : `   ${
+                  p.data.deviceType === "android"
+                    ? `• Ram: ${p.data.ram || "N/A"} GB`
+                    : `• Battery Health: ${p.data.batteryHelth || "N/A"}%`
+                }
+   • Storage: ${p.data.memory || "N/A"} GB`;
+
+          const footer = `
+   • Price: Rs ${p.price?.toLocaleString?.() || "N/A"} Pkr
+   • Description: ${p.data.description || "No description available."}`;
+
+          return `${commonDetails}\n${categoryDetails}\n${footer}`;
+        })
         .slice(0, 20)
         .join("\n\n")
     : "No devices available at the moment."
@@ -216,8 +235,6 @@ ${
 `
     : "Loading QMC information...";
 
-  console.log("infoText--->", infoText);
-
   const handleSend = async () => {
     if (!input.trim()) return;
 
@@ -237,31 +254,6 @@ ${
     setResponseLoading(true);
 
     try {
-      const rangeMatch = input.match(/(\d{2,})\D+(\d{2,})/);
-      if (rangeMatch) {
-        const min = Number(rangeMatch[1]);
-        const max = Number(rangeMatch[2]);
-        const filtered = products.filter(
-          (p) => p.price >= min && p.price <= max
-        );
-
-        const aiMessageText = filtered.length
-          ? `Certainly! Here are the devices available at QMC within the price range of Rs ${min.toLocaleString()} to Rs ${max.toLocaleString()}:\n\n${filtered
-              .map((p, index) => `${index + 1}. ${p.name} — Rs ${p.price}`)
-              .join("\n\n")}`
-          : `Sorry, no devices were found in the price range of Rs ${min.toLocaleString()} to Rs ${max.toLocaleString()}.`;
-
-        setChats((prev) => [
-          ...prev,
-          {
-            by: "bot",
-            message: aiMessageText,
-            createdAt: new Date().toString(),
-          },
-        ]);
-        setResponseLoading(false);
-        return;
-      }
       const payload = {
         contents: [
           {
