@@ -7,6 +7,7 @@ import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { generateCustomId, fetchCurrentUser } from "../utils/Helpers";
 import { CircleMinus, PlusCircle, Plus, X } from "lucide-react";
+import API from "../utils/api";
 
 const SellAccessories = ({ onClose, productToUpdate }) => {
   const { currentUser } = useAuth();
@@ -111,79 +112,79 @@ const SellAccessories = ({ onClose, productToUpdate }) => {
     getUserDetails();
   }, [currentUser]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const newErrors = {};
-    if (!brandName) newErrors.brandName = "Please add a product brand name";
-    if (!deviceModel) newErrors.deviceModel = "Please add a product model";
-    if (!price) newErrors.price = "Please add a product price";
-    if (!description)
-      newErrors.description = "Please add a product description";
-    if (
-      fields.length < 1 ||
-      fields.some((field) => !field.fieldName || !field.body)
-    )
-      newErrors.fields = "Please add at least one complete field";
+  const newErrors = {};
+  if (!brandName) newErrors.brandName = "Please add a product brand name";
+  if (!deviceModel) newErrors.deviceModel = "Please add a product model";
+  if (!price) newErrors.price = "Please add a product price";
+  if (!description) newErrors.description = "Please add a product description";
+  if (
+    fields.length < 1 ||
+    fields.some((field) => !field.fieldName || !field.body)
+  )
+    newErrors.fields = "Please add at least one complete field";
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    return;
+  }
 
-    setUploading(true);
-    try {
-      const imageUrls = await Promise.all(
-        images.map(async (image) => {
-          const imageId = await generateCustomId("ACCESSORIES");
-          const imageRef = ref(storage, `ACCESSORIES/${imageId}_${image.name}`);
-          await uploadBytes(imageRef, image);
-          return await getDownloadURL(imageRef);
-        })
-      );
+  setUploading(true);
+  try {
+    let uploadedImages = [...existingImages];
 
-      const productData = {
-        createdBy: currentUserDetails.name || "",
-        createdByEmail: currentUserDetails.email || "",
-        createdByPhoneNumber: currentUserDetails.phoneNumber || "",
-        brandName,
-        deviceModel,
-        description,
-        price,
-        fields,
-        images: [...existingImages, ...imageUrls],
-        userId: auth.currentUser?.uid || "",
-        createdAt: new Date(),
-      };
+    if (images.length > 0) {
+      const formData = new FormData();
+      images.forEach((img) => formData.append("images", img));
 
-      if (productToUpdate) {
-        await updateDoc(
-          doc(db, "ACCESSORIES", productToUpdate.id),
-          productData
-        );
-        toast.success("Product updated successfully!");
+      const response = await API.post("/Images/addMultipleImages", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      if (response.data?.success) {
+        const newImages = response.data.images.map((img) => img.url);
+        uploadedImages = [...uploadedImages, ...newImages];
       } else {
-        const customId = await generateCustomId("ACCESSORIES");
-        await setDoc(doc(db, "ACCESSORIES", customId), productData);
-        toast.success("Product listed successfully!");
+        throw new Error("Failed to upload images to backend");
       }
-
-      onClose();
-    } catch (error) {
-      console.error("Error processing product:", error);
-      setErrors({ submit: "Failed to process product. Please try again." });
-    } finally {
-      setUploading(false);
     }
-  };
+
+    const productData = {
+      createdBy: currentUserDetails.name || "",
+      createdByEmail: currentUserDetails.email || "",
+      createdByPhoneNumber: currentUserDetails.phoneNumber || "",
+      brandName,
+      deviceModel,
+      description,
+      price,
+      fields,
+      images: uploadedImages,
+      userId: auth.currentUser?.uid || "",
+      createdAt: new Date(),
+    };
+
+    if (productToUpdate) {
+      await updateDoc(doc(db, "ACCESSORIES", productToUpdate.id), productData);
+      toast.success("Product updated successfully!");
+    } else {
+      const customId = await generateCustomId("ACCESSORIES");
+      await setDoc(doc(db, "ACCESSORIES", customId), productData);
+      toast.success("Product listed successfully!");
+    }
+
+    onClose();
+  } catch (error) {
+    console.error("Error processing product:", error);
+    setErrors({ submit: "Failed to process product. Please try again." });
+  } finally {
+    setUploading(false);
+  }
+};
 
   const handleClose = () => {
     onClose();
-  };
-
-  const handleImageUploadClose = () => {
-    setIsImageClicked(false);
-    setSelectedImage(null);
   };
 
   return (

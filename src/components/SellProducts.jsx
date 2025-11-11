@@ -6,6 +6,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { generateCustomId, fetchCurrentUser } from "../utils/Helpers";
+import API from "../utils/api";
 
 const SellProducts = ({ onClose, productToUpdate }) => {
   const { currentUser } = useAuth();
@@ -77,6 +78,11 @@ const SellProducts = ({ onClose, productToUpdate }) => {
     setStep(2);
   };
 
+  const onBack = () => {
+    setErrors({});
+    setStep(1);
+  };
+
   const handleAddFilesClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -112,17 +118,23 @@ const SellProducts = ({ onClose, productToUpdate }) => {
 
     setUploading(true);
     try {
-      const imageUrls = await Promise.all(
-        images.map(async (image) => {
-          const imageId = await generateCustomId("SMARTDEVICES");
-          const imageRef = ref(
-            storage,
-            `SMARTDEVICES/${imageId}_${image.name}`
-          );
-          await uploadBytes(imageRef, image);
-          return await getDownloadURL(imageRef);
-        })
-      );
+      let uploadedImages = [...existingImages];
+
+      if (images.length > 0) {
+        const formData = new FormData();
+        images.forEach((img) => formData.append("images", img));
+
+        const response = await API.post("/Images/addMultipleImages", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        if (response.data?.success) {
+          const newImages = response.data.images.map((img) => img.url);
+          uploadedImages = [...uploadedImages, ...newImages];
+        } else {
+          throw new Error("Failed to upload images to backend");
+        }
+      }
 
       const productData = {
         createdBy: currentUserDetails.name,
@@ -136,7 +148,7 @@ const SellProducts = ({ onClose, productToUpdate }) => {
         ram,
         price,
         description,
-        images: [...existingImages, ...imageUrls],
+        images: uploadedImages,
         userId: auth.currentUser?.uid,
         createdAt: new Date(),
       };
@@ -160,11 +172,6 @@ const SellProducts = ({ onClose, productToUpdate }) => {
     } finally {
       setUploading(false);
     }
-  };
-
-  const onBack = () => {
-    setErrors({});
-    setStep(1);
   };
 
   const handleClose = () => {
@@ -399,10 +406,18 @@ const SellProducts = ({ onClose, productToUpdate }) => {
                     />
                   </div>
                 ))}
-                <div style={{border:"none", display:"flex",alignItems:"center", justifyContent:"center"}} className="media-preview-video">
-                <div onClick={handleAddFilesClick} className="add-Files">
-                  <Plus />
-                </div>
+                <div
+                  style={{
+                    border: "none",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  className="media-preview-video"
+                >
+                  <div onClick={handleAddFilesClick} className="add-Files">
+                    <Plus />
+                  </div>
                 </div>
                 <input
                   ref={fileInputRef}

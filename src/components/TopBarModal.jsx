@@ -12,6 +12,7 @@ import { auth, db } from "../utils/FirebaseConfig";
 import { useAuth } from "../context/AuthContext";
 import "../assets/styles/Modal.css";
 import { Info, Palette, Pen } from "lucide-react";
+import API from "../utils/api";
 
 const ProfileImage =
   "https://png.pngtree.com/png-clipart/20200701/original/pngtree-single-person-character-in-vector-png-image_5359691.jpg";
@@ -40,7 +41,7 @@ const TopBarModal = ({ userData, onProfileUpdate, isOpen, setIsOpen }) => {
   };
 
   const getUserDocId = async () => {
-    const collectionName = role === "user";
+    const collectionName = role === "user" ? "EMPLOYEES" : role.toUpperCase();
     const collectionRef = collection(db, collectionName);
     const q = query(collectionRef, where("uid", "==", currentUser.uid));
     const querySnapshot = await getDocs(q);
@@ -58,16 +59,22 @@ const TopBarModal = ({ userData, onProfileUpdate, isOpen, setIsOpen }) => {
         throw new Error("User is not authenticated");
       }
 
-      const storage = getStorage();
       let imageUrl = userData.profileImg || "";
+
       if (fileInputRef.current.files[0]) {
         const file = fileInputRef.current.files[0];
-        const storageRef = ref(
-          storage,
-          `profileImages/${auth.currentUser.uid}`
-        );
-        await uploadBytes(storageRef, file);
-        imageUrl = await getDownloadURL(storageRef);
+        const formData = new FormData();
+        formData.append("image", file);
+
+        const response = await API.post("/Images/addImage", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        if (response.data?.success) {
+          imageUrl = response.data.url;
+        } else {
+          throw new Error("Failed to upload image to backend");
+        }
       }
 
       const collectionName = role === "user" ? "EMPLOYEES" : role.toUpperCase();
